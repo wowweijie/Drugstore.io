@@ -1,4 +1,4 @@
-package com.example.blossom
+package com.example.drugstore_io
 
 import io.flutter.embedding.android.FlutterActivity
 
