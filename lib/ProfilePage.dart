@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:blossom/model/Profile.dart';
-import 'package:blossom/CipHoursPage.dart';
+import 'package:drugstore_io/model/Profile.dart';
+import 'package:drugstore_io/CipHoursPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatefulWidget {
