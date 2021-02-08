@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-
 import 'AboutPage.dart';
+import './registration/LoginPage.dart';
 import 'HomePage.dart';
 import 'ChatPage.dart';
 import 'ProfilePage.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-  
+
     return FutureBuilder(
       // Initialize FlutterFire:
       future: _initialization,
@@ -32,15 +32,13 @@ class MyApp extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-           return MaterialApp(home: MyBottomNavigationBar());
+          return MaterialApp(home: LoginPage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
         return FlutterEasyLoading(child: Text("Please wait.."));
       },
     );
-    
-   
   }
 }
 
