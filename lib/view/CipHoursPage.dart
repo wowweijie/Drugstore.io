@@ -1,4 +1,4 @@
-import 'package:drugstore_io/PdfViewer.dart';
+import 'PdfViewer.dart';
 import 'package:pdf/pdf.dart';
 import 'dart:io';
 import 'package:pdf/widgets.dart';

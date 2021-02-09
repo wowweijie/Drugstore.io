@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'AboutPage.dart';
-import './registration/LoginPage.dart';
-import 'HomePage.dart';
-import 'ChatPage.dart';
-import 'ProfilePage.dart';
-import 'StoriesPage.dart';
+import 'view/AboutPage.dart';
+import 'package:drugstore_io/view/registration/LoginPage.dart';
+import 'view/HomePage.dart';
+import 'view/ChatPage.dart';
+import 'view/ProfilePage.dart';
+import 'view/StoriesPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(home: MyBottomNavigationBar());
+          return MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
