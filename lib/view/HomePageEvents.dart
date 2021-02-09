@@ -1,4 +1,3 @@
-import 'package:drugstore_io/eventsPage/EventsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'eventsPage/EventsPage.dart';

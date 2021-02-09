@@ -1,5 +1,5 @@
-import 'package:drugstore_io/HomePageProgress.dart';
-import 'package:drugstore_io/QuotePopUp.dart';
+import 'HomePageProgress.dart';
+import 'QuotePopUp.dart';
 import 'HomePageCategories.dart';
 import 'HomePageEvents.dart';
 import 'event_data.dart';

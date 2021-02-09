@@ -1,6 +1,5 @@
-import 'package:drugstore_io/HomePage.dart';
 import 'package:drugstore_io/main.dart';
-import 'package:drugstore_io/registration/RegistrationDialog.dart';
+import 'package:drugstore_io/view/registration/RegistrationDialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
