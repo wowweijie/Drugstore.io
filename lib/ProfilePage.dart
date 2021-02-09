@@ -15,7 +15,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('sample_users');
 
     return FutureBuilder<DocumentSnapshot>(
       future: users.doc(documentId).get(),

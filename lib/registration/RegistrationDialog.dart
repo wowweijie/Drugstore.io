@@ -94,7 +94,7 @@ class _RegistrationDialog extends State<RegistrationDialog> {
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
                       onChanged: (value) {
-                        email = value;
+                        email = value.trim();
                       },
                       decoration: InputDecoration(
                           hintText: "Enter your Email",
@@ -226,7 +226,7 @@ class _RegistrationDialog extends State<RegistrationDialog> {
                             final newuser =
                                 await auth.createUserWithEmailAndPassword(
                                     email: email, password: password);
-                            fDbUsers.add({
+                            fDbUsers.set({
                               'name': name,
                               'uid': auth.currentUser.uid,
                               'DOB': dob,
