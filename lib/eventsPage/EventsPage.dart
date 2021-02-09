@@ -16,10 +16,9 @@ class EventsPage extends StatefulWidget {
   _EventsPageState createState() => _EventsPageState();
 }
 
-
 class _EventsPageState extends State<EventsPage> {
   bool checkCompleted;
-  
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -32,23 +31,23 @@ class _EventsPageState extends State<EventsPage> {
     checkCompleted = false;
 
     if (FirebaseAuth.instance.currentUser != null)
-      FirebaseFirestore.instance.collection('users')
-                              .where('uid', isEqualTo: FirebaseAuth.instance.currentUser.uid)
-                              .get()
-                              .then((QuerySnapshot querySnapshot) => {
-                                  querySnapshot.docs.forEach((doc) {
-                                      print(doc);
-                                      doc["completed_events"].forEach((eventName) {
-                                          print(eventName);
-                                          print(widget.msg['name']);
-                                        if(widget.msg['name'] == eventName)
-                                          checkCompleted = true;
-                                      });
-                                  })
-                              });
-    
+      FirebaseFirestore.instance
+          .collection('sample_users')
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+          .get()
+          .then((QuerySnapshot querySnapshot) => {
+                querySnapshot.docs.forEach((doc) {
+                  print(doc);
+                  doc["completed_events"].forEach((eventName) {
+                    print(eventName);
+                    print(widget.msg['name']);
+                    if (widget.msg['name'] == eventName) checkCompleted = true;
+                  });
+                })
+              });
+
     String registeredDisplayButton = "Register for this event";
-    if(checkCompleted) registeredDisplayButton = "Registered";
+    if (checkCompleted) registeredDisplayButton = "Registered";
 
     List participants = widget.msg['participants'];
     // String eventTimeString = DateFormat.yMMMMd().add_jm().format(eventTime);
@@ -73,12 +72,13 @@ class _EventsPageState extends State<EventsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          width: MediaQuery.of(context).size.width*0.75,
+                          width: MediaQuery.of(context).size.width * 0.75,
                           child: Column(
                             children: [
                               Text(widget.msg['name'],
                                   style: TextStyle(
-                                      fontSize: 32, fontWeight: FontWeight.bold)),
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
@@ -90,7 +90,10 @@ class _EventsPageState extends State<EventsPage> {
                       ],
                     ),
                   ),
-                  Divider(thickness: 3, color: Colors.black,),
+                  Divider(
+                    thickness: 3,
+                    color: Colors.black,
+                  ),
                   SizedBox(height: 10),
                   Row(children: [
                     Image.asset(
@@ -165,44 +168,34 @@ class _EventsPageState extends State<EventsPage> {
             padding: EdgeInsets.all(20),
             child: RaisedButton(
               padding: EdgeInsets.all(20),
-              color: checkCompleted? Colors.grey[400] : Colors.blueAccent,
-              onPressed: () async{
+              color: checkCompleted ? Colors.grey[400] : Colors.blueAccent,
+              onPressed: () async {
                 final FirebaseAuth auth = FirebaseAuth.instance;
-                User authUser =  auth.currentUser;
+                User authUser = auth.currentUser;
                 print(checkCompleted);
-               
 
-                if (authUser==null){
-                // if(true){
+                if (authUser == null) {
+                  // if(true){
                   showDialog(
-                  context: context,
-                  builder: (BuildContext dialogContext) {
-                    return  RegistrationDialog();
-                    }
-                  );
-                }
-
-                else{
+                      context: context,
+                      builder: (BuildContext dialogContext) {
+                        return RegistrationDialog();
+                      });
+                } else {
                   print("set to true");
                   checkCompleted = true;
                   print("Rerouting");
                   Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    MyApp()),
-                );
+                    context,
+                    MaterialPageRoute(builder: (context) => MyApp()),
+                  );
                 }
-
-                
-
-                
-                
-
-
               },
               child: Center(
-                child: Text(FirebaseAuth.instance.currentUser == null ? "Log in / Register" : registeredDisplayButton,
+                child: Text(
+                    FirebaseAuth.instance.currentUser == null
+                        ? "Log in / Register"
+                        : registeredDisplayButton,
                     style: TextStyle(
                       fontSize: 20,
                     )),
