@@ -1,4 +1,5 @@
 {
     "editor.defaultFormatter": "Dart-Code.flutter",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "files.autoSave": "afterDelay"
 }
