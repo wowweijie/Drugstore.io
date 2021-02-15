@@ -3,7 +3,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import '../HomePage.dart';
+import 'package:drugstore_io/view/reference/HomePage.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
