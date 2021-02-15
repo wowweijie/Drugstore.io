@@ -55,7 +55,6 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
     ChatPage(),
     StoriesPage(),
     ProfilePage(),
-    AboutPage()
   ];
 
   void _onItemTapped(int selectedIndex) {
@@ -93,12 +92,6 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
             label: "Profile",
             icon: Icon(
               Icons.person,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: "About",
-            icon: Icon(
-              Icons.contact_support_outlined,
             ),
           ),
         ],
