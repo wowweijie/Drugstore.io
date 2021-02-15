@@ -4,7 +4,7 @@ import 'HomePageCategories.dart';
 import 'HomePageEvents.dart';
 import 'event_data.dart';
 import 'package:flutter/material.dart';
-import 'eventsPage/EventsPage.dart';
+import 'package:drugstore_io/view/eventsPage/EventsPage.dart';
 import 'dart:math';
 
 class HomePage extends StatefulWidget {
