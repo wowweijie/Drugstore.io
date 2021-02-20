@@ -69,6 +69,7 @@ flutter:
     - images/date_icon.png
     - images/duration_icon.png
     - images/flutter-logo.png
+    - images/rafiki.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

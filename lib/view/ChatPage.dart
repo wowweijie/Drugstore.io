@@ -1,42 +1,21 @@
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
+  const ChatPage({Key key}) : super(key: key);
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final List<ChatMessage> _messages = <ChatMessage>[
+  final List<Widget> _messages = <Widget>[
     new ChatMessage(
       text:
           "Hi there! This is a reminder that you have an event coming up in 3 days! The event you have successfully registered for is: #I Am Remarkable workshop for YOUth. Could you please confirm that you are attending the event? (Yes/No)",
       name: "Blossom",
       type: false,
-    )
+    ),
   ];
   final TextEditingController _textController = new TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(
-          'Chat with Blossom',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-      ),
-      body: new Column(children: <Widget>[
-        new Container(
-          child: _buildChatBody(),
-        ),
-        new Divider(height: 1.0),
-        new Container(  
-          decoration: new BoxDecoration(color: Theme.of(context).cardColor),
-          child: _buildTextComposer(),
-        ),
-      ]),
-    );
-  }
 
   void _handleSubmitted(String text) {
     _textController.clear();
@@ -49,6 +28,34 @@ class _ChatPageState extends State<ChatPage> {
       _messages.insert(0, message);
     });
     response(text);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_messages.length < 2)
+      _messages.insert(0, ChatOption(["option1"], _handleSubmitted));
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text(
+          '',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: new Column(children: <Widget>[
+        new Flexible(
+            child: Column(children: <Widget>[
+          // SizedBox(
+          //     child: Image.asset("images/rafiki.png", fit: BoxFit.fitHeight),
+          //     height: 230),
+          _buildChatBody(),
+        ])),
+        new Divider(height: 1.0),
+        new Container(
+          decoration: new BoxDecoration(color: Theme.of(context).cardColor),
+          child: _buildTextComposer(),
+        ),
+      ]),
+    );
   }
 
   void response(text) {
@@ -88,13 +95,25 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _buildChatBody() {
-    return new Flexible(
-        child: new ListView.builder(
-      padding: new EdgeInsets.all(8.0),
-      reverse: true,
-      itemBuilder: (_, int index) => _messages[index],
-      itemCount: _messages.length,
-    ));
+    return new Container(
+      height: 498,
+      width: 400,
+      child: new ListView.builder(
+        padding: new EdgeInsets.all(8.0),
+        reverse: true,
+        itemBuilder: (_, int index) => _messages[index],
+        itemCount: _messages.length,
+      ),
+      decoration: BoxDecoration(
+        color: const Color(0xffffffff),
+        image: DecorationImage(
+            image: AssetImage("images/rafiki.png"),
+            colorFilter: new ColorFilter.mode(
+                Colors.white.withOpacity(0.3), BlendMode.dstATop),
+            fit: BoxFit.fitWidth,
+            alignment: Alignment.topCenter),
+      ),
+    );
   }
 
   Widget _buildTextComposer() {
@@ -151,9 +170,8 @@ class ChatMessage extends StatelessWidget {
                 style:
                     new TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             new Container(
-              margin: const EdgeInsets.only(top: 5.0),
-              child: new Text(text, style: TextStyle(fontSize: 20)),
-            ),
+                margin: const EdgeInsets.only(top: 5.0),
+                child: _buildMessageBubble(text, false)),
           ],
         ),
       ),
@@ -169,9 +187,8 @@ class ChatMessage extends StatelessWidget {
             new Text(this.name,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             new Container(
-              margin: const EdgeInsets.only(top: 5.0),
-              child: new Text(text, style: TextStyle(fontSize: 20)),
-            ),
+                margin: const EdgeInsets.only(top: 5.0),
+                child: _buildMessageBubble(text, true)),
           ],
         ),
       ),
@@ -198,3 +215,82 @@ class ChatMessage extends StatelessWidget {
     );
   }
 }
+
+Widget _buildMessageBubble(msgText, user) {
+  return new Material(
+    borderRadius: BorderRadius.only(
+      bottomLeft: Radius.circular(20),
+      topLeft: user ? Radius.circular(20) : Radius.circular(0),
+      bottomRight: Radius.circular(20),
+      topRight: user ? Radius.circular(0) : Radius.circular(20),
+    ),
+    color: user ? Colors.blue : Colors.grey[200],
+    elevation: 5,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      child: Text(
+        msgText,
+        style: TextStyle(
+          color: user ? Colors.white : Color(0xFF333333),
+          fontFamily: 'Poppins',
+          fontSize: 15,
+        ),
+      ),
+    ),
+  );
+}
+
+class ChatOption extends StatefulWidget {
+  ChatOption(this.options, this.sendChatMessage);
+
+  final List<String> options;
+  final sendChatCallback sendChatMessage;
+
+  @override
+  _ChatOptionState createState() => _ChatOptionState();
+}
+
+class _ChatOptionState extends State<ChatOption> {
+  int selectedIndex = -1;
+
+  @override
+  Widget build(BuildContext buildContext) {
+    return new Wrap(
+        alignment: WrapAlignment.end,
+        runAlignment: WrapAlignment.end,
+        crossAxisAlignment: WrapCrossAlignment.end,
+        direction: Axis.horizontal,
+        spacing: 5,
+        children: <Widget>[
+          for (int index = 0; index < widget.options.length; index++)
+            ChoiceChip(
+              label: Text(
+                widget.options[index],
+                style: TextStyle(
+                  fontFamily: 'Poppin',
+                  fontWeight: FontWeight.bold,
+                  color: selectedIndex == index ? Colors.white : Colors.blue,
+                ),
+              ),
+              backgroundColor: Color(0xFFFFFFFF),
+              selected: selectedIndex == index,
+              selectedColor: Colors.blue,
+              onSelected: (bool selected) => {
+                setState(() {
+                  selectedIndex = selected ? index : selectedIndex;
+                  widget.sendChatMessage(widget.options[index]);
+                })
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+                side: BorderSide(
+                  width: 1,
+                  color: Colors.blue,
+                ),
+              ),
+            )
+        ]);
+  }
+}
+
+typedef sendChatCallback = void Function(String text);
