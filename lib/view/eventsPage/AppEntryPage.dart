@@ -1,6 +1,7 @@
 import 'package:drugstore_io/main.dart';
 import 'package:flutter/material.dart';
 import 'package:drugstore_io/view/registration/LoginPage.dart';
+import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 
 class AppEntryPage extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _AppEntryPageState extends State<AppEntryPage> {
         child: Container(
           decoration: new BoxDecoration(
             image: new DecorationImage(
-              image: new AssetImage("images/Vector.png"),
+              image: new AssetImage("images/AppEntryPage_Background.png"),
               fit: BoxFit.fitWidth,
               alignment: Alignment.topCenter,
             ),
@@ -55,7 +56,7 @@ class _AppEntryPageState extends State<AppEntryPage> {
                   onPressed: () {
                     print("Pressed Log in");
                     Navigator.push(
-                          context, MaterialPageRoute(builder: (_) => LoginPage()));
+                          context, MaterialPageRoute(builder: (_) => NewLoginPage()));
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xff0f5d9a),
