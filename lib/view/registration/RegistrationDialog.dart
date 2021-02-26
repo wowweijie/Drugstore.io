@@ -228,7 +228,7 @@ class _RegistrationDialog extends State<RegistrationDialog> {
                             final newuser =
                                 await auth.createUserWithEmailAndPassword(
                                     email: email, password: password);
-                            AccountManager.registerUser(newuser.user.uid, new UserProfile(email, name, dob));
+                            AccountManager.registerUser(newuser.user.uid, new UserProfile(email, name));
                             if (newuser != null) {
                               print("user created");
                               // Navigator.push(

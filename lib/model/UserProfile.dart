@@ -1,11 +1,9 @@
 class UserProfile {
   String email;
-  String name;
-  DateTime dateOfBirth;
+  String username;
 
-  UserProfile(String email, String name, DateTime dateOfBirth){
+  UserProfile(String email, String username){
     this.email = email;
-    this.name = name;
-    this.dateOfBirth = dateOfBirth;
+    this.username = username;
   }
 }
