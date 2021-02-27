@@ -275,11 +275,11 @@ class _ChatOptionState extends State<ChatOption> {
               backgroundColor: Color(0xFFFFFFFF),
               selected: selectedIndex == index,
               selectedColor: Colors.blue,
-              onSelected: (bool selected) => {
+              onSelected: (bool selected) {
                 setState(() {
                   selectedIndex = selected ? index : selectedIndex;
                   widget.sendChatMessage(widget.options[index]);
-                })
+                });
               },
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
