@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:drugstore_io/view/reference/AboutPage.dart';
 import 'package:drugstore_io/view/registration/LoginPage.dart';
+import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
 import 'package:drugstore_io/view/reference/HomePage.dart';
 import 'package:drugstore_io/view/reference/ChatPage.dart';
 import 'package:drugstore_io/view/reference/ProfilePage.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage());
+          return MaterialApp(debugShowCheckedModeBanner: false, home: SignUpPage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
