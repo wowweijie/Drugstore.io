@@ -1,3 +1,4 @@
+import 'package:drugstore_io/view/eventsPage/NewProfilePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage());
+          return MaterialApp(debugShowCheckedModeBanner: false, home: NewProfilePage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
