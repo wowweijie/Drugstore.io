@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'eventsPage/EventsPage.dart';
+import 'package:drugstore_io/view/eventsPage/EventsPage.dart';
 import 'package:intl/intl.dart';
 
 class HomePageEvents extends StatefulWidget {

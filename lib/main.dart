@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'view/AboutPage.dart';
+import 'package:drugstore_io/view/reference/AboutPage.dart';
 import 'package:drugstore_io/view/registration/LoginPage.dart';
 import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
-import 'view/HomePage.dart';
-import 'view/ChatPage.dart';
-import 'view/ProfilePage.dart';
-import 'view/StoriesPage.dart';
+import 'package:drugstore_io/view/reference/HomePage.dart';
+import 'package:drugstore_io/view/reference/ChatPage.dart';
+import 'package:drugstore_io/view/reference/ProfilePage.dart';
+import 'package:drugstore_io/view/reference/StoriesPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,7 +56,6 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
     ChatPage(),
     StoriesPage(),
     ProfilePage(),
-    AboutPage()
   ];
 
   void _onItemTapped(int selectedIndex) {
@@ -94,12 +93,6 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
             label: "Profile",
             icon: Icon(
               Icons.person,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: "About",
-            icon: Icon(
-              Icons.contact_support_outlined,
             ),
           ),
         ],
