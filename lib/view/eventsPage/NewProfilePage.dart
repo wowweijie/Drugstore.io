@@ -1,4 +1,5 @@
 import 'package:drugstore_io/main.dart';
+import 'package:drugstore_io/view/eventsPage/EditProfilePage.dart';
 import 'package:flutter/material.dart';
 
 class NewProfilePage extends StatefulWidget {
@@ -7,7 +8,16 @@ class NewProfilePage extends StatefulWidget {
 }
 
 class _NewProfilePageState extends State<NewProfilePage> {
-  bool _enableNotifications = false;
+  bool enableNotifications = false;
+  String name = "Pablo Stanley";
+  String username = "pablo_123456";
+  String password = "********";
+  String gender = "Male";
+  String birthday = "19 Aug 2000";
+  String ethnicity = "European";
+  String heightString = "169 cm";
+  String weightString = "55 kg";
+  String bloodType = "B+";
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +28,38 @@ class _NewProfilePageState extends State<NewProfilePage> {
         backgroundColor: Color(0xffe2eeff),
         leading: 
           Image(image :new AssetImage("images/doctor_virtual_icon.png")),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => EditProfilePage()));
+              },
+              child: Icon(
+                Icons.edit,
+                size: 26.0,
+              ),
+            )
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {
+                //Navigator.push(
+                //  context, MaterialPageRoute(builder: (_) => EditProfilePage()));
+              },
+              child: Icon(
+                Icons.logout,
+                size: 26.0,
+              ),
+            )
+          ),
+        ],
+        actionsIconTheme: IconThemeData(
+          color: Colors.blue,
+          opacity: 10.0
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -34,7 +76,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
               ),
               Container(
                 padding: const EdgeInsets.only(bottom: 10.0),
-                child: Text("Pablo Stanley", 
+                child: Text(name, 
                   style: TextStyle(color: Colors.black, fontSize: 25, 
                     fontStyle: FontStyle.italic, fontWeight: FontWeight.bold,),
                 ),
@@ -54,7 +96,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                       Text("Name", 
                         style: TextStyle(color: Colors.black, fontSize: 17,),
                       ),
-                      Text("Pablo Stanley",
+                      Text(name,
                         style: TextStyle(color: Colors.black, fontSize: 17,),
                       ),
                     ],
@@ -76,7 +118,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                       Text("Username", 
                         style: TextStyle(color: Colors.black, fontSize: 17,),
                       ),
-                      Text("pablo_123456",
+                      Text(username,
                         style: TextStyle(color: Colors.black, fontSize: 17,),
                       ),
                     ],
@@ -98,7 +140,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                       Text("Password", 
                         style: TextStyle(color: Colors.black, fontSize: 17,),
                       ),
-                      Text("********",
+                      Text(password,
                         style: TextStyle(color: Colors.black, fontSize: 17,),
                       ),
                     ],
@@ -122,11 +164,11 @@ class _NewProfilePageState extends State<NewProfilePage> {
                         textAlign: TextAlign.center,
                       ),
                       Switch(
-                        value: _enableNotifications,
+                        value: enableNotifications,
                         onChanged: (value) {
                           setState(() {
-                            _enableNotifications = value;
-                            print(_enableNotifications);
+                            enableNotifications = value;
+                            print(enableNotifications);
                           });
                         },
                         activeTrackColor: Colors.blue.shade100,
@@ -137,21 +179,12 @@ class _NewProfilePageState extends State<NewProfilePage> {
                 ),
               ),
               Container(
-                alignment: Alignment.topLeft,
-                padding: const EdgeInsets.only(top: 10.0, left: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xffd3dae5),
-                    ),
-                  //height: 30,  
-                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Text(
+                alignment: Alignment.topCenter,
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Text(
                     "About Me",
-                    style: TextStyle(color: Colors.black, fontSize: 17,),
-                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold),
                   ),
-                ),
               ),
               Container(
                 alignment: Alignment.topLeft,
@@ -170,7 +203,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                               border: OutlineInputBorder(),
                               labelText: "Gender",
                           ),
-                          initialValue: "Male",
+                          initialValue: gender,
                         ),
                       ),
                       Container(
@@ -183,7 +216,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                               border: OutlineInputBorder(),
                               labelText: "Birthday",
                           ),
-                          initialValue: "19 Aug 2000",
+                          initialValue: birthday,
                         ),
                       ),
                       Container(
@@ -196,7 +229,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                               border: OutlineInputBorder(),
                               labelText: "Ethnicity",
                           ),
-                          initialValue: "European",
+                          initialValue: ethnicity
                         ),
                       ),
                     ],
@@ -220,7 +253,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                               border: OutlineInputBorder(),
                               labelText: "Height",
                           ),
-                          initialValue: "169 cm",
+                          initialValue: heightString,
                         ),
                       ),
                       Container(
@@ -233,7 +266,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                               border: OutlineInputBorder(),
                               labelText: "Weight",
                           ),
-                          initialValue: "55 kg",
+                          initialValue: weightString,
                         ),
                       ),
                       Container(
@@ -246,7 +279,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                               border: OutlineInputBorder(),
                               labelText: "Blood Group",
                           ),
-                          initialValue: "B+",
+                          initialValue: bloodType,
                         ),
                       ),
                     ],
@@ -254,20 +287,12 @@ class _NewProfilePageState extends State<NewProfilePage> {
                 ),
               ),
               Container(
-                alignment: Alignment.topLeft,
-                padding: const EdgeInsets.only(top: 20.0, left: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xffd3dae5),
-                    ),
-                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Text(
+                alignment: Alignment.topCenter,
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Text(
                     "Medical History",
-                    style: TextStyle(color: Colors.black, fontSize: 17,),
-                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold),
                   ),
-                ),
               ),
               Container(
                 alignment: Alignment.topLeft,
