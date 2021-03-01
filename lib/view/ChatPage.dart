@@ -18,6 +18,9 @@ class _ChatPageState extends State<ChatPage> {
   final TextEditingController _textController = new TextEditingController();
 
   void _handleSubmitted(String text) {
+    if (_textController.text == "" || _textController.text.trim().isEmpty) {
+      return;
+    }
     _textController.clear();
     ChatMessage message = new ChatMessage(
       text: text,
