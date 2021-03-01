@@ -11,7 +11,7 @@ class AccountManager {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode({
-        'title': 'asd',
+        'email': user.email,
       }),
     );
     if (response.statusCode == 200) {
@@ -24,4 +24,21 @@ class AccountManager {
       throw Exception(response.statusCode.toString() + 'Failed to load album');
     }
   }
+
+  static getUser(String uid, UserProfile user) async {
+    final response = await http.get(
+      Uri.http('10.0.2.2:8080', '/users/' + uid),
+    );
+    if (response.statusCode == 200) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      print("User profile received...");
+      print(response.body);
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      throw Exception(response.statusCode.toString() + 'Failed to load album');
+    }
+  }
+
 }
