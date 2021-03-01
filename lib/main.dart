@@ -6,10 +6,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:drugstore_io/view/reference/AboutPage.dart';
 import 'package:drugstore_io/view/registration/LoginPage.dart';
+import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
 import 'package:drugstore_io/view/reference/HomePage.dart';
-import 'package:drugstore_io/view/reference/ChatPage.dart';
+import 'package:drugstore_io/view/ChatPage.dart';
 import 'package:drugstore_io/view/reference/ProfilePage.dart';
 import 'package:drugstore_io/view/reference/StoriesPage.dart';
+import 'package:drugstore_io/view/MainChatPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
