@@ -10,15 +10,17 @@ class _ChatPageState extends State<ChatPage> {
   final List<Widget> _messages = <Widget>[
     new ChatMessage(
       text:
-          "Hi there! This is a reminder that you have an event coming up in 3 days! The event you have successfully registered for is: #I Am Remarkable workshop for YOUth. Could you please confirm that you are attending the event? (Yes/No)",
-      name: "Blossom",
+          "Hi! I am Dr. Virtual, your virtual medical diagnosis chatbot to assist with your checkup. " +
+              "May I know what concerns you about your health? " +
+              "Please describe your symptoms to me :)",
+      name: "Dr. Virtual",
       type: false,
     ),
   ];
   final TextEditingController _textController = new TextEditingController();
 
   void _handleSubmitted(String text) {
-    if (_textController.text == "" || _textController.text.trim().isEmpty) {
+    if (text == "" || text.trim().isEmpty) {
       return;
     }
     _textController.clear();
@@ -46,12 +48,8 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: new Column(children: <Widget>[
         new Flexible(
-            child: Column(children: <Widget>[
-          // SizedBox(
-          //     child: Image.asset("images/rafiki.png", fit: BoxFit.fitHeight),
-          //     height: 230),
-          _buildChatBody(),
-        ])),
+          child: _buildChatBody(),
+        ),
         new Divider(height: 1.0),
         new Container(
           decoration: new BoxDecoration(color: Theme.of(context).cardColor),
@@ -68,27 +66,27 @@ class _ChatPageState extends State<ChatPage> {
       message = new ChatMessage(
         text:
             "Awesome! Your status has been updated. We look forward to seeing you!",
-        name: "Blossom",
+        name: "Dr. Virtual",
         type: false,
       );
     } else if (text == "No" || text == "no") {
       message = new ChatMessage(
         text:
             "So sorry to hear that you can't join the event! Do look out for our other events. Hope to see you soon!",
-        name: "Blossom",
+        name: "Dr. Virtual",
         type: false,
       );
     } else if (text == "What are badges?") {
       message = new ChatMessage(
         text:
             "Badges are a way to show your friends what you are most passionate about! You can earn badges by volunteering in relevant projects. Head over to the main page to see your progress towards getting the badges as well as which volunteering events can help you achieve certain badges!",
-        name: "Blossom",
+        name: "Dr. Virtual",
         type: false,
       );
     } else {
       message = new ChatMessage(
         text: "Sorry, I did not understand that.",
-        name: "Blossom",
+        name: "Dr. Virtual",
         type: false,
       );
     }
