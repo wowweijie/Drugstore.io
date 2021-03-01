@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(debugShowCheckedModeBanner: false, home: NewProfilePage());
+          return MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
