@@ -1,3 +1,4 @@
+import 'package:drugstore_io/model/UserProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,6 +8,7 @@ import 'package:drugstore_io/view/reference/HomePage.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:drugstore_io/controller/AccountManager.dart';
 
 // import 'login.dart';
 
@@ -226,14 +228,7 @@ class _RegistrationDialog extends State<RegistrationDialog> {
                             final newuser =
                                 await auth.createUserWithEmailAndPassword(
                                     email: email, password: password);
-                            fDbUsers.set({
-                              'name': name,
-                              'uid': auth.currentUser.uid,
-                              'DOB': dob,
-                              'race': race,
-                              'email': email,
-                              'mobile': mobileNum
-                            });
+                            AccountManager.registerUser(newuser.user.uid, new UserProfile(email, name));
                             if (newuser != null) {
                               print("user created");
                               // Navigator.push(

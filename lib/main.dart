@@ -1,3 +1,4 @@
+import 'package:drugstore_io/view/eventsPage/AppEntryPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,10 +6,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:drugstore_io/view/reference/AboutPage.dart';
 import 'package:drugstore_io/view/registration/LoginPage.dart';
+import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
 import 'package:drugstore_io/view/reference/HomePage.dart';
-import 'package:drugstore_io/view/reference/ChatPage.dart';
+import 'package:drugstore_io/view/ChatPage.dart';
 import 'package:drugstore_io/view/reference/ProfilePage.dart';
 import 'package:drugstore_io/view/reference/StoriesPage.dart';
+import 'package:drugstore_io/view/MainChatPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +35,7 @@ class MyApp extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage());
+          return MaterialApp(debugShowCheckedModeBanner: false, home: AppEntryPage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
@@ -51,11 +54,11 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
+    //AppEntryPage(),
     HomePage(),
     ChatPage(),
     StoriesPage(),
     ProfilePage(),
-    AboutPage()
   ];
 
   void _onItemTapped(int selectedIndex) {
@@ -93,12 +96,6 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
             label: "Profile",
             icon: Icon(
               Icons.person,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: "About",
-            icon: Icon(
-              Icons.contact_support_outlined,
             ),
           ),
         ],
