@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:drugstore_io/controller/ChatManager.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key key}) : super(key: key);
@@ -7,6 +8,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  ChatManager chatManager;
   final List<Widget> _messages = <Widget>[
     new ChatMessage(
       text:
@@ -18,6 +20,18 @@ class _ChatPageState extends State<ChatPage> {
     ),
   ];
   final TextEditingController _textController = new TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    chatManager = ChatManager.setMessageListener(sendMessageListener);
+  }
+
+  void sendMessageListener(Widget msg) {
+    setState(() {
+      _messages.insert(0, msg);
+    });
+  }
 
   void _handleSubmitted(String text) {
     if (text == "" || text.trim().isEmpty) {
@@ -32,7 +46,8 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       _messages.insert(0, message);
     });
-    response(text);
+    chatManager.generateVirtualResponse(text);
+    //response(text);
   }
 
   @override
