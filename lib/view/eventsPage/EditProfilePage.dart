@@ -1,15 +1,12 @@
 import 'package:drugstore_io/main.dart';
-import 'package:drugstore_io/view/eventsPage/EditProfilePage.dart';
-import 'package:expandable_group/expandable_group_widget.dart';
 import 'package:flutter/material.dart';
 
-class NewProfilePage extends StatefulWidget {
+class EditProfilePage extends StatefulWidget {
   @override
-  _NewProfilePageState createState() => _NewProfilePageState();
+  _EditProfilePageState createState() => _EditProfilePageState();
 }
 
-
-class _NewProfilePageState extends State<NewProfilePage> {
+class _EditProfilePageState extends State<EditProfilePage> {
   bool enableNotifications = false;
   String name = "Pablo Stanley";
   String username = "pablo_123456";
@@ -20,17 +17,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
   String heightString = "169 cm";
   String weightString = "55 kg";
   String bloodType = "B+";
-  List<String> allergies = ["Prawn", "Paracetamol"];
-  List<String> existingMedCond = ["Anaemia", "Asthma"];
-  List<String> personalMedHist = ["Pneumonia"];
-  List<String> famMedHist = ["NIL"];
-  
-  List<ListTile> _buildItems(BuildContext context, List<String> items) => items
-      .map((e) => ListTile(
-            title: Text(e),
-          ))
-      .toList();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,24 +30,9 @@ class _NewProfilePageState extends State<NewProfilePage> {
           Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => EditProfilePage()));
-                },
+                onTap: () {},
                 child: Icon(
-                  Icons.edit,
-                  size: 26.0,
-                ),
-              )),
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  //Navigator.push(
-                  //  context, MaterialPageRoute(builder: (_) => EditProfilePage()));
-                },
-                child: Icon(
-                  Icons.logout,
+                  Icons.save,
                   size: 26.0,
                 ),
               )),
@@ -83,7 +55,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
               Container(
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: Text(
-                  name,
+                  "Edit Your Profile",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 25,
@@ -113,11 +85,19 @@ class _NewProfilePageState extends State<NewProfilePage> {
                           fontSize: 17,
                         ),
                       ),
-                      Text(
-                        name,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
+                      Container(
+                        width: 150,
+                        height: 25,
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: TextFormField(
+                          textAlign: TextAlign.end,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Enter a name'),
+                          initialValue: name,
+                          onChanged: (value) {
+                            name = value;
+                          },
                         ),
                       ),
                     ],
@@ -145,11 +125,19 @@ class _NewProfilePageState extends State<NewProfilePage> {
                           fontSize: 17,
                         ),
                       ),
-                      Text(
-                        username,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
+                      Container(
+                        width: 150,
+                        height: 25,
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: TextFormField(
+                          textAlign: TextAlign.end,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Enter a username'),
+                          initialValue: username,
+                          onChanged: (value) {
+                            username = value;
+                          },
                         ),
                       ),
                     ],
@@ -177,11 +165,19 @@ class _NewProfilePageState extends State<NewProfilePage> {
                           fontSize: 17,
                         ),
                       ),
-                      Text(
-                        password,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
+                      Container(
+                        width: 150,
+                        height: 25,
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: TextFormField(
+                          textAlign: TextAlign.end,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Enter a new password'),
+                          initialValue: password,
+                          onChanged: (value) {
+                            password = value;
+                          },
                         ),
                       ),
                     ],
@@ -248,12 +244,15 @@ class _NewProfilePageState extends State<NewProfilePage> {
                         height: 60,
                         width: 130,
                         child: TextFormField(
-                          enabled: false,
+                          enabled: true,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: "Gender",
                           ),
                           initialValue: gender,
+                          onChanged: (value) {
+                            gender = value;
+                          },
                         ),
                       ),
                       Container(
@@ -261,12 +260,15 @@ class _NewProfilePageState extends State<NewProfilePage> {
                         height: 60,
                         width: 130,
                         child: TextFormField(
-                          enabled: false,
+                          enabled: true,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: "Birthday",
                           ),
                           initialValue: birthday,
+                          onChanged: (value) {
+                            birthday = value;
+                          },
                         ),
                       ),
                       Container(
@@ -274,12 +276,16 @@ class _NewProfilePageState extends State<NewProfilePage> {
                         height: 60,
                         width: 130,
                         child: TextFormField(
-                            enabled: false,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Ethnicity",
-                            ),
-                            initialValue: ethnicity),
+                          enabled: true,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "Ethnicity",
+                          ),
+                          initialValue: ethnicity,
+                          onChanged: (value) {
+                            ethnicity = value;
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -298,12 +304,15 @@ class _NewProfilePageState extends State<NewProfilePage> {
                         height: 60,
                         width: 130,
                         child: TextFormField(
-                          enabled: false,
+                          enabled: true,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: "Height",
                           ),
                           initialValue: heightString,
+                          onChanged: (value) {
+                            heightString = value;
+                          },
                         ),
                       ),
                       Container(
@@ -311,12 +320,15 @@ class _NewProfilePageState extends State<NewProfilePage> {
                         height: 60,
                         width: 130,
                         child: TextFormField(
-                          enabled: false,
+                          enabled: true,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: "Weight",
                           ),
                           initialValue: weightString,
+                          onChanged: (value) {
+                            weightString = value;
+                          },
                         ),
                       ),
                       Container(
@@ -324,12 +336,15 @@ class _NewProfilePageState extends State<NewProfilePage> {
                         height: 60,
                         width: 130,
                         child: TextFormField(
-                          enabled: false,
+                          enabled: true,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: "Blood Group",
                           ),
                           initialValue: bloodType,
+                          onChanged: (value) {
+                            bloodType = value;
+                          },
                         ),
                       ),
                     ],
@@ -351,96 +366,128 @@ class _NewProfilePageState extends State<NewProfilePage> {
                 alignment: Alignment.topLeft,
                 padding:
                     const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    ExpandableGroup(
-                          header: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Color(0xfff2f6fc),
-                              ),
-                            padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                            child: Text("Allergies", 
-                              style: TextStyle(color: Colors.black, fontSize: 17,),
-                            )
-                          ),
-                          items: _buildItems(context, allergies),
-                          isExpanded: false,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Color(0xfff2f6fc),
+                  ),
+                  padding: const EdgeInsets.only(
+                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Allergies",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
                         ),
-                  ],
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    ExpandableGroup(
-                      header: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color(0xfff2f6fc),
-                          ),
-                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                        child: Text("Existing Medical Conditions", 
-                          style: TextStyle(color: Colors.black, fontSize: 17,),
-                        )
                       ),
-                      items: _buildItems(context, existingMedCond),
-                      isExpanded: false,
-                    ),
-                  ],
+                      Text(
+                        " ",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Container(
                 alignment: Alignment.topLeft,
                 padding:
                     const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    ExpandableGroup(
-                          header: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Color(0xfff2f6fc),
-                              ),
-                            padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                            child: Text("Personal Medical History", 
-                              style: TextStyle(color: Colors.black, fontSize: 17,),
-                            )
-                          ),
-                          items: _buildItems(context, personalMedHist),
-                          isExpanded: false,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Color(0xfff2f6fc),
+                  ),
+                  padding: const EdgeInsets.only(
+                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Existing Medical Conditions",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
                         ),
-                  ],
+                      ),
+                      Text(
+                        " ",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                padding:
+                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Color(0xfff2f6fc),
+                  ),
+                  padding: const EdgeInsets.only(
+                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Personal Medical History",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
+                        ),
+                      ),
+                      Text(
+                        " ",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Container(
                 alignment: Alignment.topLeft,
                 padding: const EdgeInsets.only(
                     top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    ExpandableGroup(
-                          header: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Color(0xfff2f6fc),
-                              ),
-                            padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                            child: Text("Family Medical History", 
-                              style: TextStyle(color: Colors.black, fontSize: 17,),
-                            )
-                          ),
-                          items: _buildItems(context, famMedHist),
-                          isExpanded: false,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Color(0xfff2f6fc),
+                  ),
+                  padding: const EdgeInsets.only(
+                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Family Medical History",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
                         ),
-                  ],
+                      ),
+                      Text(
+                        " ",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
