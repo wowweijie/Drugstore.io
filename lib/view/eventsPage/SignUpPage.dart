@@ -1,3 +1,5 @@
+import 'package:drugstore_io/view/eventsPage/EditProfilePage.dart';
+import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:drugstore_io/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -146,9 +148,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                   new UserProfile(email, username));
                               if (newuser != null) {
                                 print("user created");
-                                //add navigate to edit profile page
-                                //Navigator.push(context, MaterialPageRoute(builder: (context) => NewLoginPage()),
-                                // );
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()),
+                                );
                                 //Navigator.pop(context);
                               }
 
@@ -196,8 +197,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: ElevatedButton(
                         onPressed: () {
                           print("Pressed Log In");
-                          //Navigator.push(
-                          //      context, MaterialPageRoute(builder: (_) => NewLoginPage()));
+                          Navigator.push(
+                                context, MaterialPageRoute(builder: (_) => NewLoginPage()));
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.white,
