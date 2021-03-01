@@ -1,4 +1,5 @@
 import 'package:drugstore_io/view/eventsPage/AppEntryPage.dart';
+import 'package:drugstore_io/view/eventsPage/NewProfilePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,7 +59,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
     HomePage(),
     ChatPage(),
     StoriesPage(),
-    ProfilePage(),
+    NewProfilePage(),
   ];
 
   void _onItemTapped(int selectedIndex) {
