@@ -107,14 +107,14 @@ class ChatManager {
     if (response.statusCode == 200) {
       // If the server did return a 200 SUCCESS response,
       // then parse the JSON.
-      var responseBody = jsonDecode(response.body);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       if (responseBody["should_stop"]) {
         var conditionDiagnosed = responseBody["conditions"][0];
         ChatMessage diagnoseMsg = ChatMessage(
             text: "There is a " +
                 conditionDiagnosed["probability"].toString() +
                 "% chance that you have " +
-                ReCase(conditionDiagnosed["probability"].toString())
+                ReCase(conditionDiagnosed["common_name"].toString())
                     .sentenceCase,
             name: "Dr Virtual",
             type: false);
