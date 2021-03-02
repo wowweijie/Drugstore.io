@@ -53,7 +53,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
 
   final List<Widget> _screens = [
     HomePage(),
-    ChatPage(),
+    ChatPage(key: GlobalKey()),
     StoriesPage(),
     ProfilePage(),
   ];
