@@ -46,14 +46,11 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       _messages.insert(0, message);
     });
-    chatManager.generateVirtualResponse(text);
-    //response(text);
+    chatManager.getVirtualResponse(text);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_messages.length < 2)
-      _messages.insert(0, ChatOption(["option1"], _handleSubmitted));
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(
@@ -257,10 +254,12 @@ Widget _buildMessageBubble(msgText, user) {
 }
 
 class ChatOption extends StatefulWidget {
-  ChatOption(this.options, this.sendChatMessage);
+  //ChatOption(this.options, this.sendChatMessage);
 
-  final List<String> options;
-  final sendChatCallback sendChatMessage;
+  ChatOption(Key key, this.options) : super(key: key);
+
+  final List<Option> options;
+  //final sendChatCallback sendChatMessage;
 
   @override
   _ChatOptionState createState() => _ChatOptionState();
@@ -268,7 +267,7 @@ class ChatOption extends StatefulWidget {
 
 class _ChatOptionState extends State<ChatOption> {
   int selectedIndex = -1;
-
+  ChatManager chatManager = ChatManager();
   @override
   Widget build(BuildContext buildContext) {
     return new Wrap(
@@ -281,7 +280,7 @@ class _ChatOptionState extends State<ChatOption> {
           for (int index = 0; index < widget.options.length; index++)
             ChoiceChip(
               label: Text(
-                widget.options[index],
+                widget.options[index].name,
                 style: TextStyle(
                   fontFamily: 'Poppin',
                   fontWeight: FontWeight.bold,
@@ -294,8 +293,8 @@ class _ChatOptionState extends State<ChatOption> {
               onSelected: (bool selected) {
                 setState(() {
                   selectedIndex = selected ? index : selectedIndex;
-                  widget.sendChatMessage(widget.options[index]);
                 });
+                chatManager.getOntologyFromOption(widget.options[index]);
               },
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
