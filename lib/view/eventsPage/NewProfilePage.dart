@@ -11,7 +11,6 @@ class NewProfilePage extends StatefulWidget {
   _NewProfilePageState createState() => _NewProfilePageState();
 }
 
-
 class _NewProfilePageState extends State<NewProfilePage> {
 
   static FirebaseAuth auth = FirebaseAuth.instance; 
@@ -358,7 +357,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
               Container(
                 alignment: Alignment.topLeft,
                 padding:
-                    const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
                 child: ListView(
                   shrinkWrap: true,
                   children: <Widget>[

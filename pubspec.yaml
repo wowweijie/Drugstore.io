@@ -43,6 +43,7 @@ dependencies:
   flutter_easyloading: ^2.0.0
   http: ^0.12.2
   convert: ^2.1.1
+  flutter_chips_input: ^1.9.5
   
 dev_dependencies:
   flutter_test:

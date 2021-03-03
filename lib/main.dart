@@ -59,7 +59,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
     HomePage(),
     ChatPage(),
     StoriesPage(),
-    ProfilePage(),
+    NewProfilePage(),
   ];
 
   void _onItemTapped(int selectedIndex) {
