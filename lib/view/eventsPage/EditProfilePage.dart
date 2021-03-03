@@ -355,6 +355,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: "Height",
+                            suffixText: "cm",
                           ),
                           initialValue: heightString,
                           onChanged: (value) {
@@ -371,6 +372,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: "Weight",
+                            suffixText: "kg",
                           ),
                           initialValue: weightString,
                           onChanged: (value) {
@@ -528,7 +530,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     }
                   },
                   onChanged: (data) {
-                    existingMedCond = data.map((item) => item.toString()).toList();
+                    existingMedCond =
+                        data.map((item) => item.toString()).toList();
                     print(existingMedCond);
                   },
                   chipBuilder: (context, state, item) {
@@ -583,8 +586,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
               Container(
                 padding: const EdgeInsets.only(left: 25.0, right: 25.0),
                 child: ChipsInput(
-                  initialValue:
-                      personalMedHist.map((item) => MedHealthDetails(item)).toList(),
+                  initialValue: personalMedHist
+                      .map((item) => MedHealthDetails(item))
+                      .toList(),
                   decoration: InputDecoration(
                     labelText: "Input personal medical history",
                   ),
@@ -597,7 +601,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     }
                   },
                   onChanged: (data) {
-                    personalMedHist= data.map((item) => item.toString()).toList();
+                    personalMedHist =
+                        data.map((item) => item.toString()).toList();
                     print(personalMedHist);
                   },
                   chipBuilder: (context, state, item) {
@@ -619,8 +624,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               Container(
                 alignment: Alignment.topLeft,
-                padding: const EdgeInsets.only(
-                    top: 10.0, left: 20.0, right: 20.0),
+                padding:
+                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),

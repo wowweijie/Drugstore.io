@@ -12,14 +12,19 @@ class NewProfilePage extends StatefulWidget {
 }
 
 class _NewProfilePageState extends State<NewProfilePage> {
+  static FirebaseAuth auth = FirebaseAuth.instance;
 
-  static FirebaseAuth auth = FirebaseAuth.instance; 
+  Future<UserProfile> futureProfile;
 
-  static final currentUser = AccountManager.getUser(auth.currentUser.uid);
+  @override
+  void initState() {
+    super.initState();
+    futureProfile = fetchProfile(auth.currentUser.uid.toString());
+  }
 
   bool enableNotifications = false;
-  String name = currentUser.toString();
-  String username = "pablo_123456";
+  String name = "happy";
+  String username;
   String password = "********";
   String gender = "Male";
   String birthday = "19 Aug 2000";
@@ -31,429 +36,492 @@ class _NewProfilePageState extends State<NewProfilePage> {
   List<String> existingMedCond = ["Anaemia", "Asthma"];
   List<String> personalMedHist = ["Pneumonia"];
   List<String> famMedHist = ["NIL"];
-  
+
   List<ListTile> _buildItems(BuildContext context, List<String> items) => items
       .map((e) => ListTile(
             title: Text(e),
           ))
       .toList();
-  
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Image.asset('images/doctor_virtual_text.png', fit: BoxFit.cover),
-        backgroundColor: Color(0xffe2eeff),
-        leading: Image(image: new AssetImage("images/doctor_virtual_icon.png")),
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => EditProfilePage()));
-                },
-                child: Icon(
-                  Icons.edit,
-                  size: 26.0,
-                ),
-              )),
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  //Navigator.push(
-                  //  context, MaterialPageRoute(builder: (_) => EditProfilePage()));
-                },
-                child: Icon(
-                  Icons.logout,
-                  size: 26.0,
-                ),
-              )),
-        ],
-        actionsIconTheme: IconThemeData(color: Colors.blue, opacity: 10.0),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Center(
-                  child: Container(
-                      width: 250,
-                      height: 220,
-                      child: Image.asset('images/ProfilePage_Image.png')),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Text(
-                  name,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 25,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xffeff5ff),
-                  ),
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Name",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
+    return FutureBuilder<UserProfile>(
+      future: futureProfile,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          username = snapshot.data.username;
+          name = snapshot.data.name;
+          gender = snapshot.data.gender;
+          birthday = snapshot.data.birthday;
+          ethnicity = snapshot.data.ethnicity;
+          heightString = snapshot.data.heightString;
+          weightString = snapshot.data.weightString;
+          bloodType = snapshot.data.bloodType;
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              title: Image.asset('images/doctor_virtual_text.png',
+                  fit: BoxFit.cover),
+              backgroundColor: Color(0xffe2eeff),
+              leading: Image(
+                  image: new AssetImage("images/doctor_virtual_icon.png")),
+              actions: [
+                Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => EditProfilePage()));
+                      },
+                      child: Icon(
+                        Icons.edit,
+                        size: 26.0,
                       ),
-                      Text(
+                    )),
+                Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        //Navigator.push(
+                        //  context, MaterialPageRoute(builder: (_) => EditProfilePage()));
+                      },
+                      child: Icon(
+                        Icons.logout,
+                        size: 26.0,
+                      ),
+                    )),
+              ],
+              actionsIconTheme:
+                  IconThemeData(color: Colors.blue, opacity: 10.0),
+            ),
+            body: SingleChildScrollView(
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Center(
+                        child: Container(
+                            width: 250,
+                            height: 220,
+                            child: Image.asset('images/ProfilePage_Image.png')),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Text(
                         name,
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 17,
+                          fontSize: 25,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xffeff5ff),
-                  ),
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Username",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                      Text(
-                        username,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xffeff5ff),
-                  ),
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Password",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                      Text(
-                        password,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding: const EdgeInsets.only(
-                    top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.white,
-                  ),
-                  //padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Notifications",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Switch(
-                        value: enableNotifications,
-                        onChanged: (value) {
-                          setState(() {
-                            enableNotifications = value;
-                            print(enableNotifications);
-                          });
-                        },
-                        activeTrackColor: Colors.blue.shade100,
-                        activeColor: Colors.lightBlue,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topCenter,
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Text(
-                  "About Me",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        height: 60,
-                        width: 130,
-                        child: TextFormField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Gender",
-                          ),
-                          initialValue: gender,
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        height: 60,
-                        width: 130,
-                        child: TextFormField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Birthday",
-                          ),
-                          initialValue: birthday,
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        height: 60,
-                        width: 130,
-                        child: TextFormField(
-                            enabled: false,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Ethnicity",
-                            ),
-                            initialValue: ethnicity),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        height: 60,
-                        width: 130,
-                        child: TextFormField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Height",
-                          ),
-                          initialValue: heightString,
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        height: 60,
-                        width: 130,
-                        child: TextFormField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Weight",
-                          ),
-                          initialValue: weightString,
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        height: 60,
-                        width: 130,
-                        child: TextFormField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Blood Group",
-                          ),
-                          initialValue: bloodType,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topCenter,
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Text(
-                  "Medical History",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    ExpandableGroup(
-                          header: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Color(0xfff2f6fc),
-                              ),
-                            padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                            child: Text("Allergies", 
-                              style: TextStyle(color: Colors.black, fontSize: 17,),
-                            )
-                          ),
-                          items: _buildItems(context, allergies),
-                          isExpanded: false,
-                        ),
-                  ],
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    ExpandableGroup(
-                      header: Container(
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 20.0, right: 20.0),
+                      child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color: Color(0xfff2f6fc),
-                          ),
-                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                        child: Text("Existing Medical Conditions", 
-                          style: TextStyle(color: Colors.black, fontSize: 17,),
-                        )
+                          color: Color(0xffeff5ff),
+                        ),
+                        padding: const EdgeInsets.only(
+                            top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Name",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                            Text(
+                              name,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      items: _buildItems(context, existingMedCond),
-                      isExpanded: false,
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 20.0, right: 20.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(0xffeff5ff),
+                        ),
+                        padding: const EdgeInsets.only(
+                            top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Username",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                            Text(
+                              username,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 20.0, right: 20.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(0xffeff5ff),
+                        ),
+                        padding: const EdgeInsets.only(
+                            top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Password",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                            Text(
+                              password,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.white,
+                        ),
+                        //padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Notifications",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            Switch(
+                              value: enableNotifications,
+                              onChanged: (value) {
+                                setState(() {
+                                  enableNotifications = value;
+                                  print(enableNotifications);
+                                });
+                              },
+                              activeTrackColor: Colors.blue.shade100,
+                              activeColor: Colors.lightBlue,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "About Me",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 20.0, left: 10.0, right: 10.0),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              height: 60,
+                              width: 130,
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Gender",
+                                ),
+                                initialValue: gender,
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              height: 60,
+                              width: 130,
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Birthday",
+                                ),
+                                initialValue: birthday,
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              height: 60,
+                              width: 130,
+                              child: TextFormField(
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: "Ethnicity",
+                                  ),
+                                  initialValue: ethnicity),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 20.0, left: 10.0, right: 10.0),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              height: 60,
+                              width: 130,
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Height",
+                                  suffixText: "cm",
+                                ),
+                                initialValue: heightString,
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              height: 60,
+                              width: 130,
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Weight",
+                                  suffixText: "kg",
+                                ),
+                                initialValue: weightString,
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              height: 60,
+                              width: 130,
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Blood Group",
+                                ),
+                                initialValue: bloodType,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Text(
+                        "Medical History",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListView(
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 10.0, right: 10.0, bottom: 40.0),
+                      shrinkWrap: true,
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: const EdgeInsets.only(
+                              top: 10.0, left: 20.0, right: 20.0),
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: <Widget>[
+                              ExpandableGroup(
+                                header: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Color(0xfff2f6fc),
+                                    ),
+                                    padding: const EdgeInsets.only(
+                                        top: 10.0,
+                                        bottom: 10.0,
+                                        left: 10.0,
+                                        right: 10.0),
+                                    child: Text(
+                                      "Allergies",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 17,
+                                      ),
+                                    )),
+                                items: _buildItems(context, allergies),
+                                isExpanded: false,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: const EdgeInsets.only(
+                              top: 10.0, left: 20.0, right: 20.0),
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: <Widget>[
+                              ExpandableGroup(
+                                header: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Color(0xfff2f6fc),
+                                    ),
+                                    padding: const EdgeInsets.only(
+                                        top: 10.0,
+                                        bottom: 10.0,
+                                        left: 10.0,
+                                        right: 10.0),
+                                    child: Text(
+                                      "Existing Medical Conditions",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 17,
+                                      ),
+                                    )),
+                                items: _buildItems(context, existingMedCond),
+                                isExpanded: false,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: const EdgeInsets.only(
+                              top: 10.0, left: 20.0, right: 20.0),
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: <Widget>[
+                              ExpandableGroup(
+                                header: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Color(0xfff2f6fc),
+                                    ),
+                                    padding: const EdgeInsets.only(
+                                        top: 10.0,
+                                        bottom: 10.0,
+                                        left: 10.0,
+                                        right: 10.0),
+                                    child: Text(
+                                      "Personal Medical History",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 17,
+                                      ),
+                                    )),
+                                items: _buildItems(context, personalMedHist),
+                                isExpanded: false,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: const EdgeInsets.only(
+                              top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: <Widget>[
+                              ExpandableGroup(
+                                header: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Color(0xfff2f6fc),
+                                    ),
+                                    padding: const EdgeInsets.only(
+                                        top: 10.0,
+                                        bottom: 10.0,
+                                        left: 10.0,
+                                        right: 10.0),
+                                    child: Text(
+                                      "Family Medical History",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 17,
+                                      ),
+                                    )),
+                                items: _buildItems(context, famMedHist),
+                                isExpanded: false,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    ExpandableGroup(
-                          header: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Color(0xfff2f6fc),
-                              ),
-                            padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                            child: Text("Personal Medical History", 
-                              style: TextStyle(color: Colors.black, fontSize: 17,),
-                            )
-                          ),
-                          items: _buildItems(context, personalMedHist),
-                          isExpanded: false,
-                        ),
-                  ],
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding: const EdgeInsets.only(
-                    top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    ExpandableGroup(
-                          header: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Color(0xfff2f6fc),
-                              ),
-                            padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                            child: Text("Family Medical History", 
-                              style: TextStyle(color: Colors.black, fontSize: 17,),
-                            )
-                          ),
-                          items: _buildItems(context, famMedHist),
-                          isExpanded: false,
-                        ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+
+        // By default, show a loading spinner.
+        return Align(
+            alignment: Alignment.center, child: CircularProgressIndicator());
+      },
     );
   }
 }

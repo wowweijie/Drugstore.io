@@ -146,7 +146,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   await auth.createUserWithEmailAndPassword(
                                       email: email, password: password);
                               AccountManager.registerUser(newuser.user.uid,
-                                  new UserProfile(email, username));
+                                  new UserProfile());
                               if (newuser != null) {
                                 print("user created");
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()),
