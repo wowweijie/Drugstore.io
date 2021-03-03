@@ -24,7 +24,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
 
   bool enableNotifications = false;
   String name = "happy";
-  String username;
+  String username = "pablo_123456";
   String password = "********";
   String gender = "Male";
   String birthday = "19 Aug 2000";
@@ -125,133 +125,25 @@ class _NewProfilePageState extends State<NewProfilePage> {
                       alignment: Alignment.topLeft,
                       padding: const EdgeInsets.only(
                           top: 10.0, left: 20.0, right: 20.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color(0xffeff5ff),
-                        ),
-                        padding: const EdgeInsets.only(
-                            top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Name",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                            ),
-                            Text(
-                              name,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: _userInfo("Name", name),
                     ),
                     Container(
                       alignment: Alignment.topLeft,
                       padding: const EdgeInsets.only(
                           top: 10.0, left: 20.0, right: 20.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color(0xffeff5ff),
-                        ),
-                        padding: const EdgeInsets.only(
-                            top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Username",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                            ),
-                            Text(
-                              username,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: _userInfo("Username", username),
                     ),
                     Container(
                       alignment: Alignment.topLeft,
                       padding: const EdgeInsets.only(
                           top: 10.0, left: 20.0, right: 20.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color(0xffeff5ff),
-                        ),
-                        padding: const EdgeInsets.only(
-                            top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Password",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                            ),
-                            Text(
-                              password,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: _userInfo("Password", password),
                     ),
                     Container(
                       alignment: Alignment.topLeft,
                       padding: const EdgeInsets.only(
                           top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.white,
-                        ),
-                        //padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Notifications",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            Switch(
-                              value: enableNotifications,
-                              onChanged: (value) {
-                                setState(() {
-                                  enableNotifications = value;
-                                  print(enableNotifications);
-                                });
-                              },
-                              activeTrackColor: Colors.blue.shade100,
-                              activeColor: Colors.lightBlue,
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: _notificationSwitch(),
                     ),
                     Container(
                       alignment: Alignment.topCenter,
@@ -272,44 +164,9 @@ class _NewProfilePageState extends State<NewProfilePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              height: 60,
-                              width: 130,
-                              child: TextFormField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "Gender",
-                                ),
-                                initialValue: gender,
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              height: 60,
-                              width: 130,
-                              child: TextFormField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "Birthday",
-                                ),
-                                initialValue: birthday,
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              height: 60,
-                              width: 130,
-                              child: TextFormField(
-                                  enabled: false,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: "Ethnicity",
-                                  ),
-                                  initialValue: ethnicity),
-                            ),
+                            _aboutMeInfo("Gender", gender, ""),
+                            _aboutMeInfo("Birthday", birthday, ""),
+                            _aboutMeInfo("Ethnicity", ethnicity, ""),
                           ],
                         ),
                       ),
@@ -322,47 +179,9 @@ class _NewProfilePageState extends State<NewProfilePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              height: 60,
-                              width: 130,
-                              child: TextFormField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "Height",
-                                  suffixText: "cm",
-                                ),
-                                initialValue: heightString,
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              height: 60,
-                              width: 130,
-                              child: TextFormField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "Weight",
-                                  suffixText: "kg",
-                                ),
-                                initialValue: weightString,
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              height: 60,
-                              width: 130,
-                              child: TextFormField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "Blood Group",
-                                ),
-                                initialValue: bloodType,
-                              ),
-                            ),
+                            _aboutMeInfo("Height", heightString, "cm"),
+                            _aboutMeInfo("Weight", weightString, "kg"),
+                            _aboutMeInfo("Blood Group", bloodType, ""),
                           ],
                         ),
                       ),
@@ -380,133 +199,15 @@ class _NewProfilePageState extends State<NewProfilePage> {
                     ),
                     ListView(
                       padding: const EdgeInsets.only(
-                          top: 10.0, left: 10.0, right: 10.0, bottom: 40.0),
+                          top: 10.0, left: 10.0, right: 10.0, bottom: 50.0),
                       shrinkWrap: true,
                       children: <Widget>[
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: const EdgeInsets.only(
-                              top: 10.0, left: 20.0, right: 20.0),
-                          child: ListView(
-                            shrinkWrap: true,
-                            children: <Widget>[
-                              ExpandableGroup(
-                                header: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Color(0xfff2f6fc),
-                                    ),
-                                    padding: const EdgeInsets.only(
-                                        top: 10.0,
-                                        bottom: 10.0,
-                                        left: 10.0,
-                                        right: 10.0),
-                                    child: Text(
-                                      "Allergies",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 17,
-                                      ),
-                                    )),
-                                items: _buildItems(context, allergies),
-                                isExpanded: false,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: const EdgeInsets.only(
-                              top: 10.0, left: 20.0, right: 20.0),
-                          child: ListView(
-                            shrinkWrap: true,
-                            children: <Widget>[
-                              ExpandableGroup(
-                                header: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Color(0xfff2f6fc),
-                                    ),
-                                    padding: const EdgeInsets.only(
-                                        top: 10.0,
-                                        bottom: 10.0,
-                                        left: 10.0,
-                                        right: 10.0),
-                                    child: Text(
-                                      "Existing Medical Conditions",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 17,
-                                      ),
-                                    )),
-                                items: _buildItems(context, existingMedCond),
-                                isExpanded: false,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: const EdgeInsets.only(
-                              top: 10.0, left: 20.0, right: 20.0),
-                          child: ListView(
-                            shrinkWrap: true,
-                            children: <Widget>[
-                              ExpandableGroup(
-                                header: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Color(0xfff2f6fc),
-                                    ),
-                                    padding: const EdgeInsets.only(
-                                        top: 10.0,
-                                        bottom: 10.0,
-                                        left: 10.0,
-                                        right: 10.0),
-                                    child: Text(
-                                      "Personal Medical History",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 17,
-                                      ),
-                                    )),
-                                items: _buildItems(context, personalMedHist),
-                                isExpanded: false,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: const EdgeInsets.only(
-                              top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-                          child: ListView(
-                            shrinkWrap: true,
-                            children: <Widget>[
-                              ExpandableGroup(
-                                header: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Color(0xfff2f6fc),
-                                    ),
-                                    padding: const EdgeInsets.only(
-                                        top: 10.0,
-                                        bottom: 10.0,
-                                        left: 10.0,
-                                        right: 10.0),
-                                    child: Text(
-                                      "Family Medical History",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 17,
-                                      ),
-                                    )),
-                                items: _buildItems(context, famMedHist),
-                                isExpanded: false,
-                              ),
-                            ],
-                          ),
-                        ),
+                        _medHistInfo("Allergies", allergies),
+                        _medHistInfo(
+                            "Existing Medical Conditions", existingMedCond),
+                        _medHistInfo(
+                            "Personal Medical History", personalMedHist),
+                        _medHistInfo("Family Medical History", famMedHist),
                       ],
                     ),
                   ],
@@ -522,6 +223,116 @@ class _NewProfilePageState extends State<NewProfilePage> {
         return Align(
             alignment: Alignment.center, child: CircularProgressIndicator());
       },
+    );
+  }
+
+  Widget _userInfo(String title, String info) {
+    return new Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Color(0xffeff5ff),
+        ),
+        padding: const EdgeInsets.only(
+            top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 17,
+              ),
+            ),
+            Text(
+              info,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 17,
+              ),
+            ),
+          ],
+        ));
+  }
+
+  Widget _notificationSwitch() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.white,
+      ),
+      //padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Notifications",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 17,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          Switch(
+            value: enableNotifications,
+            onChanged: (value) {
+              setState(() {
+                enableNotifications = value;
+                print(enableNotifications);
+              });
+            },
+            activeTrackColor: Colors.blue.shade100,
+            activeColor: Colors.lightBlue,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _aboutMeInfo(String title, String info, String suffix) {
+    return new Container(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      height: 60,
+      width: 130,
+      child: TextFormField(
+        enabled: false,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: title,
+          suffixText: suffix,
+        ),
+        initialValue: info,
+      ),
+    );
+  }
+
+  Widget _medHistInfo(String title, List<String> info) {
+    return new Container(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+      child: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          ExpandableGroup(
+            header: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Color(0xfff2f6fc),
+                ),
+                padding: const EdgeInsets.only(
+                    top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17,
+                  ),
+                )),
+            items: _buildItems(context, info),
+            isExpanded: false,
+          ),
+        ],
+      ),
     );
   }
 }
