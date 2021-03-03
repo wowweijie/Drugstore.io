@@ -2,6 +2,9 @@ import 'package:drugstore_io/main.dart';
 import 'package:drugstore_io/view/eventsPage/EditProfilePage.dart';
 import 'package:expandable_group/expandable_group_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:drugstore_io/controller/AccountManager.dart';
+import 'package:drugstore_io/model/UserProfile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class NewProfilePage extends StatefulWidget {
   @override
@@ -10,8 +13,13 @@ class NewProfilePage extends StatefulWidget {
 
 
 class _NewProfilePageState extends State<NewProfilePage> {
+
+  static FirebaseAuth auth = FirebaseAuth.instance; 
+
+  static final currentUser = AccountManager.getUser(auth.currentUser.uid);
+
   bool enableNotifications = false;
-  String name = "Pablo Stanley";
+  String name = currentUser.toString();
   String username = "pablo_123456";
   String password = "********";
   String gender = "Male";
