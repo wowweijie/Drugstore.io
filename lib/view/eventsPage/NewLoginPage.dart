@@ -1,3 +1,4 @@
+import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
 import 'package:flutter/material.dart';
 import 'package:drugstore_io/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -148,8 +149,8 @@ class _NewLoginPageState extends State<NewLoginPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       print("Pressed Sign up");
-                      //Navigator.push(
-                      //      context, MaterialPageRoute(builder: (_) => SignUpPage()));
+                      Navigator.push(
+                           context, MaterialPageRoute(builder: (_) => SignUpPage()));
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,

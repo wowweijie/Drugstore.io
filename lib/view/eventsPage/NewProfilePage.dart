@@ -23,21 +23,21 @@ class _NewProfilePageState extends State<NewProfilePage> {
   }
 
   bool enableNotifications = false;
-  String name = "happy";
+  String name = "Pablo Stanley";
   String username = "pablo_123456";
   String password = "********";
   String gender = "Male";
   String birthday = "19 Aug 2000";
   String ethnicity = "European";
-  String heightString = "169 cm";
-  String weightString = "55 kg";
+  String height = "169 cm";
+  String weight = "55 kg";
   String bloodType = "B+";
-  List<String> allergies = ["Prawn", "Paracetamol"];
-  List<String> existingMedCond = ["Anaemia", "Asthma"];
-  List<String> personalMedHist = ["Pneumonia"];
-  List<String> famMedHist = ["NIL"];
+  List<dynamic> allergies = ["Prawn", "Paracetamol"];
+  List<dynamic> existingMedCond = ["Anaemia", "Asthma"];
+  List<dynamic> personalMedHist = ["Pneumonia"];
+  List<dynamic> famMedHist = ["NIL"];
 
-  List<ListTile> _buildItems(BuildContext context, List<String> items) => items
+  List<ListTile> _buildItems(BuildContext context, List<dynamic> items) => items
       .map((e) => ListTile(
             title: Text(e),
           ))
@@ -54,9 +54,13 @@ class _NewProfilePageState extends State<NewProfilePage> {
           gender = snapshot.data.gender;
           birthday = snapshot.data.birthday;
           ethnicity = snapshot.data.ethnicity;
-          heightString = snapshot.data.heightString;
-          weightString = snapshot.data.weightString;
+          height = snapshot.data.height;
+          weight = snapshot.data.weight;
           bloodType = snapshot.data.bloodType;
+          allergies = snapshot.data.allergies;
+          existingMedCond = snapshot.data.existingMedCond;
+          personalMedHist = snapshot.data.personalMedHist;
+          famMedHist = snapshot.data.famMedHist;
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -179,8 +183,8 @@ class _NewProfilePageState extends State<NewProfilePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            _aboutMeInfo("Height", heightString, "cm"),
-                            _aboutMeInfo("Weight", weightString, "kg"),
+                            _aboutMeInfo("Height", height, "cm"),
+                            _aboutMeInfo("Weight", weight, "kg"),
                             _aboutMeInfo("Blood Group", bloodType, ""),
                           ],
                         ),
@@ -306,7 +310,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
     );
   }
 
-  Widget _medHistInfo(String title, List<String> info) {
+  Widget _medHistInfo(String title, List<dynamic> info) {
     return new Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),

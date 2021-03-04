@@ -1,6 +1,12 @@
+import 'package:drugstore_io/controller/AccountManager.dart';
 import 'package:drugstore_io/main.dart';
+import 'package:drugstore_io/view/eventsPage/NewProfilePage.dart';
+import 'package:drugstore_io/view/reference/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chips_input/flutter_chips_input.dart';
+import 'package:drugstore_io/model/UserProfile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -29,6 +35,16 @@ class MedHealthDetails {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  static FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<UserProfile> futureProfile;
+
+  @override
+  void initState() {
+    super.initState();
+    futureProfile = fetchProfile(auth.currentUser.uid.toString());
+  }
+
   bool enableNotifications = false;
   String name = "Pablo Stanley";
   String username = "pablo_123456";
@@ -36,13 +52,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String gender = "Male";
   String birthday = "19 Aug 2000";
   String ethnicity = "European";
-  String heightString = "169";
-  String weightString = "55";
+  String height = "169";
+  String weight = "55";
   String bloodType = "B+";
-  List<String> allergies = ["Prawn", "Paracetamol"];
-  List<String> existingMedCond = ["Anaemia", "Asthma"];
-  List<String> personalMedHist = ["Pneumonia"];
-  List<String> famMedHist = ["NIL"];
+  List<dynamic> allergies = ["Prawn", "Paracetamol"];
+  List<dynamic> existingMedCond = ["Anaemia", "Asthma"];
+  List<dynamic> personalMedHist = ["Pneumonia"];
+  List<dynamic> famMedHist = ["NIL"];
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +70,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       MedHealthDetails("Wheat"),
       MedHealthDetails("Paracetamol"),
       MedHealthDetails("Prawn"),
+      MedHealthDetails("NIL"),
     ];
 
     const commonMedCond = <MedHealthDetails>[
@@ -63,169 +80,227 @@ class _EditProfilePageState extends State<EditProfilePage> {
       MedHealthDetails("Back pain"),
       MedHealthDetails("Anxiety"),
       MedHealthDetails("Obesity"),
+      MedHealthDetails("NIL"),
     ];
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Image.asset('images/doctor_virtual_text.png', fit: BoxFit.cover),
-        backgroundColor: Color(0xffe2eeff),
-        leading: Image(image: new AssetImage("images/doctor_virtual_icon.png")),
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.save,
-                  size: 26.0,
+    return FutureBuilder<UserProfile>(
+      future: futureProfile,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          username = snapshot.data.username;
+          name = snapshot.data.name;
+          gender = snapshot.data.gender;
+          birthday = snapshot.data.birthday;
+          ethnicity = snapshot.data.ethnicity;
+          height = snapshot.data.height;
+          weight = snapshot.data.weight;
+          bloodType = snapshot.data.bloodType;
+          allergies = snapshot.data.allergies;
+          existingMedCond = snapshot.data.existingMedCond;
+          personalMedHist = snapshot.data.personalMedHist;
+          famMedHist = snapshot.data.famMedHist;
+
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              title: Image.asset('images/doctor_virtual_text.png',
+                  fit: BoxFit.cover),
+              backgroundColor: Color(0xffe2eeff),
+              leading: Image(
+                  image: new AssetImage("images/doctor_virtual_icon.png")),
+              actions: [
+                Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: GestureDetector(
+                      onTap: () async {
+                        final status = await updateProfile(
+                            auth.currentUser.uid.toString(),
+                            name,
+                            username,
+                            gender,
+                            birthday,
+                            height,
+                            weight,
+                            bloodType,
+                            ethnicity,
+                            allergies,
+                            existingMedCond,
+                            famMedHist,
+                            personalMedHist);
+
+                        if (status.runtimeType == http.Response) {
+                          print("user updated");
+                          Future.delayed(Duration(milliseconds: 500), () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        MyBottomNavigationBar()));
+                          });
+                        }
+                      },
+                      child: Icon(
+                        Icons.save,
+                        size: 26.0,
+                      ),
+                    )),
+              ],
+              actionsIconTheme:
+                  IconThemeData(color: Colors.blue, opacity: 10.0),
+            ),
+            body: SingleChildScrollView(
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Center(
+                        child: Container(
+                            width: 250,
+                            height: 220,
+                            child: Image.asset('images/ProfilePage_Image.png')),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Text(
+                        "Edit Your Profile",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 20.0, right: 20.0),
+                      child: _userInfoTextField("Name", name),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 20.0, right: 20.0),
+                      child: _userInfoTextField("Username", username),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 20.0, right: 20.0),
+                      child: _userInfoTextField("Password", password),
+                    ),
+                    _notificationSwitch(),
+                    Container(
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "About Me",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 20.0, left: 10.0, right: 10.0),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _aboutMeInfoTextField("Gender", gender, ""),
+                            _aboutMeInfoTextField("Birthday", birthday, ""),
+                            _aboutMeInfoTextField("Ethnicity", ethnicity, ""),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 20.0, left: 10.0, right: 10.0),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _aboutMeInfoTextField("Height", height, "cm"),
+                            _aboutMeInfoTextField("Weight", weight, "kg"),
+                            _aboutMeInfoTextField("Blood Group", bloodType, ""),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Text(
+                        "Medical History",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 20.0, left: 20.0, right: 20.0),
+                      child: _medHistTitle("Allergies"),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                      child: _medHistInfoChipsInput(
+                          "allergies", allergies, commonAllergies),
+                    ),
+                    Container(
+                        alignment: Alignment.topLeft,
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 20.0, right: 20.0),
+                        child: _medHistTitle("Existing Medical Conditions")),
+                    Container(
+                      padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                      child: _medHistInfoChipsInput(
+                          "existing medical conditions",
+                          existingMedCond,
+                          commonMedCond),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 20.0, right: 20.0),
+                      child: _medHistTitle("Personal Medical History"),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                      child: _medHistInfoChipsInput("personal medical history",
+                          personalMedHist, commonMedCond),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 20.0, right: 20.0),
+                      child: _medHistTitle("Family Medical History"),
+                    ),
+                    Container(
+                        padding: const EdgeInsets.only(
+                            left: 25.0, right: 25.0, bottom: 60.0),
+                        child: _medHistInfoChipsInput("family medical history",
+                            famMedHist, commonMedCond)),
+                  ],
                 ),
-              )),
-        ],
-        actionsIconTheme: IconThemeData(color: Colors.blue, opacity: 10.0),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Center(
-                  child: Container(
-                      width: 250,
-                      height: 220,
-                      child: Image.asset('images/ProfilePage_Image.png')),
-                ),
               ),
-              Container(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Text(
-                  "Edit Your Profile",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 25,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: _userInfoTextField("Name", name),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: _userInfoTextField("Username", username),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: _userInfoTextField("Password", password),
-              ),
-              _notificationSwitch(),
-              Container(
-                alignment: Alignment.topCenter,
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Text(
-                  "About Me",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _aboutMeInfoTextField("Gender", gender, ""),
-                      _aboutMeInfoTextField("Birthday", birthday, ""),
-                      _aboutMeInfoTextField("Ethnicity", ethnicity, ""),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _aboutMeInfoTextField("Height", heightString, "cm"),
-                      _aboutMeInfoTextField("Weight", weightString, "kg"),
-                      _aboutMeInfoTextField("Blood Group", bloodType, ""),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topCenter,
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Text(
-                  "Medical History",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-                child: _medHistTitle("Allergies"),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                child: _medHistInfoChipsInput("allergies", allergies, commonAllergies),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: _medHistTitle("Existing Medical Conditions")
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                child: _medHistInfoChipsInput("existing medical conditions", existingMedCond, commonMedCond),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: _medHistTitle("Personal Medical History"),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                child: _medHistInfoChipsInput("personal medical history", personalMedHist, commonMedCond),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding:
-                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: _medHistTitle("Family Medical History"),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 60.0),
-                child: _medHistInfoChipsInput("family medical history", famMedHist, commonMedCond)
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        // By default, show a loading spinner.
+        return Align(
+            alignment: Alignment.center, child: CircularProgressIndicator());
+      },
     );
   }
 
@@ -258,6 +333,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
               initialValue: initValue,
               onChanged: (value) {
                 initValue = value;
+                if (title == "Name") {
+                  name = value;
+                } else if (title == "Username") {
+                  username = value;
+                }
               },
             ),
           ),
@@ -320,6 +400,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         initialValue: info,
         onChanged: (value) {
           info = value;
+          if (title == "Gender") {
+            gender = value;
+          } else if (title == "Birthday") {
+            birthday = value;
+          }
         },
       ),
     );
@@ -355,7 +440,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget _medHistInfoChipsInput(String title, List<String> userInfo, List<MedHealthDetails> commonInfo) {
+  Widget _medHistInfoChipsInput(
+      String title, List<dynamic> userInfo, List<MedHealthDetails> commonInfo) {
     return new ChipsInput(
       initialValue: userInfo.map((item) => MedHealthDetails(item)).toList(),
       decoration: InputDecoration(
