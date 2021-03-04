@@ -1,3 +1,4 @@
+import 'package:drugstore_io/view/PrescriptionsPage.dart';
 import 'package:flutter/material.dart';
 
 class RecordsPage extends StatefulWidget {
@@ -75,8 +76,8 @@ class _RecordsPageState extends State<RecordsPage> {
                   ElevatedButton(
                     onPressed: () {
                       print("Go to prescriptions page");
-                      //Navigator.push(
-                      //      context, MaterialPageRoute(builder: (_) => SignUpPage()));
+                      Navigator.push(
+                            context, MaterialPageRoute(builder: (_) => PrescriptionsPage()));
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,
