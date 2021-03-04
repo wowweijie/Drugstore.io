@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:drugstore_io/controller/AccountManager.dart';
 import 'package:drugstore_io/model/UserProfile.dart';
+import 'package:http/http.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -145,7 +146,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   await auth.createUserWithEmailAndPassword(
                                       email: email, password: password);
                               AccountManager.registerUser(newuser.user.uid,
-                                  new UserProfile(email, username));
+                                  new UserProfile());
                               if (newuser != null) {
                                 print("user created");
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()),
