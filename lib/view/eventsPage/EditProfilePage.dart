@@ -213,7 +213,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              DropDownMenu(dropdownValue: gender),
+                              DropDownMenu(dropdownValue: gender, dropdownItems: _gender),
                               _aboutMeInfoTextField("Birthday", birthday, ""),
                               _aboutMeInfoTextField("Ethnicity", ethnicity, ""),
                             ],
@@ -546,17 +546,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
 class DropDownMenu extends StatefulWidget {
   final String dropdownValue;
-  DropDownMenu({Key key, @required this.dropdownValue}) : super(key: key);
+  final List<String> dropdownItems;
+  DropDownMenu({Key key, @required this.dropdownValue, @required this.dropdownItems}) : super(key: key);
   @override
-  _DropDownMenuState createState() => _DropDownMenuState();
+  _DropDownMenuState createState() => _DropDownMenuState(dropdownValue, dropdownItems);
 }
 
 class _DropDownMenuState extends State<DropDownMenu> {
-  String _dropdownValue;
-  List<String> _gender = ['Male', 'Female', 'Others'];
+  _DropDownMenuState(this.dropdownValue, this.dropdownItems);
+  String dropdownValue;
+  final List<String> dropdownItems;
   @override
   Widget build(BuildContext context) {
-    _dropdownValue = widget.dropdownValue;
     return new Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
       height: 60,
@@ -566,10 +567,10 @@ class _DropDownMenuState extends State<DropDownMenu> {
           labelText: 'Gender',
           border: OutlineInputBorder(),
         ),
-        isEmpty: _dropdownValue == null,
+        isEmpty: dropdownValue == null,
         child: new DropdownButton<String>(
           underline: Container(color: Colors.transparent),
-          value: _dropdownValue,
+          value: dropdownValue,
           isDense: true,
           isExpanded: true,
           icon: Icon(
@@ -579,10 +580,10 @@ class _DropDownMenuState extends State<DropDownMenu> {
           iconSize: 24,
           onChanged: (String value) {
             setState(() {
-              _dropdownValue = value;
+              dropdownValue = value;
             });
           },
-          items: _gender.map((String value) {
+          items: dropdownItems.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
