@@ -36,8 +36,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String gender = "Male";
   String birthday = "19 Aug 2000";
   String ethnicity = "European";
-  String heightString = "169 cm";
-  String weightString = "55 kg";
+  String heightString = "169";
+  String weightString = "55";
   String bloodType = "B+";
   List<String> allergies = ["Prawn", "Paracetamol"];
   List<String> existingMedCond = ["Anaemia", "Asthma"];
@@ -115,158 +115,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 alignment: Alignment.topLeft,
                 padding:
                     const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xffeff5ff),
-                  ),
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Name",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                      Container(
-                        width: 150,
-                        height: 25,
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: TextFormField(
-                          textAlign: TextAlign.end,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Enter a name'),
-                          initialValue: name,
-                          onChanged: (value) {
-                            name = value;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                child: _userInfoTextField("Name", name),
               ),
               Container(
                 alignment: Alignment.topLeft,
                 padding:
                     const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xffeff5ff),
-                  ),
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Username",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                      Container(
-                        width: 150,
-                        height: 25,
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: TextFormField(
-                          textAlign: TextAlign.end,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Enter a username'),
-                          initialValue: username,
-                          onChanged: (value) {
-                            username = value;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                child: _userInfoTextField("Username", username),
               ),
               Container(
                 alignment: Alignment.topLeft,
                 padding:
                     const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xffeff5ff),
-                  ),
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Password",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                      Container(
-                        width: 150,
-                        height: 25,
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: TextFormField(
-                          textAlign: TextAlign.end,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Enter a new password'),
-                          initialValue: password,
-                          onChanged: (value) {
-                            password = value;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                child: _userInfoTextField("Password", password),
               ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding: const EdgeInsets.only(
-                    top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.white,
-                  ),
-                  //padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Notifications",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Switch(
-                        value: enableNotifications,
-                        onChanged: (value) {
-                          setState(() {
-                            enableNotifications = value;
-                            print(enableNotifications);
-                          });
-                        },
-                        activeTrackColor: Colors.blue.shade100,
-                        activeColor: Colors.lightBlue,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              _notificationSwitch(),
               Container(
                 alignment: Alignment.topCenter,
                 padding: const EdgeInsets.only(top: 10.0),
@@ -286,54 +149,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        height: 60,
-                        width: 130,
-                        child: TextFormField(
-                          enabled: true,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Gender",
-                          ),
-                          initialValue: gender,
-                          onChanged: (value) {
-                            gender = value;
-                          },
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        height: 60,
-                        width: 130,
-                        child: TextFormField(
-                          enabled: true,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Birthday",
-                          ),
-                          initialValue: birthday,
-                          onChanged: (value) {
-                            birthday = value;
-                          },
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        height: 60,
-                        width: 130,
-                        child: TextFormField(
-                          enabled: true,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Ethnicity",
-                          ),
-                          initialValue: ethnicity,
-                          onChanged: (value) {
-                            ethnicity = value;
-                          },
-                        ),
-                      ),
+                      _aboutMeInfoTextField("Gender", gender, ""),
+                      _aboutMeInfoTextField("Birthday", birthday, ""),
+                      _aboutMeInfoTextField("Ethnicity", ethnicity, ""),
                     ],
                   ),
                 ),
@@ -346,54 +164,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        height: 60,
-                        width: 130,
-                        child: TextFormField(
-                          enabled: true,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Height",
-                          ),
-                          initialValue: heightString,
-                          onChanged: (value) {
-                            heightString = value;
-                          },
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        height: 60,
-                        width: 130,
-                        child: TextFormField(
-                          enabled: true,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Weight",
-                          ),
-                          initialValue: weightString,
-                          onChanged: (value) {
-                            weightString = value;
-                          },
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        height: 60,
-                        width: 130,
-                        child: TextFormField(
-                          enabled: true,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Blood Group",
-                          ),
-                          initialValue: bloodType,
-                          onChanged: (value) {
-                            bloodType = value;
-                          },
-                        ),
-                      ),
+                      _aboutMeInfoTextField("Height", heightString, "cm"),
+                      _aboutMeInfoTextField("Weight", weightString, "kg"),
+                      _aboutMeInfoTextField("Blood Group", bloodType, ""),
                     ],
                   ),
                 ),
@@ -413,299 +186,207 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 alignment: Alignment.topLeft,
                 padding:
                     const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xfff2f6fc),
-                  ),
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Allergies  ",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                      Text(
-                        " ",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                child: _medHistTitle("Allergies"),
               ),
               Container(
                 padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                child: ChipsInput(
-                  initialValue:
-                      allergies.map((item) => MedHealthDetails(item)).toList(),
-                  decoration: InputDecoration(
-                    labelText: "Input allergies",
-                  ),
-                  //maxChips: 3,
-                  findSuggestions: (String query) {
-                    if (query.length != 0) {
-                      return findChipsSuggestions(query, commonAllergies);
-                    } else {
-                      return const <MedHealthDetails>[];
-                    }
-                  },
-                  onChanged: (data) {
-                    allergies = data.map((item) => item.toString()).toList();
-                    print(allergies);
-                  },
-                  chipBuilder: (context, state, item) {
-                    return InputChip(
-                      key: ObjectKey(item),
-                      label: Text(item.itemDetail),
-                      onDeleted: () => state.deleteChip(item),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    );
-                  },
-                  suggestionBuilder: (context, state, item) {
-                    return ListTile(
-                      key: ObjectKey(item),
-                      title: Text(item.itemDetail),
-                      onTap: () => state.selectSuggestion(item),
-                    );
-                  },
-                ),
+                child: _medHistInfoChipsInput("allergies", allergies, commonAllergies),
               ),
               Container(
                 alignment: Alignment.topLeft,
                 padding:
                     const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xfff2f6fc),
-                  ),
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Existing Medical Conditions",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                      Text(
-                        " ",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                child: _medHistTitle("Existing Medical Conditions")
               ),
               Container(
                 padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                child: ChipsInput(
-                  initialValue: existingMedCond
-                      .map((item) => MedHealthDetails(item))
-                      .toList(),
-                  decoration: InputDecoration(
-                    labelText: "Input existing medical conditions",
-                  ),
-                  //maxChips: 3,
-                  findSuggestions: (String query) {
-                    if (query.length != 0) {
-                      return findChipsSuggestions(query, commonMedCond);
-                    } else {
-                      return const <MedHealthDetails>[];
-                    }
-                  },
-                  onChanged: (data) {
-                    existingMedCond = data.map((item) => item.toString()).toList();
-                    print(existingMedCond);
-                  },
-                  chipBuilder: (context, state, item) {
-                    return InputChip(
-                      key: ObjectKey(item),
-                      label: Text(item.itemDetail),
-                      onDeleted: () => state.deleteChip(item),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    );
-                  },
-                  suggestionBuilder: (context, state, item) {
-                    return ListTile(
-                      key: ObjectKey(item),
-                      title: Text(item.itemDetail),
-                      onTap: () => state.selectSuggestion(item),
-                    );
-                  },
-                ),
+                child: _medHistInfoChipsInput("existing medical conditions", existingMedCond, commonMedCond),
               ),
               Container(
                 alignment: Alignment.topLeft,
                 padding:
                     const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xfff2f6fc),
-                  ),
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Personal Medical History",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                      Text(
-                        " ",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                child: _medHistTitle("Personal Medical History"),
               ),
               Container(
                 padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                child: ChipsInput(
-                  initialValue:
-                      personalMedHist.map((item) => MedHealthDetails(item)).toList(),
-                  decoration: InputDecoration(
-                    labelText: "Input personal medical history",
-                  ),
-                  //maxChips: 3,
-                  findSuggestions: (String query) {
-                    if (query.length != 0) {
-                      return findChipsSuggestions(query, commonMedCond);
-                    } else {
-                      return const <MedHealthDetails>[];
-                    }
-                  },
-                  onChanged: (data) {
-                    personalMedHist= data.map((item) => item.toString()).toList();
-                    print(personalMedHist);
-                  },
-                  chipBuilder: (context, state, item) {
-                    return InputChip(
-                      key: ObjectKey(item),
-                      label: Text(item.itemDetail),
-                      onDeleted: () => state.deleteChip(item),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    );
-                  },
-                  suggestionBuilder: (context, state, item) {
-                    return ListTile(
-                      key: ObjectKey(item),
-                      title: Text(item.itemDetail),
-                      onTap: () => state.selectSuggestion(item),
-                    );
-                  },
-                ),
+                child: _medHistInfoChipsInput("personal medical history", personalMedHist, commonMedCond),
               ),
               Container(
-                alignment: Alignment.topLeft,
-                padding: const EdgeInsets.only(
-                    top: 10.0, left: 20.0, right: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xfff2f6fc),
-                  ),
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Family Medical History",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                      Text(
-                        " ",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                child: ChipsInput(
-                  initialValue:
-                      famMedHist.map((item) => MedHealthDetails(item)).toList(),
-                  decoration: InputDecoration(
-                    labelText: "Input family medical history",
-                  ),
-                  //maxChips: 3,
-                  findSuggestions: (String query) {
-                    if (query.length != 0) {
-                      return findChipsSuggestions(query, commonMedCond);
-                    } else {
-                      return const <MedHealthDetails>[];
-                    }
-                  },
-                  onChanged: (data) {
-                    famMedHist = data.map((item) => item.toString()).toList();
-                    print(famMedHist);
-                  },
-                  chipBuilder: (context, state, item) {
-                    return InputChip(
-                      key: ObjectKey(item),
-                      label: Text(item.itemDetail),
-                      onDeleted: () => state.deleteChip(item),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    );
-                  },
-                  suggestionBuilder: (context, state, item) {
-                    return ListTile(
-                      key: ObjectKey(item),
-                      title: Text(item.itemDetail),
-                      onTap: () => state.selectSuggestion(item),
-                    );
-                  },
-                ),
-              ),
-              /*Container(
                 alignment: Alignment.topLeft,
                 padding:
-                    const EdgeInsets.only(top: 10.0, left: 25.0, right: 25.0),
-                child: TextFormField(
-                  textAlign: TextAlign.start,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black)),
-                      hintText: 'Enter your allergies'),
-                  initialValue: famMedHist.first,
-                  onChanged: (value) {
-                    famMedHist.add(value);
-                  },
-                ),
-              ),*/
+                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+                child: _medHistTitle("Family Medical History"),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 60.0),
+                child: _medHistInfoChipsInput("family medical history", famMedHist, commonMedCond)
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _userInfoTextField(String title, String initValue) {
+    return new Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Color(0xffeff5ff),
+      ),
+      padding: const EdgeInsets.only(
+          top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 17,
+            ),
+          ),
+          Container(
+            width: 150,
+            height: 25,
+            padding: const EdgeInsets.only(top: 10.0),
+            child: TextFormField(
+              textAlign: TextAlign.end,
+              decoration: InputDecoration(
+                  border: InputBorder.none, hintText: 'Enter ' + title),
+              initialValue: initValue,
+              onChanged: (value) {
+                initValue = value;
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _notificationSwitch() {
+    return Container(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.only(
+          top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.white,
+        ),
+        //padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Notifications",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 17,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            Switch(
+              value: enableNotifications,
+              onChanged: (value) {
+                setState(() {
+                  enableNotifications = value;
+                  print(enableNotifications);
+                });
+              },
+              activeTrackColor: Colors.blue.shade100,
+              activeColor: Colors.lightBlue,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _aboutMeInfoTextField(String title, String info, String suffix) {
+    return new Container(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      height: 60,
+      width: 130,
+      child: TextFormField(
+        enabled: true,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: title,
+          suffixText: suffix,
+        ),
+        initialValue: info,
+        onChanged: (value) {
+          info = value;
+        },
+      ),
+    );
+  }
+
+  Widget _medHistTitle(String title) {
+    return new Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Color(0xfff2f6fc),
+      ),
+      padding: const EdgeInsets.only(
+          top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 17,
+            ),
+          ),
+          Text(
+            " ",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 17,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _medHistInfoChipsInput(String title, List<String> userInfo, List<MedHealthDetails> commonInfo) {
+    return new ChipsInput(
+      initialValue: userInfo.map((item) => MedHealthDetails(item)).toList(),
+      decoration: InputDecoration(
+        labelText: "Input " + title,
+      ),
+      findSuggestions: (String query) {
+        if (query.length != 0) {
+          return findChipsSuggestions(query, commonInfo);
+        } else {
+          return const <MedHealthDetails>[];
+        }
+      },
+      onChanged: (data) {
+        userInfo = data.map((item) => item.toString()).toList();
+        print(userInfo);
+      },
+      chipBuilder: (context, state, item) {
+        return InputChip(
+          key: ObjectKey(item),
+          label: Text(item.itemDetail),
+          onDeleted: () => state.deleteChip(item),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        );
+      },
+      suggestionBuilder: (context, state, item) {
+        return ListTile(
+          key: ObjectKey(item),
+          title: Text(item.itemDetail),
+          onTap: () => state.selectSuggestion(item),
+        );
+      },
     );
   }
 
