@@ -22,6 +22,7 @@ environment:
 
 dependencies:
   expandable_group: ^0.0.5
+  list_expandable: 
   flutter:
     sdk: flutter
   carousel_slider : ^2.3.1
