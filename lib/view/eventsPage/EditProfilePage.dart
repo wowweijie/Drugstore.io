@@ -3,6 +3,7 @@ import 'package:drugstore_io/main.dart';
 import 'package:drugstore_io/view/eventsPage/NewProfilePage.dart';
 import 'package:drugstore_io/view/reference/HomePage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_chips_input/flutter_chips_input.dart';
 import 'package:drugstore_io/model/UserProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,6 +63,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
   List<dynamic> famMedHist = ["NIL"];
 
   List<String> _gender = ['Male', 'Female', 'Others'];
+  List<String> _ethnicity = [
+    'Chinese',
+    'Malay',
+    'Indian',
+    'European',
+    'Others'
+  ];
+  List<String> _bloodGroups = ['A', 'B', 'AB', 'O', 'Unknown'];
 
   @override
   Widget build(BuildContext context) {
@@ -116,11 +125,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                     if (status.runtimeType == http.Response) {
                       print("user updated");
+                      // Future.delayed(Duration(milliseconds: 500), () {
+                      //   Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => MyBottomNavigationBar()));
+                      // });
                       Future.delayed(Duration(milliseconds: 500), () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyBottomNavigationBar()));
+                        Navigator.pop(context);
                       });
                     }
                   },
@@ -213,9 +225,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              DropDownMenu(dropdownValue: gender, dropdownItems: _gender),
-                              _aboutMeInfoTextField("Birthday", birthday, ""),
-                              _aboutMeInfoTextField("Ethnicity", ethnicity, ""),
+                              new DropDownMenu(
+                                  title: 'Gender',
+                                  dropdownValue: gender,
+                                  dropdownItems: _gender),
+                              DatePickerDemo(birthday: birthday),
+                              new DropDownMenu(
+                                  title: 'Ethnicity',
+                                  dropdownValue: ethnicity,
+                                  dropdownItems: _ethnicity),
                             ],
                           ),
                         ),
@@ -230,8 +248,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             children: [
                               _aboutMeInfoTextField("Height", height, "cm"),
                               _aboutMeInfoTextField("Weight", weight, "kg"),
-                              _aboutMeInfoTextField(
-                                  "Blood Group", bloodType, ""),
+                              new DropDownMenu(
+                                  title: 'Blood Group',
+                                  dropdownValue: bloodType,
+                                  dropdownItems: _bloodGroups),
                             ],
                           ),
                         ),
@@ -399,6 +419,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
       width: 130,
       child: TextFormField(
         enabled: true,
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           labelText: title,
@@ -407,63 +431,55 @@ class _EditProfilePageState extends State<EditProfilePage> {
         initialValue: info,
         onChanged: (value) {
           info = value;
-          if (title == "Gender") {
-            gender = value;
-          } else if (title == "Birthday") {
-            birthday = value;
-          } else if (title == "Ethnicity") {
-            ethnicity = value;
-          } else if (title == "Height") {
+          if (title == "Height") {
             height = value;
           } else if (title == "Weight") {
             weight = value;
-          } else if (title == "Blood Group") {
-            bloodType = value;
           }
         },
       ),
     );
   }
 
-  Widget _aboutMeInfoDropdown(String title, String info) {
-    return new Container(
-      padding: EdgeInsets.symmetric(horizontal: 5),
-      height: 60,
-      width: 130,
-      child: InputDecorator(
-        decoration: InputDecoration(
-          labelText: title,
-          border: OutlineInputBorder(),
-        ),
-        isEmpty: info == null,
-        child: new DropdownButton<String>(
-          underline: Container(color: Colors.transparent),
-          value: info,
-          isDense: true,
-          isExpanded: true,
-          icon: Icon(
-            Icons.arrow_drop_down,
-            color: Colors.black,
-          ),
-          iconSize: 24,
-          onChanged: (String value) {
-            setState(() {
-              info = value;
-              gender = value;
-            });
-            print(info);
-            print(gender);
-          },
-          items: _gender.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
+  // Widget _aboutMeInfoDropdown(String title, String info) {
+  //   return new Container(
+  //     padding: EdgeInsets.symmetric(horizontal: 5),
+  //     height: 60,
+  //     width: 130,
+  //     child: InputDecorator(
+  //       decoration: InputDecoration(
+  //         labelText: title,
+  //         border: OutlineInputBorder(),
+  //       ),
+  //       isEmpty: info == null,
+  //       child: new DropdownButton<String>(
+  //         underline: Container(color: Colors.transparent),
+  //         value: info,
+  //         isDense: true,
+  //         isExpanded: true,
+  //         icon: Icon(
+  //           Icons.arrow_drop_down,
+  //           color: Colors.black,
+  //         ),
+  //         iconSize: 24,
+  //         onChanged: (String value) {
+  //           setState(() {
+  //             info = value;
+  //             gender = value;
+  //           });
+  //           print(info);
+  //           print(gender);
+  //         },
+  //         items: _gender.map((String value) {
+  //           return DropdownMenuItem<String>(
+  //             value: value,
+  //             child: Text(value),
+  //           );
+  //         }).toList(),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _medHistTitle(String title) {
     return new Container(
@@ -545,15 +561,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
 }
 
 class DropDownMenu extends StatefulWidget {
+  final String title;
   final String dropdownValue;
   final List<String> dropdownItems;
-  DropDownMenu({Key key, @required this.dropdownValue, @required this.dropdownItems}) : super(key: key);
+  DropDownMenu(
+      {Key key,
+      @required this.title,
+      @required this.dropdownValue,
+      @required this.dropdownItems})
+      : super(key: key);
   @override
-  _DropDownMenuState createState() => _DropDownMenuState(dropdownValue, dropdownItems);
+  _DropDownMenuState createState() =>
+      _DropDownMenuState(title, dropdownValue, dropdownItems);
 }
 
 class _DropDownMenuState extends State<DropDownMenu> {
-  _DropDownMenuState(this.dropdownValue, this.dropdownItems);
+  _DropDownMenuState(title, this.dropdownValue, this.dropdownItems);
   String dropdownValue;
   final List<String> dropdownItems;
   @override
@@ -564,7 +587,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
       width: 130,
       child: InputDecorator(
         decoration: InputDecoration(
-          labelText: 'Gender',
+          labelText: widget.title,
           border: OutlineInputBorder(),
         ),
         isEmpty: dropdownValue == null,
@@ -592,5 +615,60 @@ class _DropDownMenuState extends State<DropDownMenu> {
         ),
       ),
     );
+  }
+}
+
+class DatePickerDemo extends StatefulWidget {
+  final String birthday;
+  DatePickerDemo(
+      {Key key,
+      @required this.birthday})
+      : super(key: key);
+  @override
+  _DatePickerDemoState createState() => _DatePickerDemoState(birthday);
+}
+
+class _DatePickerDemoState extends State<DatePickerDemo> {
+  _DatePickerDemoState(this.birthday);
+  String birthday;
+  /// Which holds the selected date
+  /// Defaults to today's date.
+  DateTime selectedDate;
+
+  _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate == null? DateTime.parse(birthday) : selectedDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2022),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark(), // This will change to light theme.
+          child: child,
+        );
+      },
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        print(selectedDate);
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 60,
+        width: 130,
+        child: InputDecorator(
+          decoration: InputDecoration(
+            labelText: 'Birthday',
+            border: OutlineInputBorder(),
+          ),
+          child: new FlatButton(
+            onPressed: () => _selectDate(context),
+            child: selectedDate ==  null ? Text(birthday): Text("${selectedDate.toLocal()}".split(' ')[0]),
+          ),
+        ));
   }
 }

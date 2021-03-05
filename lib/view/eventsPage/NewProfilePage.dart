@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:drugstore_io/main.dart';
 import 'package:drugstore_io/view/eventsPage/EditProfilePage.dart';
 import 'package:expandable_group/expandable_group_widget.dart';
@@ -43,191 +45,205 @@ class _NewProfilePageState extends State<NewProfilePage> {
           ))
       .toList();
 
+  _navigateNextPageAndRetriveValue(BuildContext context) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => EditProfilePage()),
+    );
+
+    setState(() {
+      futureProfile = fetchProfile(auth.currentUser.uid.toString());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<UserProfile>(
-      future: futureProfile,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          username = snapshot.data.username;
-          name = snapshot.data.name;
-          gender = snapshot.data.gender;
-          birthday = snapshot.data.birthday;
-          ethnicity = snapshot.data.ethnicity;
-          height = snapshot.data.height;
-          weight = snapshot.data.weight;
-          bloodType = snapshot.data.bloodType;
-          allergies = snapshot.data.allergies;
-          existingMedCond = snapshot.data.existingMedCond;
-          personalMedHist = snapshot.data.personalMedHist;
-          famMedHist = snapshot.data.famMedHist;
-          return Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              title: Image.asset('images/doctor_virtual_text.png',
-                  fit: BoxFit.cover),
-              backgroundColor: Color(0xffe2eeff),
-              leading: Image(
-                  image: new AssetImage("images/doctor_virtual_icon.png")),
-              actions: [
-                Padding(
-                    padding: EdgeInsets.only(right: 20.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => EditProfilePage()));
-                      },
-                      child: Icon(
-                        Icons.edit,
-                        size: 26.0,
+    return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title:
+              Image.asset('images/doctor_virtual_text.png', fit: BoxFit.cover),
+          backgroundColor: Color(0xffe2eeff),
+          leading:
+              Image(image: new AssetImage("images/doctor_virtual_icon.png")),
+          actions: [
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (_) => EditProfilePage()));
+                    _navigateNextPageAndRetriveValue(context);
+                  },
+                  child: Icon(
+                    Icons.edit,
+                    size: 26.0,
+                  ),
+                )),
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    //Navigator.push(
+                    //  context, MaterialPageRoute(builder: (_) => EditProfilePage()));
+                  },
+                  child: Icon(
+                    Icons.logout,
+                    size: 26.0,
+                  ),
+                )),
+          ],
+          actionsIconTheme: IconThemeData(color: Colors.blue, opacity: 10.0),
+        ),
+        body: FutureBuilder<UserProfile>(
+          future: futureProfile,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              username = snapshot.data.username;
+              name = snapshot.data.name;
+              gender = snapshot.data.gender;
+              birthday = snapshot.data.birthday;
+              ethnicity = snapshot.data.ethnicity;
+              height = snapshot.data.height;
+              weight = snapshot.data.weight;
+              bloodType = snapshot.data.bloodType;
+              allergies = snapshot.data.allergies;
+              existingMedCond = snapshot.data.existingMedCond;
+              personalMedHist = snapshot.data.personalMedHist;
+              famMedHist = snapshot.data.famMedHist;
+              print(height);
+              print(username);
+              return SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Center(
+                          child: Container(
+                              width: 250,
+                              height: 220,
+                              child:
+                                  Image.asset('images/ProfilePage_Image.png')),
+                        ),
                       ),
-                    )),
-                Padding(
-                    padding: EdgeInsets.only(right: 20.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        //Navigator.push(
-                        //  context, MaterialPageRoute(builder: (_) => EditProfilePage()));
-                      },
-                      child: Icon(
-                        Icons.logout,
-                        size: 26.0,
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: Text(
+                          name,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 25,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    )),
-              ],
-              actionsIconTheme:
-                  IconThemeData(color: Colors.blue, opacity: 10.0),
-            ),
-            body: SingleChildScrollView(
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Center(
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 20.0, right: 20.0),
+                        child: _userInfo("Name", name),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 20.0, right: 20.0),
+                        child: _userInfo("Username", username),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 20.0, right: 20.0),
+                        child: _userInfo("Password", password),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
+                        child: _notificationSwitch(),
+                      ),
+                      Container(
+                        alignment: Alignment.topCenter,
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Text(
+                          "About Me",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: const EdgeInsets.only(
+                            top: 20.0, left: 10.0, right: 10.0),
                         child: Container(
-                            width: 250,
-                            height: 220,
-                            child: Image.asset('images/ProfilePage_Image.png')),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: Text(
-                        name,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 25,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.bold,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _aboutMeInfo("Gender", gender, ""),
+                              _aboutMeInfo("Birthday", birthday, ""),
+                              _aboutMeInfo("Ethnicity", ethnicity, ""),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding: const EdgeInsets.only(
-                          top: 10.0, left: 20.0, right: 20.0),
-                      child: _userInfo("Name", name),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding: const EdgeInsets.only(
-                          top: 10.0, left: 20.0, right: 20.0),
-                      child: _userInfo("Username", username),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding: const EdgeInsets.only(
-                          top: 10.0, left: 20.0, right: 20.0),
-                      child: _userInfo("Password", password),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding: const EdgeInsets.only(
-                          top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-                      child: _notificationSwitch(),
-                    ),
-                    Container(
-                      alignment: Alignment.topCenter,
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Text(
-                        "About Me",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding: const EdgeInsets.only(
-                          top: 20.0, left: 10.0, right: 10.0),
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _aboutMeInfo("Gender", gender, ""),
-                            _aboutMeInfo("Birthday", birthday, ""),
-                            _aboutMeInfo("Ethnicity", ethnicity, ""),
-                          ],
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: const EdgeInsets.only(
+                            top: 20.0, left: 10.0, right: 10.0),
+                        child: Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _aboutMeInfo("Height", height, "cm"),
+                              _aboutMeInfo("Weight", weight, "kg"),
+                              _aboutMeInfo("Blood Group", bloodType, ""),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding: const EdgeInsets.only(
-                          top: 20.0, left: 10.0, right: 10.0),
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _aboutMeInfo("Height", height, "cm"),
-                            _aboutMeInfo("Weight", weight, "kg"),
-                            _aboutMeInfo("Blood Group", bloodType, ""),
-                          ],
+                      Container(
+                        alignment: Alignment.topCenter,
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Text(
+                          "Medical History",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
-                    ),
-                    Container(
-                      alignment: Alignment.topCenter,
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Text(
-                        "Medical History",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold),
+                      ListView(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10.0, right: 10.0, bottom: 50.0),
+                        shrinkWrap: true,
+                        children: <Widget>[
+                          _medHistInfo("Allergies", allergies),
+                          _medHistInfo(
+                              "Existing Medical Conditions", existingMedCond),
+                          _medHistInfo(
+                              "Personal Medical History", personalMedHist),
+                          _medHistInfo("Family Medical History", famMedHist),
+                        ],
                       ),
-                    ),
-                    ListView(
-                      padding: const EdgeInsets.only(
-                          top: 10.0, left: 10.0, right: 10.0, bottom: 50.0),
-                      shrinkWrap: true,
-                      children: <Widget>[
-                        _medHistInfo("Allergies", allergies),
-                        _medHistInfo(
-                            "Existing Medical Conditions", existingMedCond),
-                        _medHistInfo(
-                            "Personal Medical History", personalMedHist),
-                        _medHistInfo("Family Medical History", famMedHist),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
-        }
+              );
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
 
-        // By default, show a loading spinner.
-        return Align(
-            alignment: Alignment.center, child: CircularProgressIndicator());
-      },
-    );
+            // By default, show a loading spinner.
+            return Align(
+                alignment: Alignment.center,
+                child: CircularProgressIndicator());
+          },
+        ));
   }
 
   Widget _userInfo(String title, String info) {

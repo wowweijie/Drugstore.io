@@ -52,7 +52,7 @@ class MyBottomNavigationBar extends StatefulWidget {
 }
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
-  int _selectedIndex = 3;
+  int _selectedIndex = 0;
 
   final List<Widget> _screens = [
     //AppEntryPage(),
