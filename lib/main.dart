@@ -1,5 +1,7 @@
+import 'package:drugstore_io/view/HomePage.dart';
 import 'package:drugstore_io/view/RecordsPage.dart';
 import 'package:drugstore_io/view/eventsPage/AppEntryPage.dart';
+import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 import 'package:drugstore_io/view/eventsPage/NewProfilePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:drugstore_io/view/reference/AboutPage.dart';
 import 'package:drugstore_io/view/registration/LoginPage.dart';
 import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
-import 'package:drugstore_io/view/reference/HomePage.dart';
 import 'package:drugstore_io/view/ChatPage.dart';
 import 'package:drugstore_io/view/reference/StoriesPage.dart';
 import 'package:drugstore_io/view/MainChatPage.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage());
+          return MaterialApp(debugShowCheckedModeBanner: false, home: HomePage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
