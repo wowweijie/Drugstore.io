@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:drugstore_io/view/ChatPage.dart';
 import 'dart:convert';
 import 'package:recase/recase.dart';
-import 'package:uuid/uuid.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drugstore_io/controller/DiagnosisManager.dart';
 
 class ChatManager {
   static final ChatManager _instance = ChatManager._internal();
@@ -161,28 +160,3 @@ class Option {
 }
 
 typedef SingleWidgetFunction = void Function(Widget widget);
-
-Future<http.Response> createDiagnosis(symptomsList, conditionDiagnosed) async {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  var uuid = Uuid();
-  
-  final response = await http.post(
-    Uri.http('10.0.2.2:8080', '/diagnoses/', {'id': uuid.v1()}),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, dynamic>{
-      'user': auth.currentUser.uid.toString(),
-      'symptoms': symptomsList,
-      'condition': conditionDiagnosed["common_name"],
-      'probability': conditionDiagnosed["probability"],
-      'approved': false
-    }),
-  );
-
-  if (response.statusCode == 200) {
-    return response;
-  } else {
-    throw Exception('Failed to create diagnosis.');
-  }
-}

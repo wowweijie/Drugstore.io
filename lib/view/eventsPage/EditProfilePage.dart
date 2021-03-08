@@ -656,7 +656,6 @@ class _DatePickerDemoState extends State<DatePickerDemo> {
   StringCallback callback;
 
   /// Which holds the selected date
-  /// Defaults to today's date.
   DateTime selectedDate;
 
   _selectDate(BuildContext context) async {
