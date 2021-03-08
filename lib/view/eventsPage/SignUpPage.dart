@@ -145,11 +145,14 @@ class _SignUpPageState extends State<SignUpPage> {
                               final newuser =
                                   await auth.createUserWithEmailAndPassword(
                                       email: email, password: password);
-                              AccountManager.registerUser(newuser.user.uid,
-                                  new UserProfile());
+                              AccountManager.registerUser(
+                                  newuser.user.uid, new UserProfile());
                               if (newuser != null) {
                                 print("user created");
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()),
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditProfilePage()),
                                 );
                                 //Navigator.pop(context);
                               }
@@ -199,7 +202,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         onPressed: () {
                           print("Pressed Log In");
                           Navigator.push(
-                                context, MaterialPageRoute(builder: (_) => NewLoginPage()));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => NewLoginPage()));
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.white,
