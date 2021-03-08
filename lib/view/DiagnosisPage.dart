@@ -87,11 +87,15 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
                         isExpanded: false,
                         header: Row(
                           children: <Widget>[
-                            Image(
-                                image: (userDiagnoses[index].approved
-                                    ? new AssetImage("images/approve_icon.png")
-                                    : null)),
-                            Container(
+                            userDiagnoses[index].approved
+                                ? Image(
+                                    image: new AssetImage(
+                                        "images/approve_icon.png"),
+                                    width: 30,
+                                    height: 30)
+                                : Container(),
+                            Expanded(
+                                child: Container(
                               alignment: Alignment.centerLeft,
                               padding: const EdgeInsets.only(
                                   left: 10.0, right: 10.0),
@@ -108,7 +112,7 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
                                   fontSize: 16,
                                 ),
                               ),
-                            ),
+                            )),
                           ],
                         ),
                         items: _buildItems(context, group.symptoms),
