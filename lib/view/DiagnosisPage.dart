@@ -26,8 +26,11 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title:
-              Image.asset('images/doctor_virtual_text.png', fit: BoxFit.cover),
+          title: Image(
+            image: new AssetImage("images/drugstore.io_text.png"), 
+            fit: BoxFit.fitHeight,
+            height: 35,
+          ),
           backgroundColor: Color(0xffe2eeff),
           leading: Padding(
               padding: EdgeInsets.only(left: 10.0),

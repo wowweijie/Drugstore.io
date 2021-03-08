@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
-              debugShowCheckedModeBanner: false, home: NewLoginPage());
+              debugShowCheckedModeBanner: false, home: AppEntryPage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
@@ -96,7 +96,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blueGrey,
+        selectedItemColor: Colors.blue,
         onTap: _onItemTapped,
         backgroundColor: Color(0xffe2eeff),
       ),

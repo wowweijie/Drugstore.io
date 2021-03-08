@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:drugstore_io/view/DiagnosisPage.dart';
+import 'package:drugstore_io/view/PrescriptionsPage.dart';
+import 'package:drugstore_io/view/eventsPage/EditProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable_group/expandable_group_widget.dart';
 
@@ -126,8 +129,8 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ElevatedButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context, MaterialPageRoute(builder: (_) => MyBottomNavigationBar()));
+                                Navigator.push(
+                                  context, MaterialPageRoute(builder: (_) => DiagnosisPage()));
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Color(0xffe6f0fa),
@@ -156,8 +159,8 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ElevatedButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context, MaterialPageRoute(builder: (_) => MyBottomNavigationBar()));
+                                Navigator.push(
+                                   context, MaterialPageRoute(builder: (_) => PrescriptionsPage()));
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Color(0xffe6f0fa),
@@ -186,8 +189,8 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ElevatedButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context, MaterialPageRoute(builder: (_) => MyBottomNavigationBar()));
+                                Navigator.push(
+                                  context, MaterialPageRoute(builder: (_) => EditProfilePage()));
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Color(0xffe6f0fa),
@@ -269,7 +272,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Container(
                   alignment: Alignment.topLeft,
-                  padding: const EdgeInsets.only(bottom: 50.0),
+                  //padding: const EdgeInsets.only(bottom: 50.0),
                   width: 370,
                   child: _listView("View Prescription", _latestPrescription, "symptoms_icon"),
                 ),
