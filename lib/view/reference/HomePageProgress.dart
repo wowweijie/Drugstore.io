@@ -22,7 +22,7 @@ class HomePageProgress extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 30,
                     backgroundImage: NetworkImage(
-                        'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Furry_blue_paw_vector_logo.svg/1200px-Furry_blue_paw_vector_logo.svg.png'),
+                        'https://thumbs.dreamstime.com/b/smiling-woman-vector-illustration-young-happy-student-happy-girl-adult-beauty-person-healthy-71801962.jpg'),
                   ),
                 ),
                 Column(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:drugstore_io/controller/ChatManager.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key key}) : super(key: key);
@@ -7,17 +8,35 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  ChatManager chatManager;
   final List<Widget> _messages = <Widget>[
     new ChatMessage(
       text:
-          "Hi there! This is a reminder that you have an event coming up in 3 days! The event you have successfully registered for is: #I Am Remarkable workshop for YOUth. Could you please confirm that you are attending the event? (Yes/No)",
-      name: "Blossom",
+          "Hi! I am Dr. Virtual, your virtual medical diagnosis chatbot to assist with your checkup. " +
+              "May I know what concerns you about your health? " +
+              "Please describe your symptoms to me :)",
+      name: "Dr. Virtual",
       type: false,
     ),
   ];
   final TextEditingController _textController = new TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    chatManager = ChatManager.setMessageListener(sendMessageListener);
+  }
+
+  void sendMessageListener(Widget msg) {
+    setState(() {
+      _messages.insert(0, msg);
+    });
+  }
+
   void _handleSubmitted(String text) {
+    if (text == "" || text.trim().isEmpty) {
+      return;
+    }
     _textController.clear();
     ChatMessage message = new ChatMessage(
       text: text,
@@ -27,13 +46,11 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       _messages.insert(0, message);
     });
-    response(text);
+    chatManager.getVirtualResponse(text);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_messages.length < 2)
-      _messages.insert(0, ChatOption(["option1"], _handleSubmitted));
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(
@@ -43,9 +60,8 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: new Column(children: <Widget>[
         new Flexible(
-            child: Column(children: <Widget>[
-          _buildChatBody(),
-        ])),
+          child: _buildChatBody(),
+        ),
         new Divider(height: 1.0),
         new Container(
           decoration: new BoxDecoration(color: Theme.of(context).cardColor),
@@ -62,27 +78,27 @@ class _ChatPageState extends State<ChatPage> {
       message = new ChatMessage(
         text:
             "Awesome! Your status has been updated. We look forward to seeing you!",
-        name: "Blossom",
+        name: "Dr. Virtual",
         type: false,
       );
     } else if (text == "No" || text == "no") {
       message = new ChatMessage(
         text:
             "So sorry to hear that you can't join the event! Do look out for our other events. Hope to see you soon!",
-        name: "Blossom",
+        name: "Dr. Virtual",
         type: false,
       );
     } else if (text == "What are badges?") {
       message = new ChatMessage(
         text:
             "Badges are a way to show your friends what you are most passionate about! You can earn badges by volunteering in relevant projects. Head over to the main page to see your progress towards getting the badges as well as which volunteering events can help you achieve certain badges!",
-        name: "Blossom",
+        name: "Dr. Virtual",
         type: false,
       );
     } else {
       message = new ChatMessage(
         text: "Sorry, I did not understand that.",
-        name: "Blossom",
+        name: "Dr. Virtual",
         type: false,
       );
     }
@@ -238,10 +254,12 @@ Widget _buildMessageBubble(msgText, user) {
 }
 
 class ChatOption extends StatefulWidget {
-  ChatOption(this.options, this.sendChatMessage);
+  //ChatOption(this.options, this.sendChatMessage);
 
-  final List<String> options;
-  final sendChatCallback sendChatMessage;
+  ChatOption(Key key, this.options) : super(key: key);
+
+  final List<Option> options;
+  //final sendChatCallback sendChatMessage;
 
   @override
   _ChatOptionState createState() => _ChatOptionState();
@@ -249,7 +267,7 @@ class ChatOption extends StatefulWidget {
 
 class _ChatOptionState extends State<ChatOption> {
   int selectedIndex = -1;
-
+  ChatManager chatManager = ChatManager();
   @override
   Widget build(BuildContext buildContext) {
     return new Wrap(
@@ -262,7 +280,7 @@ class _ChatOptionState extends State<ChatOption> {
           for (int index = 0; index < widget.options.length; index++)
             ChoiceChip(
               label: Text(
-                widget.options[index],
+                widget.options[index].name,
                 style: TextStyle(
                   fontFamily: 'Poppin',
                   fontWeight: FontWeight.bold,
@@ -275,8 +293,8 @@ class _ChatOptionState extends State<ChatOption> {
               onSelected: (bool selected) {
                 setState(() {
                   selectedIndex = selected ? index : selectedIndex;
-                  widget.sendChatMessage(widget.options[index]);
                 });
+                chatManager.getOntologyFromOption(widget.options[index]);
               },
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.all(new Radius.circular(20.0)),

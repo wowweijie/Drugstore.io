@@ -44,6 +44,8 @@ dependencies:
   http: ^0.12.2
   convert: ^2.1.1
   flutter_chips_input: ^1.9.5
+  recase: ^3.0.1
+
   
 dev_dependencies:
   flutter_test:

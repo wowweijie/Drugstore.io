@@ -1,3 +1,4 @@
+import 'package:drugstore_io/view/RecordsPage.dart';
 import 'package:drugstore_io/view/eventsPage/AppEntryPage.dart';
 import 'package:drugstore_io/view/eventsPage/NewProfilePage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -57,8 +58,8 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   final List<Widget> _screens = [
     //AppEntryPage(),
     HomePage(),
-    ChatPage(),
-    StoriesPage(),
+    ChatPage(key: GlobalKey()),
+    RecordsPage(),
     NewProfilePage(),
   ];
 
