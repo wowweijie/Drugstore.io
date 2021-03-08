@@ -1,6 +1,7 @@
 import 'package:drugstore_io/view/PrescriptionsPage.dart';
 import 'package:drugstore_io/view/RecordsPage.dart';
 import 'package:drugstore_io/view/eventsPage/AppEntryPage.dart';
+import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 import 'package:drugstore_io/view/eventsPage/NewProfilePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
-              debugShowCheckedModeBanner: false, home: PrescriptionsPage());
+              debugShowCheckedModeBanner: false, home: NewLoginPage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete

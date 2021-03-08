@@ -1,3 +1,4 @@
+import 'package:drugstore_io/view/DiagnosisPage.dart';
 import 'package:drugstore_io/view/PrescriptionsPage.dart';
 import 'package:flutter/material.dart';
 
@@ -42,8 +43,8 @@ class _RecordsPageState extends State<RecordsPage> {
                   ElevatedButton(
                     onPressed: () {
                       print("Go to diagnosis page");
-                      //Navigator.push(
-                      //      context, MaterialPageRoute(builder: (_) => SignUpPage()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => DiagnosisPage()));
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,
@@ -51,33 +52,34 @@ class _RecordsPageState extends State<RecordsPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
-                      minimumSize: Size(150,100),
+                      minimumSize: Size(150, 100),
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget> [
-                        Image(
-                          height: 50,
-                          width: 50,
-                          image: new AssetImage("images/duration_icon.png"),
-                        ),
-                        Text(
-                          "Diagnosis",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Image(
+                            height: 50,
+                            width: 50,
+                            image: new AssetImage("images/duration_icon.png"),
                           ),
-                        ),
-                      ]
-                    ),
+                          Text(
+                            "Diagnosis",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                            ),
+                          ),
+                        ]),
                   ),
                   ElevatedButton(
                     onPressed: () {
                       print("Go to prescriptions page");
                       Navigator.push(
-                            context, MaterialPageRoute(builder: (_) => PrescriptionsPage()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => PrescriptionsPage()));
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,
@@ -85,26 +87,25 @@ class _RecordsPageState extends State<RecordsPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
-                      minimumSize: Size(150,100),
+                      minimumSize: Size(150, 100),
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget> [
-                        Image(
-                          height: 50,
-                          width: 50,
-                          image: new AssetImage("images/date_icon.png"),
-                        ),
-                        Text(
-                          "Presciptions",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image(
+                            height: 50,
+                            width: 50,
+                            image: new AssetImage("images/date_icon.png"),
                           ),
-                        ),
-                      ]
-                    ),
+                          Text(
+                            "Presciptions",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                            ),
+                          ),
+                        ]),
                   ),
                 ],
               ),

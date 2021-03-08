@@ -9,9 +9,19 @@ class PrescriptionsPage extends StatefulWidget {
 
 class _PrescriptionsPageState extends State<PrescriptionsPage> {
   String _dropdownValue;
-  List<String> _dropdownItems = ['One', 'Two', 'Three', 'Four'];
+
   String specialReq;
-  List<List<String>> _prescriptionInfo = [["Paractemol","Aspirin"], ["Insulin"], ["Telfast", "Vitamin C"]];
+  List<List<String>> _prescriptionInfo = [
+    ["Paractemol", "Aspirin"],
+    ["Insulin"],
+    ["Telfast", "Vitamin C"]
+  ];
+  List<List<String>> _prescriptionDetails = [
+    ["30/02/2020", "Peter"],
+    ["16/06/2019", "Freud"],
+    ["19/05/2019", "Louise"],
+  ];
+  List<String> _dropdownItems = ["30/02/2020", "16/06/2019", "19/05/2019"];
 
   List<ListTile> _buildItems(BuildContext context, List<String> items) => items
       .map((e) => ListTile(
@@ -188,11 +198,22 @@ class _PrescriptionsPageState extends State<PrescriptionsPage> {
                       borderRadius: BorderRadius.circular(5),
                       color: Color(0xfff2f6fc),
                     ),
-                    child: Text('Prescription $index',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            _prescriptionDetails[index][0],
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            "Dr " + _prescriptionDetails[index][1],
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ]),
                   ),
                   items: _buildItems(context, group),
                 );
