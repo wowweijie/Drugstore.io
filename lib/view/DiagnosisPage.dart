@@ -95,7 +95,9 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
                             color: Color(0xfff2f6fc),
                           ),
                           child: Text(
-                            userDiagnoses[index].date,
+                            userDiagnoses[index].date +
+                                ": " +
+                                userDiagnoses[index].condition,
                             style: TextStyle(
                               fontSize: 16,
                             ),
