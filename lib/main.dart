@@ -1,5 +1,8 @@
+import 'package:drugstore_io/view/HomePage.dart';
+import 'package:drugstore_io/view/PrescriptionsPage.dart';
 import 'package:drugstore_io/view/RecordsPage.dart';
 import 'package:drugstore_io/view/eventsPage/AppEntryPage.dart';
+import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 import 'package:drugstore_io/view/eventsPage/NewProfilePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +12,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:drugstore_io/view/reference/AboutPage.dart';
 import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
-import 'package:drugstore_io/view/reference/HomePage.dart';
 import 'package:drugstore_io/view/ChatPage.dart';
 import 'package:drugstore_io/view/reference/StoriesPage.dart';
 import 'package:drugstore_io/view/MainChatPage.dart';
@@ -60,11 +62,11 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    //AppEntryPage(),
     HomePage(),
     ChatPage(key: GlobalKey()),
     RecordsPage(),
     NewProfilePage(),
+    //PrescriptionsPage(),
   ];
 
   void _onItemTapped(int selectedIndex) {
@@ -82,32 +84,25 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         items: [
           BottomNavigationBarItem(
             label: "Home",
-            icon: Icon(
-              Icons.home,
-            ),
+            icon: Image(image: new AssetImage("images/home_icon.png")),
           ),
           BottomNavigationBarItem(
-            label: "Chat",
-            icon: Icon(
-              Icons.chat,
-            ),
+            label: "Doctor",
+            icon: Image(image: new AssetImage("images/doctor_icon.png")),
           ),
           BottomNavigationBarItem(
-            label: "Stories",
-            icon: Icon(
-              Icons.question_answer,
-            ),
+            label: "Records",
+            icon: Image(image: new AssetImage("images/records_icon.png")),
           ),
           BottomNavigationBarItem(
             label: "Profile",
-            icon: Icon(
-              Icons.person,
-            ),
+            icon: Image(image: new AssetImage("images/profile_icon.png")),
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blueAccent,
+        selectedItemColor: Colors.blueGrey,
         onTap: _onItemTapped,
+        backgroundColor: Color(0xffe2eeff),
       ),
     );
   }
