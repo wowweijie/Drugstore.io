@@ -85,23 +85,31 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
                       int index = userDiagnoses.indexOf(group);
                       return ListExpandableWidget(
                         isExpanded: false,
-                        header: Container(
-                          alignment: Alignment.centerLeft,
-                          padding:
-                              const EdgeInsets.only(left: 10.0, right: 10.0),
-                          height: 48,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Color(0xfff2f6fc),
-                          ),
-                          child: Text(
-                            userDiagnoses[index].date +
-                                ": " +
-                                userDiagnoses[index].condition,
-                            style: TextStyle(
-                              fontSize: 16,
+                        header: Row(
+                          children: <Widget>[
+                            Image(
+                                image: (userDiagnoses[index].approved
+                                    ? new AssetImage("images/approve_icon.png")
+                                    : null)),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, right: 10.0),
+                              height: 48,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Color(0xfff2f6fc),
+                              ),
+                              child: Text(
+                                userDiagnoses[index].date +
+                                    ": " +
+                                    userDiagnoses[index].condition,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                         items: _buildItems(context, group.symptoms),
                       );
