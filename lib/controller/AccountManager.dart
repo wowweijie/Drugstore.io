@@ -80,7 +80,7 @@ Future<http.Response> updateProfile(
     weight,
     bloodType,
     ethnicity,
-    List<dynamic> allergies,
+    List<String> allergies,
     existingMedCond,
     famMedHist,
     personalMedHist) async {

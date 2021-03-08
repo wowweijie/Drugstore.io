@@ -38,8 +38,25 @@ class MedHealthDetails {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   static FirebaseAuth auth = FirebaseAuth.instance;
+  Key genderDropdownKey = GlobalKey();
 
   Future<UserProfile> futureProfile;
+
+  setGender(String gender) {
+    this.gender = gender;
+  }
+
+  setEthnicity(String ethnicity) {
+    this.ethnicity = ethnicity;
+  }
+
+  setBloodGroup(String bloodType) {
+    this.bloodType = bloodType;
+  }
+
+  setBirthday(String birthday) {
+    this.birthday = birthday;
+  }
 
   @override
   void initState() {
@@ -59,7 +76,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String bloodType = "B+";
   List<dynamic> allergies = ["Prawn", "Paracetamol"];
   List<dynamic> existingMedCond = ["Anaemia", "Asthma"];
-  List<dynamic> personalMedHist = ["Pneumonia"];
+  List<dynamic> personalMedHist = ["NIL"];
   List<dynamic> famMedHist = ["NIL"];
 
   List<String> _gender = ['Male', 'Female', 'Others'];
@@ -108,6 +125,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () async {
+                    print(gender);
                     final status = await updateProfile(
                         auth.currentUser.uid.toString(),
                         name,
@@ -125,15 +143,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                     if (status.runtimeType == http.Response) {
                       print("user updated");
-                      // Future.delayed(Duration(milliseconds: 500), () {
-                      //   Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) => MyBottomNavigationBar()));
-                      // });
                       Future.delayed(Duration(milliseconds: 500), () {
-                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyBottomNavigationBar(
+                                    key: GlobalKey(), selectedIndex: 3)));
                       });
+                      // Future.delayed(Duration(milliseconds: 500), () {
+                      //   Navigator.pop(context);
+                      // });
                     }
                   },
                   child: Icon(
@@ -228,12 +247,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               new DropDownMenu(
                                   title: 'Gender',
                                   dropdownValue: gender,
-                                  dropdownItems: _gender),
-                              DatePickerDemo(birthday: birthday),
+                                  dropdownItems: _gender,
+                                  callback: setGender),
+                              DatePickerDemo(
+                                  birthday: birthday, callback: setBirthday),
                               new DropDownMenu(
                                   title: 'Ethnicity',
                                   dropdownValue: ethnicity,
-                                  dropdownItems: _ethnicity),
+                                  dropdownItems: _ethnicity,
+                                  callback: setEthnicity),
                             ],
                           ),
                         ),
@@ -251,7 +273,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               new DropDownMenu(
                                   title: 'Blood Group',
                                   dropdownValue: bloodType,
-                                  dropdownItems: _bloodGroups),
+                                  dropdownItems: _bloodGroups,
+                                  callback: setBloodGroup),
                             ],
                           ),
                         ),
@@ -441,46 +464,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  // Widget _aboutMeInfoDropdown(String title, String info) {
-  //   return new Container(
-  //     padding: EdgeInsets.symmetric(horizontal: 5),
-  //     height: 60,
-  //     width: 130,
-  //     child: InputDecorator(
-  //       decoration: InputDecoration(
-  //         labelText: title,
-  //         border: OutlineInputBorder(),
-  //       ),
-  //       isEmpty: info == null,
-  //       child: new DropdownButton<String>(
-  //         underline: Container(color: Colors.transparent),
-  //         value: info,
-  //         isDense: true,
-  //         isExpanded: true,
-  //         icon: Icon(
-  //           Icons.arrow_drop_down,
-  //           color: Colors.black,
-  //         ),
-  //         iconSize: 24,
-  //         onChanged: (String value) {
-  //           setState(() {
-  //             info = value;
-  //             gender = value;
-  //           });
-  //           print(info);
-  //           print(gender);
-  //         },
-  //         items: _gender.map((String value) {
-  //           return DropdownMenuItem<String>(
-  //             value: value,
-  //             child: Text(value),
-  //           );
-  //         }).toList(),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _medHistTitle(String title) {
     return new Container(
       decoration: BoxDecoration(
@@ -526,7 +509,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
         }
       },
       onChanged: (data) {
-        userInfo = data.map((item) => item.toString()).toList();
+        userInfo = data.map<String>((item) => item.toString()).toList();
+        if (title == "allergies") {
+          allergies = data.map<String>((item) => item.toString()).toList();
+        } else if (title == "existing medical conditions") {
+          existingMedCond =
+              data.map<String>((item) => item.toString()).toList();
+        } else if (title == "personal medical history") {
+          personalMedHist =
+              data.map<String>((item) => item.toString()).toList();
+        } else if (title == "family medical history") {
+          famMedHist = data.map<String>((item) => item.toString()).toList();
+        }
         print(userInfo);
       },
       chipBuilder: (context, state, item) {
@@ -560,25 +554,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 }
 
+typedef void StringCallback(String val);
+
 class DropDownMenu extends StatefulWidget {
   final String title;
   final String dropdownValue;
   final List<String> dropdownItems;
+  final StringCallback callback;
   DropDownMenu(
       {Key key,
       @required this.title,
       @required this.dropdownValue,
-      @required this.dropdownItems})
+      @required this.dropdownItems,
+      this.callback})
       : super(key: key);
   @override
   _DropDownMenuState createState() =>
-      _DropDownMenuState(title, dropdownValue, dropdownItems);
+      _DropDownMenuState(title, dropdownValue, dropdownItems, callback);
 }
 
 class _DropDownMenuState extends State<DropDownMenu> {
-  _DropDownMenuState(title, this.dropdownValue, this.dropdownItems);
+  _DropDownMenuState(
+      title, this.dropdownValue, this.dropdownItems, this.callback);
   String dropdownValue;
+  StringCallback callback;
   final List<String> dropdownItems;
+
   @override
   Widget build(BuildContext context) {
     return new Container(
@@ -604,6 +605,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
           onChanged: (String value) {
             setState(() {
               dropdownValue = value;
+              callback(value);
             });
           },
           items: dropdownItems.map((String value) {
@@ -618,19 +620,41 @@ class _DropDownMenuState extends State<DropDownMenu> {
   }
 }
 
+MaterialColor createMaterialColor(Color color) {
+  List strengths = <double>[.05];
+  Map swatch = <int, Color>{};
+  final int r = color.red, g = color.green, b = color.blue;
+
+  for (int i = 1; i < 10; i++) {
+    strengths.add(0.1 * i);
+  }
+  strengths.forEach((strength) {
+    final double ds = 0.5 - strength;
+    swatch[(strength * 1000).round()] = Color.fromRGBO(
+      r + ((ds < 0 ? r : (255 - r)) * ds).round(),
+      g + ((ds < 0 ? g : (255 - g)) * ds).round(),
+      b + ((ds < 0 ? b : (255 - b)) * ds).round(),
+      1,
+    );
+  });
+  return MaterialColor(color.value, swatch);
+}
+
 class DatePickerDemo extends StatefulWidget {
   final String birthday;
-  DatePickerDemo(
-      {Key key,
-      @required this.birthday})
+  final StringCallback callback;
+  DatePickerDemo({Key key, @required this.birthday, this.callback})
       : super(key: key);
   @override
-  _DatePickerDemoState createState() => _DatePickerDemoState(birthday);
+  _DatePickerDemoState createState() =>
+      _DatePickerDemoState(birthday, callback);
 }
 
 class _DatePickerDemoState extends State<DatePickerDemo> {
-  _DatePickerDemoState(this.birthday);
+  _DatePickerDemoState(this.birthday, this.callback);
   String birthday;
+  StringCallback callback;
+
   /// Which holds the selected date
   /// Defaults to today's date.
   DateTime selectedDate;
@@ -638,12 +662,15 @@ class _DatePickerDemoState extends State<DatePickerDemo> {
   _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate == null? DateTime.parse(birthday) : selectedDate,
+      initialDate:
+          selectedDate == null ? DateTime.parse(birthday) : selectedDate,
       firstDate: DateTime(1900),
       lastDate: DateTime(2022),
       builder: (context, child) {
         return Theme(
-          data: ThemeData.dark(), // This will change to light theme.
+          data: ThemeData(
+              primarySwatch: createMaterialColor(
+                  Color(0xffb5cbec))), // This will change color theme.
           child: child,
         );
       },
@@ -651,7 +678,7 @@ class _DatePickerDemoState extends State<DatePickerDemo> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        print(selectedDate);
+        callback("${selectedDate.toLocal()}".split(' ')[0]);
       });
   }
 
@@ -667,7 +694,10 @@ class _DatePickerDemoState extends State<DatePickerDemo> {
           ),
           child: new FlatButton(
             onPressed: () => _selectDate(context),
-            child: selectedDate ==  null ? Text(birthday): Text("${selectedDate.toLocal()}".split(' ')[0]),
+            child: selectedDate == null
+                ? Text(birthday, textAlign: TextAlign.left)
+                : Text("${selectedDate.toLocal()}".split(' ')[0],
+                    textAlign: TextAlign.left),
           ),
         ));
   }
