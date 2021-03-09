@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
-              debugShowCheckedModeBanner: false, home: AppEntryPage());
+              debugShowCheckedModeBanner: false, home: NewLoginPage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
@@ -62,7 +62,6 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
     ChatPage(key: GlobalKey()),
     RecordsPage(),
     NewProfilePage(),
-    //PrescriptionsPage(),
   ];
 
   void _onItemTapped(int selectedIndex) {
