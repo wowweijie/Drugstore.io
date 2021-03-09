@@ -9,11 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'package:drugstore_io/view/reference/AboutPage.dart';
 import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
 import 'package:drugstore_io/view/ChatPage.dart';
-import 'package:drugstore_io/view/reference/StoriesPage.dart';
 import 'package:drugstore_io/view/MainChatPage.dart';
 
 void main() async {
@@ -39,7 +37,7 @@ class MyApp extends StatelessWidget {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
-              debugShowCheckedModeBanner: false, home: NewLoginPage());
+              debugShowCheckedModeBanner: false, home: HomePage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete

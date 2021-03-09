@@ -253,44 +253,6 @@ class _HomePageState extends State<HomePage> {
                     width: 370,
                     child: _listView("View your daily health tip", _healthTips,
                         "bulb_icon")),
-                /*Divider(
-                  color: Color(0xffb5cbec),
-                  thickness: 4,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        "Last Diagnosis:  ",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        "Diabetes Type 1",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  //padding: const EdgeInsets.only(bottom: 50.0),
-                  width: 370,
-                  child: _listView("View Prescription", _latestPrescription,
-                      "symptoms_icon"),
-                ),*/
               ],
             ),
           ),
@@ -352,8 +314,25 @@ class _HomePageState extends State<HomePage> {
         ]);
   }
 
-  /*Widget _latestRecord() {
-    List<Diagnosis> latestDiagnosis = [Diagnosis("Asthma", "29-03-2020", "Pablo", true, 0.97, ["Dead"])];
+  Widget _latestRecord() {
+    List<List<dynamic>> latestDiagnosis = [
+      [
+        "Asthma",
+        "29-03-2020",
+        "Pablo",
+        true,
+        0.97,
+        ["Dead"]
+      ]
+    ];
+    List<List<dynamic>> latestPrescription = [
+      [
+        ["Paractemol", "Aspirin"],
+        "30/02/2020",
+        "Peter"
+      ]
+    ];
+
     return new Dialog(
       backgroundColor: Colors.white,
       elevation: 10,
@@ -362,6 +341,18 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: Text(
+                "Latest Record",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             Text(
               "Last Diagnosis:  ",
               style: TextStyle(
@@ -372,16 +363,16 @@ class _HomePageState extends State<HomePage> {
             ),
             ListView(
               padding: const EdgeInsets.only(
-                  top: 10.0, left: 10.0, right: 10.0, bottom: 50.0),
+                  top: 10.0, left: 10.0, right: 10.0, bottom: 10.0),
               shrinkWrap: true,
               physics: ScrollPhysics(),
               children: latestDiagnosis.map((group) {
                 int index = latestDiagnosis.indexOf(group);
                 return ListExpandableWidget(
-                  isExpanded: false,
+                  isExpanded: true,
                   header: Row(
                     children: <Widget>[
-                      latestDiagnosis[index].approved
+                      latestDiagnosis[index][3]
                           ? Image(
                               image: new AssetImage("images/approve_icon.png"),
                               width: 30,
@@ -397,9 +388,9 @@ class _HomePageState extends State<HomePage> {
                           color: Color(0xfff2f6fc),
                         ),
                         child: Text(
-                          latestDiagnosis[index].date +
+                          latestDiagnosis[index][1] +
                               ": " +
-                              latestDiagnosis[index].condition,
+                              latestDiagnosis[index][0],
                           style: TextStyle(
                             fontSize: 16,
                           ),
@@ -407,7 +398,49 @@ class _HomePageState extends State<HomePage> {
                       )),
                     ],
                   ),
-                  items: _buildItems(context, group.symptoms),
+                  items: _buildItems(context, group[5]),
+                );
+              }).toList(),
+            ),
+            Divider(
+              color: Color(0xfff2f6fc),
+              thickness: 3,
+            ),
+            Text(
+              "Last Prescription:  ",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            ListView(
+              padding: const EdgeInsets.only(
+                  top: 10.0, left: 10.0, right: 10.0, bottom: 10.0),
+              shrinkWrap: true,
+              physics: ScrollPhysics(),
+              children: latestPrescription.map((group) {
+                int index = latestPrescription.indexOf(group);
+                return ListExpandableWidget(
+                  isExpanded: true,
+                  header: Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                    height: 48,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Color(0xfff2f6fc),
+                    ),
+                    child: Text(
+                      latestPrescription[index][1] +
+                          " by Dr. " +
+                          latestPrescription[index][2],
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  items: _buildItems(context, group[0]),
                 );
               }).toList(),
             ),
@@ -415,5 +448,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }*/
+  }
 }
