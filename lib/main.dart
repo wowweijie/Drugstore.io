@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:drugstore_io/view/reference/AboutPage.dart';
-import 'package:drugstore_io/view/registration/LoginPage.dart';
+import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
 import 'package:drugstore_io/view/ChatPage.dart';
 import 'package:drugstore_io/view/reference/StoriesPage.dart';
@@ -50,11 +50,15 @@ class MyApp extends StatelessWidget {
 }
 
 class MyBottomNavigationBar extends StatefulWidget {
+  final int selectedIndex;
   @override
-  _MyBottomNavigationBarState createState() => _MyBottomNavigationBarState();
+  MyBottomNavigationBar({Key key, @required this.selectedIndex})
+      : super(key: key);
+  createState() => _MyBottomNavigationBarState(selectedIndex);
 }
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
+  _MyBottomNavigationBarState(this._selectedIndex);
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [

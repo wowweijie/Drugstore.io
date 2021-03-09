@@ -1,6 +1,5 @@
 import 'package:drugstore_io/main.dart';
 import 'package:flutter/material.dart';
-import 'package:drugstore_io/view/registration/LoginPage.dart';
 import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 
 class AppEntryPage extends StatefulWidget {
