@@ -1,6 +1,5 @@
 import 'package:drugstore_io/main.dart';
 import 'package:flutter/material.dart';
-import 'package:drugstore_io/view/registration/LoginPage.dart';
 import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 
 class AppEntryPage extends StatefulWidget {
@@ -37,9 +36,10 @@ class _AppEntryPageState extends State<AppEntryPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 10.0),
+                padding: const EdgeInsets.only(top: 5.0),
                 child: Container(
-                    child: Image.asset('images/Logo_EntryPage.png')),
+                    padding: const EdgeInsets.only(left: 70.0, right: 70.0, bottom: 10.0),
+                    child: Image.asset('images/drugstore.io_logo.png')),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),

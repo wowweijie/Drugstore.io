@@ -1,3 +1,4 @@
+import 'package:drugstore_io/view/CombinedRecordsPage.dart';
 import 'package:drugstore_io/view/HomePage.dart';
 import 'package:drugstore_io/view/PrescriptionsPage.dart';
 import 'package:drugstore_io/view/RecordsPage.dart';
@@ -9,11 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'package:drugstore_io/view/reference/AboutPage.dart';
-import 'package:drugstore_io/view/registration/LoginPage.dart';
+import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
 import 'package:drugstore_io/view/ChatPage.dart';
-import 'package:drugstore_io/view/reference/StoriesPage.dart';
 import 'package:drugstore_io/view/MainChatPage.dart';
 
 void main() async {
@@ -39,7 +38,7 @@ class MyApp extends StatelessWidget {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
-              debugShowCheckedModeBanner: false, home: NewLoginPage());
+              debugShowCheckedModeBanner: false, home: AppEntryPage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
@@ -50,19 +49,22 @@ class MyApp extends StatelessWidget {
 }
 
 class MyBottomNavigationBar extends StatefulWidget {
+  final int selectedIndex;
   @override
-  _MyBottomNavigationBarState createState() => _MyBottomNavigationBarState();
+  MyBottomNavigationBar({Key key, @required this.selectedIndex})
+      : super(key: key);
+  createState() => _MyBottomNavigationBarState(selectedIndex);
 }
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
+  _MyBottomNavigationBarState(this._selectedIndex);
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
     HomePage(),
     ChatPage(key: GlobalKey()),
-    RecordsPage(),
+    CombinedRecordsPage(),
     NewProfilePage(),
-    //PrescriptionsPage(),
   ];
 
   void _onItemTapped(int selectedIndex) {
@@ -96,7 +98,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blueGrey,
+        selectedItemColor: Colors.blue,
         onTap: _onItemTapped,
         backgroundColor: Color(0xffe2eeff),
       ),

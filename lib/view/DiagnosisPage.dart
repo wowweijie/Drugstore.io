@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:list_expandable/list_expandable_widget.dart';
+import 'package:drugstore_io/controller/DiagnosisManager.dart';
+import 'package:drugstore_io/model/Diagnosis.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DiagnosisPage extends StatefulWidget {
   @override
@@ -7,6 +10,17 @@ class DiagnosisPage extends StatefulWidget {
 }
 
 class _DiagnosisPageState extends State<DiagnosisPage> {
+  static FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<List<Diagnosis>> futureDiagnosis;
+  List<Diagnosis> userDiagnoses;
+
+  @override
+  void initState() {
+    super.initState();
+    futureDiagnosis = fetchDiagnosis(auth.currentUser.uid.toString());
+  }
+
   List<List<String>> _diagnosisInfo = [
     ["Flu", "Cough"],
     ["Diabetes"],
@@ -15,7 +29,7 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
 
   List<String> _diagnosisDetails = ["30/02/2020", "16/06/2019", "19/05/2019"];
 
-  List<ListTile> _buildItems(BuildContext context, List<String> items) => items
+  List<ListTile> _buildItems(BuildContext context, List<dynamic> items) => items
       .map((e) => ListTile(
             title: Text(e),
           ))
@@ -26,8 +40,11 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title:
-              Image.asset('images/doctor_virtual_text.png', fit: BoxFit.cover),
+          title: Image(
+            image: new AssetImage("images/drugstore.io_text.png"), 
+            fit: BoxFit.fitHeight,
+            height: 35,
+          ),
           backgroundColor: Color(0xffe2eeff),
           leading: Padding(
               padding: EdgeInsets.only(left: 10.0),
@@ -42,48 +59,79 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
                 ),
               )),
         ),
-        body: SingleChildScrollView(
-          child: Column(children: <Widget>[
-            Container(
-              padding: const EdgeInsets.only(top: 15.0, left: 20.0),
-              alignment: Alignment.topLeft,
-              child: Text(
-                "View Diagnosis",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            ListView(
-              padding: const EdgeInsets.only(
-                  top: 10.0, left: 10.0, right: 10.0, bottom: 50.0),
-              shrinkWrap: true,
-              children: _diagnosisInfo.map((group) {
-                int index = _diagnosisInfo.indexOf(group);
-                return ListExpandableWidget(
-                  isExpanded: false,
-                  header: Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    height: 48,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color(0xfff2f6fc),
-                    ),
+        body: FutureBuilder<List<Diagnosis>>(
+          future: futureDiagnosis,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              userDiagnoses = snapshot.data;
+
+              return SingleChildScrollView(
+                child: Column(children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.only(top: 15.0, left: 20.0),
+                    alignment: Alignment.topLeft,
                     child: Text(
-                      _diagnosisDetails[index],
+                      "View Diagnosis",
                       style: TextStyle(
-                        fontSize: 16,
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  items: _buildItems(context, group),
-                );
-              }).toList(),
-            ),
-          ]),
+                  ListView(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, left: 10.0, right: 10.0, bottom: 50.0),
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    children: userDiagnoses.map((group) {
+                      int index = userDiagnoses.indexOf(group);
+                      return ListExpandableWidget(
+                        isExpanded: false,
+                        header: Row(
+                          children: <Widget>[
+                            userDiagnoses[index].approved
+                                ? Image(
+                                    image: new AssetImage(
+                                        "images/approve_icon.png"),
+                                    width: 30,
+                                    height: 30)
+                                : Container(),
+                            Expanded(
+                                child: Container(
+                              alignment: Alignment.centerLeft,
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, right: 10.0),
+                              height: 48,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Color(0xfff2f6fc),
+                              ),
+                              child: Text(
+                                userDiagnoses[index].date +
+                                    ": " +
+                                    userDiagnoses[index].condition,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            )),
+                          ],
+                        ),
+                        items: _buildItems(context, group.symptoms),
+                      );
+                    }).toList(),
+                  ),
+                ]),
+              );
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            // By default, show a loading spinner.
+            return Align(
+                alignment: Alignment.center,
+                child: CircularProgressIndicator());
+          },
         ));
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:drugstore_io/view/ChatPage.dart';
 import 'dart:convert';
 import 'package:recase/recase.dart';
+import 'package:drugstore_io/controller/DiagnosisManager.dart';
 
 class ChatManager {
   static final ChatManager _instance = ChatManager._internal();
@@ -19,6 +20,7 @@ class ChatManager {
 
   SingleWidgetFunction sendMsgWidgetCallback;
   List<Map<String, String>> evidenceList;
+  List<dynamic> symptomsList = [];
   var baseIfmdURL;
 
   ChatManager._internal() {
@@ -52,6 +54,10 @@ class ChatManager {
                 "source": "initial"
               })
           .toList();
+      symptomsList= mentions
+          .map((mention) => 
+                mention["common_name"].toString(),
+              ).toList();
       final questionResponse = await http.post(
         Uri.https(baseIfmdURL, '/v3/diagnosis'),
         headers: <String, String>{
@@ -91,6 +97,10 @@ class ChatManager {
 
   void getOntologyFromOption(Option option) async {
     evidenceList.add({"id": option.id, "choice_id": "present"});
+    print(option.name);
+    print(evidenceList);
+    symptomsList.add(option.name);
+    print(symptomsList);
     final response = await http.post(
       Uri.https(baseIfmdURL, '/v3/diagnosis'),
       headers: <String, String>{
@@ -119,6 +129,7 @@ class ChatManager {
             name: "Dr Virtual",
             type: false);
         sendMsgWidgetCallback(diagnoseMsg);
+        createDiagnosis(symptomsList, conditionDiagnosed);
         return;
       }
       ChatMessage questionMsg = ChatMessage(

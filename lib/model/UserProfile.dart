@@ -13,20 +13,28 @@ class UserProfile {
   final String username;
   final String gender;
   final String birthday;
-  final String heightString;
-  final String weightString;
+  final String height;
+  final String weight;
   final String ethnicity;
   final String bloodType;
+  final List<dynamic> allergies;
+  final List<dynamic> existingMedCond;
+  final List<dynamic> personalMedHist;
+  final List<dynamic> famMedHist;
 
   UserProfile(
       {this.name,
       this.username,
       this.gender,
       this.birthday,
-      this.heightString,
-      this.weightString,
+      this.height,
+      this.weight,
       this.ethnicity,
-      this.bloodType});
+      this.bloodType,
+      this.allergies,
+      this.existingMedCond,
+      this.personalMedHist,
+      this.famMedHist});
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
@@ -34,10 +42,14 @@ class UserProfile {
       username: json['username'],
       gender: json['gender'],
       birthday: json['birthday'],
-      heightString: json['heightString'],
-      weightString: json['weightString'],
+      height: json['height'],
+      weight: json['weight'],
       ethnicity: json['ethnicity'],
       bloodType: json['bloodType'],
+      allergies: json['allergies'],
+      existingMedCond: json['existingMedCond'],
+      personalMedHist: json['personalMedHist'],
+      famMedHist: json['famMedHist'],
     );
   }
 }
