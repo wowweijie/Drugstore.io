@@ -251,6 +251,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                     alignment: Alignment.topLeft,
                     width: 370,
+                    padding: const EdgeInsets.only(bottom: 10.0),
                     child: _listView("View your daily health tip", _healthTips,
                         "bulb_icon")),
               ],

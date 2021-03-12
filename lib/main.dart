@@ -1,3 +1,4 @@
+import 'package:drugstore_io/view/CombinedRecordsPage.dart';
 import 'package:drugstore_io/view/HomePage.dart';
 import 'package:drugstore_io/view/PrescriptionsPage.dart';
 import 'package:drugstore_io/view/RecordsPage.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
-              debugShowCheckedModeBanner: false, home: HomePage());
+              debugShowCheckedModeBanner: false, home: AppEntryPage());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
@@ -62,7 +63,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   final List<Widget> _screens = [
     HomePage(),
     ChatPage(key: GlobalKey()),
-    RecordsPage(),
+    CombinedRecordsPage(),
     NewProfilePage(),
   ];
 
