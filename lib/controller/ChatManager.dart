@@ -54,10 +54,11 @@ class ChatManager {
                 "source": "initial"
               })
           .toList();
-      symptomsList= mentions
-          .map((mention) => 
-                mention["common_name"].toString(),
-              ).toList();
+      symptomsList = mentions
+          .map(
+            (mention) => mention["common_name"].toString(),
+          )
+          .toList();
       final questionResponse = await http.post(
         Uri.https(baseIfmdURL, '/v3/diagnosis'),
         headers: <String, String>{
@@ -99,7 +100,9 @@ class ChatManager {
     evidenceList.add({"id": option.id, "choice_id": "present"});
     print(option.name);
     print(evidenceList);
-    symptomsList.add(option.name);
+    if ((option.name != 'None of the above') & (option.name != 'No')) {
+      symptomsList.add(option.name);
+    }
     print(symptomsList);
     final response = await http.post(
       Uri.https(baseIfmdURL, '/v3/diagnosis'),

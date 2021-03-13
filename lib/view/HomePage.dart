@@ -1,10 +1,14 @@
 import 'dart:math';
 
+import 'package:drugstore_io/controller/DiagnosisManager.dart';
+import 'package:drugstore_io/controller/PrescriptionManager.dart';
+import 'package:drugstore_io/model/Prescription.dart';
 import 'package:list_expandable/list_expandable_widget.dart';
 import 'package:drugstore_io/view/eventsPage/EditProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable_group/expandable_group_widget.dart';
 import 'package:drugstore_io/model/Diagnosis.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -36,11 +40,35 @@ class _HomePageState extends State<HomePage> {
     "Received a prescription for 2021-03-08: Asthma exacerbation"
   ];
 
-  List<ListTile> _buildItems(BuildContext context, List<String> items) => items
+  List<ListTile> _buildItems(BuildContext context, List<dynamic> items) => items
       .map((e) => ListTile(
             title: Text(e),
           ))
       .toList();
+
+  List<ListTile> _buildItemsPrescription(
+          BuildContext context, List<dynamic> items) =>
+      items
+          .map((e) => ListTile(
+                title:
+                    Text(e['name'] + ' ' + e['dosage'] + ' ' + e['frequency']),
+              ))
+          .toList();
+
+  static FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<List<Diagnosis>> futureDiagnosis;
+  List<Diagnosis> userDiagnoses;
+
+  Future<List<Prescription>> futurePrescription;
+  List<Prescription> userPrescriptions;
+
+  @override
+  void initState() {
+    super.initState();
+    futureDiagnosis = fetchDiagnosis(auth.currentUser.uid.toString());
+    futurePrescription = fetchPrescription(auth.currentUser.uid.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -335,119 +363,146 @@ class _HomePageState extends State<HomePage> {
     ];
 
     return new Dialog(
-      backgroundColor: Colors.white,
-      elevation: 10,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Text(
-                "Latest Record",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Text(
-              "Last Diagnosis:  ",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            ListView(
-              padding: const EdgeInsets.only(
-                  top: 10.0, left: 10.0, right: 10.0, bottom: 10.0),
-              shrinkWrap: true,
-              physics: ScrollPhysics(),
-              children: latestDiagnosis.map((group) {
-                int index = latestDiagnosis.indexOf(group);
-                return ListExpandableWidget(
-                  isExpanded: true,
-                  header: Row(
-                    children: <Widget>[
-                      latestDiagnosis[index][3]
-                          ? Image(
-                              image: new AssetImage("images/approve_icon.png"),
-                              width: 30,
-                              height: 30)
-                          : Container(),
-                      Expanded(
-                          child: Container(
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                        height: 48,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color(0xfff2f6fc),
+        backgroundColor: Colors.white,
+        elevation: 10,
+        child: Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Container(
+              height: MediaQuery.of(context).size.height / 1.5,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.only(bottom: 20.0, top: 5.0),
+                      child: Text(
+                        "Latest Record",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
-                        child: Text(
-                          latestDiagnosis[index][1] +
-                              ": " +
-                              latestDiagnosis[index][0],
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      )),
-                    ],
-                  ),
-                  items: _buildItems(context, group[5]),
-                );
-              }).toList(),
-            ),
-            Divider(
-              color: Color(0xfff2f6fc),
-              thickness: 3,
-            ),
-            Text(
-              "Last Prescription:  ",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            ListView(
-              padding: const EdgeInsets.only(
-                  top: 10.0, left: 10.0, right: 10.0, bottom: 10.0),
-              shrinkWrap: true,
-              physics: ScrollPhysics(),
-              children: latestPrescription.map((group) {
-                int index = latestPrescription.indexOf(group);
-                return ListExpandableWidget(
-                  isExpanded: true,
-                  header: Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    height: 48,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color(0xfff2f6fc),
-                    ),
-                    child: Text(
-                      latestPrescription[index][1] +
-                          " by Dr. " +
-                          latestPrescription[index][2],
-                      style: TextStyle(
-                        fontSize: 16,
                       ),
                     ),
-                  ),
-                  items: _buildItems(context, group[0]),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
-      ),
-    );
+                    Text(
+                      "Last Diagnosis:  ",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    FutureBuilder<List<Diagnosis>>(
+                      future: futureDiagnosis,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          userDiagnoses = snapshot.data;
+
+                          return Container(
+                              child: ListExpandableWidget(
+                            isExpanded: false,
+                            header: Row(
+                              children: <Widget>[
+                                userDiagnoses[0].approved
+                                    ? Container(
+                                        padding:
+                                            const EdgeInsets.only(right: 10.0),
+                                        child: Image(
+                                            image: new AssetImage(
+                                                "images/approve.png"),
+                                            width: 30,
+                                            height: 30))
+                                    : Container(),
+                                Expanded(
+                                    child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, right: 10.0),
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Color(0xfff2f6fc),
+                                  ),
+                                  child: Text(
+                                    userDiagnoses[0].date +
+                                        ": " +
+                                        userDiagnoses[0].condition,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                )),
+                              ],
+                            ),
+                            items:
+                                _buildItems(context, userDiagnoses[0].symptoms),
+                          ));
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        }
+                        // By default, show a loading spinner.
+                        return Align(
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator());
+                      },
+                    ),
+                    Divider(
+                      color: Color(0xfff2f6fc),
+                      thickness: 3,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Text(
+                          "Last Prescription:  ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
+                    FutureBuilder<List<Prescription>>(
+                      future: futurePrescription,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          userPrescriptions = snapshot.data;
+                          return Container(
+                              child: ListExpandableWidget(
+                            isExpanded: true,
+                            header: Container(
+                              alignment: Alignment.centerLeft,
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, right: 10.0),
+                              height: 48,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Color(0xfff2f6fc),
+                              ),
+                              child: Text(
+                                userPrescriptions[0].date +
+                                    " by Dr. " +
+                                    userPrescriptions[0].doctor,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            items: _buildItemsPrescription(
+                                context, userPrescriptions[0].drug),
+                          ));
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        }
+                        // By default, show a loading spinner.
+                        return Align(
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator());
+                      },
+                    )
+                  ],
+                ),
+              ),
+            )));
   }
 }

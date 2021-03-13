@@ -15,10 +15,20 @@ import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
 import 'package:drugstore_io/view/ChatPage.dart';
 import 'package:drugstore_io/view/MainChatPage.dart';
 
+import 'package:drugstore_io/controller/PushNotificationManager.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Firebase.initializeApp();
+
+  final PushNotificationsManager notif = PushNotificationsManager();
+  Future handleStartUpLogic() async {
+    await notif.init();
+  }
+  handleStartUpLogic();
   runApp(MyApp());
+
+
 }
 
 class MyApp extends StatelessWidget {
