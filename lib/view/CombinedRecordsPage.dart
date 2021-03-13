@@ -1,3 +1,5 @@
+import 'package:drugstore_io/controller/PrescriptionManager.dart';
+import 'package:drugstore_io/model/Prescription.dart';
 import 'package:flutter/material.dart';
 import 'package:list_expandable/list_expandable_widget.dart';
 import 'package:drugstore_io/controller/DiagnosisManager.dart';
@@ -10,17 +12,20 @@ class CombinedRecordsPage extends StatefulWidget {
 }
 
 class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
-
   final _formKey = GlobalKey<FormState>();
   static FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<List<Diagnosis>> futureDiagnosis;
   List<Diagnosis> userDiagnoses;
 
+  Future<List<Prescription>> futurePrescription;
+  List<Prescription> userPrescriptions;
+
   @override
   void initState() {
     super.initState();
     futureDiagnosis = fetchDiagnosis(auth.currentUser.uid.toString());
+    futurePrescription = fetchPrescription(auth.currentUser.uid.toString());
   }
 
   String specialReq;
@@ -47,29 +52,34 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
           ))
       .toList();
 
+  List<ListTile> _buildItemsPrescription(
+          BuildContext context, List<dynamic> items) =>
+      items
+          .map((e) => ListTile(
+                title:
+                    Text(e['name'] + ' ' + e['dosage'] + ' ' + e['frequency']),
+              ))
+          .toList();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Image(
-            image: new AssetImage("images/drugstore.io_text.png"), 
+            image: new AssetImage("images/drugstore.io_text.png"),
             fit: BoxFit.fitHeight,
             height: 35,
           ),
           backgroundColor: Color(0xffe2eeff),
           leading: Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.arrow_back,
-                  size: 26.0,
-                  color: Colors.black,
-                ),
-              )),
+            padding: EdgeInsets.only(left: 10.0),
+            child: ClipOval(
+              child: Image(
+                image: new AssetImage("images/drugstore.io_icon.png"),
+              ),
+            ),
+          ),
         ),
         body: FutureBuilder<List<Diagnosis>>(
           future: futureDiagnosis,
@@ -103,11 +113,13 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
                         header: Row(
                           children: <Widget>[
                             userDiagnoses[index].approved
-                                ? Image(
-                                    image: new AssetImage(
-                                        "images/approve_icon.png"),
-                                    width: 30,
-                                    height: 30)
+                                ? Container(
+                                    padding: const EdgeInsets.only(right: 10.0),
+                                    child: Image(
+                                        image: new AssetImage(
+                                            "images/approve.png"),
+                                        width: 30,
+                                        height: 30))
                                 : Container(),
                             Expanded(
                                 child: Container(
@@ -154,13 +166,13 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
                   ),
                   Container(
                     padding: const EdgeInsets.only(top: 10.0, right: 10.0),
-                    alignment: Alignment.topRight,
+                    alignment: Alignment.center,
                     child: ElevatedButton(
                       onPressed: () {
                         showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              _requestPrescriptionDialog());
+                            context: context,
+                            builder: (BuildContext context) =>
+                                _requestPrescriptionDialog());
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xff0f5d9a),
@@ -183,44 +195,66 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
                       ),
                     ),
                   ),
-                  ListView(
-                    padding: const EdgeInsets.only(
-                        top: 10.0, left: 10.0, right: 10.0, bottom: 50.0),
-                    shrinkWrap: true,
-                    children: _prescriptionInfo.map((group) {
-                      int index = _prescriptionInfo.indexOf(group);
-                      return ListExpandableWidget(
-                        isExpanded: false,
-                        header: Container(
-                          alignment: Alignment.centerLeft,
-                          padding:
-                              const EdgeInsets.only(left: 10.0, right: 10.0),
-                          height: 48,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Color(0xfff2f6fc),
+                  FutureBuilder<List<Prescription>>(
+                    future: futurePrescription,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        userPrescriptions = snapshot.data;
+                        return Container(
+                          child: ListView(
+                            padding: const EdgeInsets.only(
+                                top: 10.0,
+                                left: 10.0,
+                                right: 10.0,
+                                bottom: 50.0),
+                            shrinkWrap: true,
+                            children: userPrescriptions.map((group) {
+                              int index = userPrescriptions.indexOf(group);
+                              return ListExpandableWidget(
+                                isExpanded: false,
+                                header: Container(
+                                  alignment: Alignment.centerLeft,
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, right: 10.0),
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Color(0xfff2f6fc),
+                                  ),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                          userPrescriptions[index].date,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Dr " +
+                                              userPrescriptions[index].doctor,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ]),
+                                ),
+                                items: _buildItemsPrescription(
+                                    context, group.drug),
+                              );
+                            }).toList(),
                           ),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  _prescriptionDetails[index][0],
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  "Dr " + _prescriptionDetails[index][1],
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ]),
-                        ),
-                        items: _buildItems(context, group),
-                      );
-                    }).toList(),
-                  ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      // By default, show a loading spinner.
+                      return Align(
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator());
+                    },
+                  )
                 ]),
               );
             } else if (snapshot.hasError) {
@@ -234,7 +268,7 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
         ));
   }
 
-  Widget _requestPrescriptionDialog(){
+  Widget _requestPrescriptionDialog() {
     return new Dialog(
       backgroundColor: Colors.white,
       elevation: 10,
@@ -293,7 +327,8 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
                           dropdownItems: userDiagnoses, callback: setDiagnosis),
                     ),
                     Container(
-                      padding: const EdgeInsets.only(top: 10.0, left: 20.0, bottom: 5.0),
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 20.0, bottom: 5.0),
                       alignment: Alignment.topLeft,
                       child: Text(
                         "Special Requests (if any): ",
@@ -305,7 +340,8 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5.0, vertical: 5.0),
                       height: 150,
                       width: 275,
                       child: TextFormField(
@@ -316,7 +352,8 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: "Enter any special requests.",
-                          contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 15.0),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 5.0, vertical: 15.0),
                         ),
                         onChanged: (value) {
                           specialReq = value;

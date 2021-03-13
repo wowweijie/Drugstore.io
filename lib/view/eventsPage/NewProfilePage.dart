@@ -1,7 +1,9 @@
 // import 'dart:html';
 
 import 'package:drugstore_io/main.dart';
+import 'package:drugstore_io/view/eventsPage/AppEntryPage.dart';
 import 'package:drugstore_io/view/eventsPage/EditProfilePage.dart';
+import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 import 'package:expandable_group/expandable_group_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:drugstore_io/controller/AccountManager.dart';
@@ -61,11 +63,20 @@ class _NewProfilePageState extends State<NewProfilePage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title:
-              Image.asset('images/doctor_virtual_text.png', fit: BoxFit.cover),
+          title: Image(
+            image: new AssetImage("images/drugstore.io_text.png"),
+            fit: BoxFit.fitHeight,
+            height: 35,
+          ),
           backgroundColor: Color(0xffe2eeff),
-          leading:
-              Image(image: new AssetImage("images/doctor_virtual_icon.png")),
+          leading: Padding(
+            padding: EdgeInsets.only(left: 10.0),
+            child: ClipOval(
+              child: Image(
+                image: new AssetImage("images/drugstore.io_icon.png"),
+              ),
+            ),
+          ),
           actions: [
             Padding(
                 padding: EdgeInsets.only(right: 20.0),
@@ -86,8 +97,8 @@ class _NewProfilePageState extends State<NewProfilePage> {
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () {
-                    //Navigator.push(
-                    //  context, MaterialPageRoute(builder: (_) => EditProfilePage()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => AppEntryPage()));
                   },
                   child: Icon(
                     Icons.logout,
