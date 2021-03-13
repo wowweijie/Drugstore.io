@@ -52,12 +52,22 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(
-          '',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      appBar: AppBar(
+          title: Image(
+            image: new AssetImage("images/drugstore.io_text.png"), 
+            fit: BoxFit.fitHeight,
+            height: 35,
+          ),
+          backgroundColor: Color(0xffe2eeff),
+          leading: Padding(
+            padding: EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
+            child: ClipOval(
+              child: Image(
+                image: new AssetImage("images/drugstore.io_icon.png"), 
+              ),
+            ),
+          ),
         ),
-      ),
       body: new Column(children: <Widget>[
         new Flexible(
           child: _buildChatBody(),
@@ -109,8 +119,6 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildChatBody() {
     return new Container(
-      height: 498,
-      width: 400,
       child: new ListView.builder(
         padding: new EdgeInsets.all(8.0),
         reverse: true,
@@ -124,7 +132,7 @@ class _ChatPageState extends State<ChatPage> {
             colorFilter: new ColorFilter.mode(
                 Colors.white.withOpacity(0.3), BlendMode.dstATop),
             fit: BoxFit.fitWidth,
-            alignment: Alignment.topCenter),
+            alignment: Alignment.center),
       ),
     );
   }
@@ -148,6 +156,7 @@ class _ChatPageState extends State<ChatPage> {
               margin: new EdgeInsets.symmetric(horizontal: 4.0),
               child: new IconButton(
                   icon: new Icon(Icons.send),
+                  color: Color(0xffb5cbec),
                   onPressed: () => _handleSubmitted(_textController.text)),
             ),
           ],
@@ -167,11 +176,14 @@ class ChatMessage extends StatelessWidget {
   List<Widget> otherMessage(context) {
     return <Widget>[
       new Container(
-        margin: const EdgeInsets.only(right: 16.0),
+        margin: const EdgeInsets.only(right: 10.0),
         child: new CircleAvatar(
+          child: Image(
+            image: new AssetImage("images/chat_doctor_icon.png"),
+            fit: BoxFit.fitHeight,
+            alignment: Alignment.center,
+          ),
           radius: 30.0,
-          backgroundImage: NetworkImage(
-              'https://thumbs.dreamstime.com/b/smiling-woman-vector-illustration-young-happy-student-happy-girl-adult-beauty-person-healthy-71801962.jpg'),
           backgroundColor: Colors.transparent,
         ),
       ),
