@@ -1,4 +1,5 @@
 import 'package:drugstore_io/controller/PrescriptionManager.dart';
+import 'package:drugstore_io/main.dart';
 import 'package:drugstore_io/model/Prescription.dart';
 import 'package:flutter/material.dart';
 import 'package:list_expandable/list_expandable_widget.dart';
@@ -231,17 +232,22 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
                                             fontSize: 16,
                                           ),
                                         ),
-                                        Text(
-                                          "Dr " +
-                                              userPrescriptions[index].doctor,
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                        ),
+                                        userPrescriptions[index].complete
+                                            ? Text(
+                                                "Dr " +
+                                                    userPrescriptions[index]
+                                                        .doctor,
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              )
+                                            : Text("-"),
                                       ]),
                                 ),
-                                items: _buildItemsPrescription(
-                                    context, group.drug),
+                                items: userPrescriptions[index].complete
+                                    ? _buildItemsPrescription(
+                                        context, group.drug)
+                                    : _buildItems(context, ["Pending"]),
                               );
                             }).toList(),
                           ),
@@ -365,7 +371,14 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         onPressed: () {
-                          print("Submit prescription request");
+                          createPrescription(selectedDiagnosis);
+                          Future.delayed(Duration(milliseconds: 500), () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyBottomNavigationBar(
+                                        key: GlobalKey(), selectedIndex: 2)));
+                          });
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Color(0xff0f5d9a),
@@ -447,7 +460,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
           },
           items: dropdownItems.map((value) {
             return DropdownMenuItem<String>(
-              value: value.date + ": " + value.condition,
+              value: value.id,
               child: Text(value.date + ": " + value.condition),
             );
           }).toList(),

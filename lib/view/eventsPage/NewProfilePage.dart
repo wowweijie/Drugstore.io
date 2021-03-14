@@ -26,7 +26,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
     futureProfile = fetchProfile(auth.currentUser.uid.toString());
   }
 
-  bool enableNotifications = false;
+  bool enableNotifications = true;
   String name = "Pablo Stanley";
   String username = "pablo_123456";
   String password = "********";
