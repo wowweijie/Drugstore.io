@@ -484,17 +484,26 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(5),
                                 color: Color(0xfff2f6fc),
                               ),
-                              child: Text(
-                                userPrescriptions[0].date +
-                                    " by Dr. " +
-                                    userPrescriptions[0].doctor,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
+                              child: userPrescriptions[0].complete
+                                  ? Text(
+                                      userPrescriptions[0].date +
+                                          " by Dr. " +
+                                          userPrescriptions[0].doctor,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    )
+                                  : Text(
+                                      userPrescriptions[0].date,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
                             ),
-                            items: _buildItemsPrescription(
-                                context, userPrescriptions[0].drug),
+                            items: userPrescriptions[0].complete
+                                ? _buildItemsPrescription(
+                                    context, userPrescriptions[0].drug)
+                                : _buildItems(context, ["Pending"]),
                           ));
                         } else if (snapshot.hasError) {
                           return Text("${snapshot.error}");
