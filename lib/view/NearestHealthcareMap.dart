@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:drugstore_io/controller/PlacesManager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -79,6 +80,7 @@ class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
               zoom: 16,
             ),
             markers: Set<Marker>.of(placesManager.markers),
+            // polylines: Set<Polyline>.of(placesManager.polylines.values),
           ),
           // Show zoom buttons
           SafeArea(
