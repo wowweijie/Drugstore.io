@@ -32,9 +32,11 @@ class PlacesManager {
   String keyword;
 
   Uint8List healthcareIcon;
+  Uint8List currentLocationIcon;
 
   void setCustomMapPin() async {
     healthcareIcon = await getBytesFromAsset('images/healthcare.png', 150);
+    currentLocationIcon = await getBytesFromAsset('images/location.png', 150);
   }
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
@@ -72,6 +74,15 @@ class PlacesManager {
       error = Error.fromJson(data);
       // success
     } else if (data['status'] == "OK") {
+      markers.add(
+        Marker(
+          markerId: MarkerId("ChIJyWMKn2kX2jERN5VPP5gkvzQ"),
+          position: LatLng(1.3393865, 103.8476442),
+          infoWindow: InfoWindow(title: "Current Location"),
+          onTap: () {},
+          icon: BitmapDescriptor.fromBytes(currentLocationIcon),
+        ),
+      );
       places = PlaceResponse.parseResults(data['results']);
       for (int i = 0; i < places.length; i++) {
         markers.add(

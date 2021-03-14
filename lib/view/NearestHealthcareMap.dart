@@ -12,8 +12,8 @@ class NearestHealthcareMap extends StatefulWidget {
 class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
   PlacesManager placesManager = PlacesManager();
   Position _currentPosition;
-  double lat = 1.335850;
-  double long = 103.856420;
+  double lat = 1.3393865;
+  double long = 103.8476442;
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
   _getCurrentLocation() {
@@ -35,7 +35,7 @@ class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
     placesManager.searchNearby(lat, long);
   }
 
-  static const LatLng _center = const LatLng(1.335850, 103.856420);
+  static const LatLng _center = const LatLng(1.3393865, 103.8476442);
 
   GoogleMapController mapController;
 
@@ -65,10 +65,10 @@ class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
         body: Stack(children: <Widget>[
           GoogleMap(
             onMapCreated: (GoogleMapController controller) {
-                mapController = controller;
+              mapController = controller;
             },
             myLocationButtonEnabled: false,
-            myLocationEnabled: true,
+            myLocationEnabled: false,
             zoomGesturesEnabled: true,
             zoomControlsEnabled: false,
             initialCameraPosition: CameraPosition(
@@ -81,53 +81,53 @@ class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
             markers: Set<Marker>.of(placesManager.markers),
           ),
           // Show zoom buttons
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    ClipOval(
-                      child: Material(
-                        color: Colors.blue[100], // button color
-                        child: InkWell(
-                          splashColor: Colors.blue, // inkwell color
-                          child: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Icon(Icons.add),
-                          ),
-                          onTap: () {
-                            mapController.animateCamera(
-                              CameraUpdate.zoomIn(),
-                            );
-                          },
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  ClipOval(
+                    child: Material(
+                      color: Colors.blue[100], // button color
+                      child: InkWell(
+                        splashColor: Colors.blue, // inkwell color
+                        child: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Icon(Icons.add),
                         ),
+                        onTap: () {
+                          mapController.animateCamera(
+                            CameraUpdate.zoomIn(),
+                          );
+                        },
                       ),
                     ),
-                    SizedBox(height: 20),
-                    ClipOval(
-                      child: Material(
-                        color: Colors.blue[100], // button color
-                        child: InkWell(
-                          splashColor: Colors.blue, // inkwell color
-                          child: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Icon(Icons.remove),
-                          ),
-                          onTap: () {
-                            mapController.animateCamera(
-                              CameraUpdate.zoomOut(),
-                            );
-                          },
+                  ),
+                  SizedBox(height: 20),
+                  ClipOval(
+                    child: Material(
+                      color: Colors.blue[100], // button color
+                      child: InkWell(
+                        splashColor: Colors.blue, // inkwell color
+                        child: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Icon(Icons.remove),
                         ),
+                        onTap: () {
+                          mapController.animateCamera(
+                            CameraUpdate.zoomOut(),
+                          );
+                        },
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
             ),
+          ),
           // Show current location button
           SafeArea(
             child: Align(
