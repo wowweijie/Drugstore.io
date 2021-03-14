@@ -40,7 +40,8 @@ Future<http.Response> createDiagnosis(symptomsList, conditionDiagnosed) async {
       'condition': conditionDiagnosed["common_name"],
       'probability': conditionDiagnosed["probability"],
       'date': "${DateTime.now().toLocal()}".split(' ')[0],
-      'approved': false
+      'approved': false,
+      'id': uuid.v1(),
     }),
   );
 
