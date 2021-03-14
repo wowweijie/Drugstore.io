@@ -203,6 +203,7 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
                         userPrescriptions = snapshot.data;
                         return Container(
                           child: ListView(
+                            physics: ScrollPhysics(),
                             padding: const EdgeInsets.only(
                                 top: 10.0,
                                 left: 10.0,
