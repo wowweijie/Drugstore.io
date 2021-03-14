@@ -70,7 +70,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
           ),
           backgroundColor: Color(0xffe2eeff),
           leading: Padding(
-            padding: EdgeInsets.only(left: 10.0),
+            padding: EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
             child: ClipOval(
               child: Image(
                 image: new AssetImage("images/drugstore.io_icon.png"),
