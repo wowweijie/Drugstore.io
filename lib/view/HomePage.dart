@@ -3,12 +3,14 @@ import 'dart:math';
 import 'package:drugstore_io/controller/DiagnosisManager.dart';
 import 'package:drugstore_io/controller/PrescriptionManager.dart';
 import 'package:drugstore_io/model/Prescription.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:list_expandable/list_expandable_widget.dart';
 import 'package:drugstore_io/view/eventsPage/EditProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable_group/expandable_group_widget.dart';
 import 'package:drugstore_io/model/Diagnosis.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drugstore_io/view/NearestHealthcareMap.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -129,8 +131,11 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ElevatedButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context, MaterialPageRoute(builder: (_) => MyBottomNavigationBar()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            NearestHealthcareMap()));
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Color(0xffe6f0fa),
@@ -147,7 +152,7 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             padding: const EdgeInsets.only(top: 5.0),
                             child: Text(
-                              "Find Hospital",
+                              "Find Drugstore",
                               softWrap: true,
                             ),
                           ),

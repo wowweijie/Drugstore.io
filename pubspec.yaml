@@ -48,6 +48,8 @@ dependencies:
   convert: ^2.1.1
   flutter_chips_input: ^1.9.5
   recase: ^3.0.1
+  google_maps_flutter: ^0.5.11+1
+  geolocator: ^5.3.1
 
   
 dev_dependencies:

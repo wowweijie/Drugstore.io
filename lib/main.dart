@@ -25,10 +25,9 @@ void main() async {
   Future handleStartUpLogic() async {
     await notif.init();
   }
+
   handleStartUpLogic();
   runApp(MyApp());
-
-
 }
 
 class MyApp extends StatelessWidget {
