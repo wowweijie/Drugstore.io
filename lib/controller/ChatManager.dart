@@ -1,3 +1,4 @@
+import 'package:drugstore_io/view/chat/Diagnosis.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:drugstore_io/view/chat/ChatPage.dart';
@@ -132,14 +133,12 @@ class ChatManager {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       if (responseBody["should_stop"]) {
         var conditionDiagnosed = responseBody["conditions"][0];
-        ChatMessage diagnoseMsg = ChatMessage(
-            text: "There is a " +
-                conditionDiagnosed["probability"].toString() +
-                "% chance that you have " +
-                ReCase(conditionDiagnosed["common_name"].toString())
-                    .sentenceCase,
-            name: "Dr Virtual",
-            type: false);
+        DiagnosisResult diagnoseMsg = DiagnosisResult(
+            condition:
+                ReCase(conditionDiagnosed["common_name"].toString()).titleCase,
+            chance:
+                (conditionDiagnosed["probability"] * 100).round().toString(),
+            name: "Dr Virtual");
         sendMsgWidgetCallback(diagnoseMsg);
         createDiagnosis(symptomsList, conditionDiagnosed);
         return;
