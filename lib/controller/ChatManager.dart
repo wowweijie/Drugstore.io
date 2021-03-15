@@ -1,6 +1,7 @@
+import 'package:drugstore_io/view/chat/Diagnosis.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:drugstore_io/view/ChatPage.dart';
+import 'package:drugstore_io/view/chat/ChatPage.dart';
 import 'dart:convert';
 import 'package:recase/recase.dart';
 import 'package:drugstore_io/controller/DiagnosisManager.dart';
@@ -85,7 +86,15 @@ class ChatManager {
             .map<Option>(((item) {
           return Option(id: item["id"], name: item["name"]);
         })).toList();
-        sendMsgWidgetCallback(ChatOption(GlobalKey(), options));
+        if (options.length == 1) {
+          List<Option> yesNoList = new List<Option>(2);
+          yesNoList[0] = new Option(id: options[0].id, name: "Yes");
+          yesNoList[1] = new Option(id: options[0].id, name: "No");
+          yesNoList[1].present = false;
+          sendMsgWidgetCallback(ChatOption(GlobalKey(), yesNoList));
+        } else {
+          sendMsgWidgetCallback(ChatOption(GlobalKey(), options));
+        }
       }
     } else {
       // If the server did not return a 201 CREATED response,
@@ -97,9 +106,10 @@ class ChatManager {
   }
 
   void getOntologyFromOption(Option option) async {
-    evidenceList.add({"id": option.id, "choice_id": "present"});
+    String presentOrAbsent = option.present ? "present" : "absent";
+    evidenceList.add({"id": option.id, "choice_id": presentOrAbsent});
     print(option.name);
-    print(evidenceList);
+    print("evidenceList : $evidenceList");
     if ((option.name != 'None of the above') & (option.name != 'No')) {
       symptomsList.add(option.name);
     }
@@ -123,14 +133,12 @@ class ChatManager {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       if (responseBody["should_stop"]) {
         var conditionDiagnosed = responseBody["conditions"][0];
-        ChatMessage diagnoseMsg = ChatMessage(
-            text: "There is a " +
-                conditionDiagnosed["probability"].toString() +
-                "% chance that you have " +
-                ReCase(conditionDiagnosed["common_name"].toString())
-                    .sentenceCase,
-            name: "Dr Virtual",
-            type: false);
+        DiagnosisResult diagnoseMsg = DiagnosisResult(
+            condition:
+                ReCase(conditionDiagnosed["common_name"].toString()).titleCase,
+            chance:
+                (conditionDiagnosed["probability"] * 100).round().toString(),
+            name: "Dr Virtual");
         sendMsgWidgetCallback(diagnoseMsg);
         createDiagnosis(symptomsList, conditionDiagnosed);
         return;
@@ -144,7 +152,15 @@ class ChatManager {
           responseBody["question"]["items"].map<Option>(((item) {
         return Option(id: item["id"], name: item["name"]);
       })).toList();
-      sendMsgWidgetCallback(ChatOption(GlobalKey(), options));
+      if (options.length == 1) {
+        List<Option> yesNoList = new List<Option>(2);
+        yesNoList[0] = new Option(id: options[0].id, name: "Yes");
+        yesNoList[1] = new Option(id: options[0].id, name: "No");
+        yesNoList[1].present = false;
+        sendMsgWidgetCallback(ChatOption(GlobalKey(), yesNoList));
+      } else {
+        sendMsgWidgetCallback(ChatOption(GlobalKey(), options));
+      }
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
@@ -153,11 +169,16 @@ class ChatManager {
           response.statusCode.toString() + 'Failed to connect to Infermedica');
     }
   }
+
+  void sendUserMessage(String text) {
+    sendMsgWidgetCallback(ChatMessage(name: "Me", text: text, type: true));
+  }
 }
 
 class Option {
   String id;
   String name;
+  bool present = true;
 
   Option({this.id, this.name});
 }
