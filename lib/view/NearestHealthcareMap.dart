@@ -42,7 +42,7 @@ class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
     healthcareIcon = await getBytesFromAsset('images/healthcare.png', 150);
     currentLocationIcon = await getBytesFromAsset('images/location.png', 150);
     futureMarkers =
-        searchNearby(lat, long, healthcareIcon, currentLocationIcon);
+        searchNearby(lat, long, currentLocationIcon, healthcareIcon);
   }
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
