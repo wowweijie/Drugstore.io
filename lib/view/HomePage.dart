@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:drugstore_io/controller/DiagnosisManager.dart';
 import 'package:drugstore_io/controller/PrescriptionManager.dart';
+import 'package:drugstore_io/main.dart';
 import 'package:drugstore_io/model/Prescription.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:list_expandable/list_expandable_widget.dart';
@@ -42,11 +43,23 @@ class _HomePageState extends State<HomePage> {
     "Received a prescription for 2021-03-08: Asthma exacerbation"
   ];
 
-  List<ListTile> _buildItems(BuildContext context, List<dynamic> items) => items
-      .map((e) => ListTile(
-            title: Text(e),
-          ))
-      .toList();
+  List<ListTile> _buildItems(
+          BuildContext context, List<dynamic> items, bool records) =>
+      items
+          .map((e) => ListTile(
+                onTap: () {
+                  if (records) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => MyBottomNavigationBar(
+                                key: GlobalKey(), selectedIndex: 2)));
+                  }
+                },
+                title: Text(e),
+                tileColor: records ? Colors.transparent : Colors.white,
+              ))
+          .toList();
 
   List<ListTile> _buildItemsPrescription(
           BuildContext context, List<dynamic> items) =>
@@ -297,6 +310,7 @@ class _HomePageState extends State<HomePage> {
     List<String> _tip = [_healthTips[Random().nextInt(10)]];
     int boxColor = 0xfff2f6fc;
     bool expand = false;
+    bool records = false;
     if (title == "View your daily health tip") {
       info = _tip;
     } else if (title == "Reminders" ||
@@ -304,6 +318,9 @@ class _HomePageState extends State<HomePage> {
         title == "Diagnosis Approval") {
       boxColor = 0xffffc3bd;
       expand = true;
+      if (title != "Reminders") {
+        records = true;
+      }
     }
 
     return new ListView(
@@ -342,8 +359,10 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            items: _buildItems(context, info),
+            items: _buildItems(context, info, records),
             isExpanded: expand,
+            expandedIcon: null,
+            collapsedIcon: null,
           ),
         ]);
   }
@@ -441,8 +460,8 @@ class _HomePageState extends State<HomePage> {
                                 )),
                               ],
                             ),
-                            items:
-                                _buildItems(context, userDiagnoses[0].symptoms),
+                            items: _buildItems(
+                                context, userDiagnoses[0].symptoms, false),
                           ));
                         } else if (snapshot.hasError) {
                           return Text("${snapshot.error}");
@@ -503,7 +522,7 @@ class _HomePageState extends State<HomePage> {
                             items: userPrescriptions[0].complete
                                 ? _buildItemsPrescription(
                                     context, userPrescriptions[0].drug)
-                                : _buildItems(context, ["Pending"]),
+                                : _buildItems(context, ["Pending"], false),
                           ));
                         } else if (snapshot.hasError) {
                           return Text("${snapshot.error}");
