@@ -12,8 +12,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
 import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
-import 'package:drugstore_io/view/ChatPage.dart';
-import 'package:drugstore_io/view/MainChatPage.dart';
+import 'package:drugstore_io/view/chat/ChatPage.dart';
 
 import 'package:drugstore_io/controller/PushNotificationManager.dart';
 
