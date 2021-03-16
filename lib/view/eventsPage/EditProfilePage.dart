@@ -115,11 +115,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title:
-              Image.asset('images/doctor_virtual_text.png', fit: BoxFit.cover),
+          title: Image(
+            image: new AssetImage("images/drugstore.io_text.png"),
+            fit: BoxFit.fitHeight,
+            height: 35,
+          ),
           backgroundColor: Color(0xffe2eeff),
-          leading:
-              Image(image: new AssetImage("images/doctor_virtual_icon.png")),
+          leading: Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  size: 26.0,
+                  color: Colors.black,
+                ),
+              )),
           actions: [
             Padding(
                 padding: EdgeInsets.only(right: 20.0),
