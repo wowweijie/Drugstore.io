@@ -182,16 +182,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
             if (snapshot.hasData) {
               username = snapshot.data.username;
               name = snapshot.data.name;
-              gender = snapshot.data.gender;
-              birthday = snapshot.data.birthday;
-              ethnicity = snapshot.data.ethnicity;
-              height = snapshot.data.height;
-              weight = snapshot.data.weight;
-              bloodType = snapshot.data.bloodType;
               allergies = snapshot.data.allergies;
               existingMedCond = snapshot.data.existingMedCond;
               personalMedHist = snapshot.data.personalMedHist;
               famMedHist = snapshot.data.famMedHist;
+              gender = snapshot.data.gender;
+              if (snapshot.data.birthday == "") {
+                birthday = "2000-01-01";
+              } else {
+                birthday = snapshot.data.birthday;
+              }
+              ethnicity = snapshot.data.ethnicity;
+              height = snapshot.data.height;
+              weight = snapshot.data.weight;
+              bloodType = snapshot.data.bloodType;  
 
               return SingleChildScrollView(
                 child: Container(
@@ -604,10 +608,10 @@ class _DropDownMenuState extends State<DropDownMenu> {
           labelText: widget.title,
           border: OutlineInputBorder(),
         ),
-        isEmpty: dropdownValue == null,
+        isEmpty: dropdownValue == "",
         child: new DropdownButton<String>(
           underline: Container(color: Colors.transparent),
-          value: dropdownValue,
+          value: dropdownValue=="" ? null : dropdownValue,
           isDense: true,
           isExpanded: true,
           icon: Icon(
