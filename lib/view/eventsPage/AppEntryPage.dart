@@ -1,6 +1,7 @@
 import 'package:drugstore_io/main.dart';
 import 'package:flutter/material.dart';
 import 'package:drugstore_io/view/eventsPage/NewLoginPage.dart';
+import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
 
 class AppEntryPage extends StatefulWidget {
   @override
@@ -79,8 +80,8 @@ class _AppEntryPageState extends State<AppEntryPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     print("Pressed Sign up");
-                    //Navigator.push(
-                    //      context, MaterialPageRoute(builder: (_) => SignUpPage()));
+                    Navigator.push(
+                         context, MaterialPageRoute(builder: (_) => SignUpPage()));
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xff0f5d9a),
