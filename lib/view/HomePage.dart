@@ -386,6 +386,15 @@ class _HomePageState extends State<HomePage> {
       ]
     ];
 
+    String getDiagnosisName(int index) {
+      for (int i = 0; i < userDiagnoses.length; i++) {
+        if (userPrescriptions[index].diagnosis == userDiagnoses[i].id) {
+          return userDiagnoses[i].condition;
+        }
+      }
+      return "Diagnosis";
+    }
+
     return new Dialog(
         backgroundColor: Colors.white,
         elevation: 10,
@@ -477,7 +486,7 @@ class _HomePageState extends State<HomePage> {
                       thickness: 3,
                     ),
                     Container(
-                        padding: const EdgeInsets.only(top: 5.0),
+                        padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
                         child: Text(
                           "Last Prescription:  ",
                           style: TextStyle(
@@ -493,37 +502,63 @@ class _HomePageState extends State<HomePage> {
                           userPrescriptions = snapshot.data;
                           return Container(
                               child: ListExpandableWidget(
-                            isExpanded: true,
-                            header: Container(
-                              alignment: Alignment.centerLeft,
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, right: 10.0),
-                              height: 48,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Color(0xfff2f6fc),
-                              ),
-                              child: userPrescriptions[0].complete
-                                  ? Text(
-                                      userPrescriptions[0].date +
-                                          " by Dr. " +
-                                          userPrescriptions[0].doctor,
-                                      style: TextStyle(
-                                        fontSize: 16,
+                                  isExpanded: true,
+                                  items: userPrescriptions[0].complete
+                                      ? _buildItemsPrescription(
+                                          context, userPrescriptions[0].drug)
+                                      : _buildItems(
+                                          context, ["Pending"], false),
+                                  header: Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.only(
+                                          left: 10.0, right: 10.0),
+                                      // height: 65,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Color(0xfff2f6fc),
                                       ),
-                                    )
-                                  : Text(
-                                      userPrescriptions[0].date,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                            ),
-                            items: userPrescriptions[0].complete
-                                ? _buildItemsPrescription(
-                                    context, userPrescriptions[0].drug)
-                                : _buildItems(context, ["Pending"], false),
-                          ));
+                                      child: Column(children: <Widget>[
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          padding: const EdgeInsets.only(
+                                              top: 10.0, bottom: 5.0),
+                                          child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  userPrescriptions[0].date,
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                userPrescriptions[0].complete
+                                                    ? Text(
+                                                        "Dr " +
+                                                            userPrescriptions[0]
+                                                                .doctor,
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                        ),
+                                                      )
+                                                    : Text("-"),
+                                              ]),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          padding: const EdgeInsets.only(
+                                              bottom: 10.0),
+                                          child: Text(
+                                            getDiagnosisName(0),
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ]))));
                         } else if (snapshot.hasError) {
                           return Text("${snapshot.error}");
                         }

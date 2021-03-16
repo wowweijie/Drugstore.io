@@ -170,7 +170,7 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
                     alignment: Alignment.center,
                     child: ElevatedButton.icon(
                       icon: Image(
-                        image: new AssetImage("images/pills_icon.png"), 
+                        image: new AssetImage("images/pills_icon.png"),
                         color: Colors.white,
                         height: 20,
                       ),
@@ -229,41 +229,42 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
                                     color: Color(0xfff2f6fc),
                                   ),
                                   child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      padding: const EdgeInsets.only(
-                                        top: 10.0, bottom: 5.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Text(
-                                            userPrescriptions[index].date,
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          userPrescriptions[index].complete
-                                              ? Text(
-                                                  "Dr " +
-                                                      userPrescriptions[index]
-                                                          .doctor,
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                  ),
-                                                )
-                                              : Text("-"),
-                                        ]),
-                                      ),
+                                    children: <Widget>[
                                       Container(
                                         alignment: Alignment.centerLeft,
                                         padding: const EdgeInsets.only(
-                                          bottom: 10.0),
+                                            top: 10.0, bottom: 5.0),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                userPrescriptions[index].date,
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              userPrescriptions[index].complete
+                                                  ? Text(
+                                                      "Dr " +
+                                                          userPrescriptions[
+                                                                  index]
+                                                              .doctor,
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                      ),
+                                                    )
+                                                  : Text("-"),
+                                            ]),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10.0),
                                         child: Text(
                                           getDiagnosisName(index),
                                           style: TextStyle(
-                                              fontSize: 16,
+                                            fontSize: 16,
                                           ),
                                           softWrap: true,
                                           overflow: TextOverflow.ellipsis,
@@ -302,9 +303,9 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
         ));
   }
 
-  String getDiagnosisName(int index){
-    for (int i = 0; i< userDiagnoses.length; i++){
-      if (userPrescriptions[index].diagnosis == userDiagnoses[i].id){
+  String getDiagnosisName(int index) {
+    for (int i = 0; i < userDiagnoses.length; i++) {
+      if (userPrescriptions[index].diagnosis == userDiagnoses[i].id) {
         return userDiagnoses[i].condition;
       }
     }
