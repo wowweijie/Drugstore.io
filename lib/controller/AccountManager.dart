@@ -63,7 +63,7 @@ Future<http.Response> createProfile(String uid, username) async {
     }),
   );
 
-  if (response.statusCode == 201) {
+  if (response.statusCode == 200) {
     return response;
   } else {
     throw Exception('Failed to create profile.');
