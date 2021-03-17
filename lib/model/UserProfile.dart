@@ -21,6 +21,7 @@ class UserProfile {
   final List<dynamic> existingMedCond;
   final List<dynamic> personalMedHist;
   final List<dynamic> famMedHist;
+  final bool enableNotifications;
 
   UserProfile(
       {this.name,
@@ -34,7 +35,8 @@ class UserProfile {
       this.allergies,
       this.existingMedCond,
       this.personalMedHist,
-      this.famMedHist});
+      this.famMedHist,
+      this.enableNotifications});
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
@@ -50,6 +52,7 @@ class UserProfile {
       existingMedCond: json['existingMedCond'],
       personalMedHist: json['personalMedHist'],
       famMedHist: json['famMedHist'],
+      enableNotifications: json['enableNotifications'],
     );
   }
 }

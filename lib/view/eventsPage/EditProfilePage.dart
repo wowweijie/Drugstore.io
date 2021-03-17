@@ -58,6 +58,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
     this.birthday = birthday;
   }
 
+  setNotifs(bool enableNotifications) {
+    this.enableNotifications = enableNotifications;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +69,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   bool enableNotifications = false;
+  bool notifsInitTrue = true;
+  bool notifsInitFalse = false;
   String name = "Pablo Stanley";
   String username = "pablo_123456";
   String password = "********";
@@ -152,7 +158,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         allergies,
                         existingMedCond,
                         famMedHist,
-                        personalMedHist);
+                        personalMedHist,
+                        enableNotifications);
 
                     if (status.runtimeType == http.Response) {
                       print("user updated");
@@ -196,7 +203,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
               height = snapshot.data.height;
               weight = snapshot.data.weight;
               bloodType = snapshot.data.bloodType;  
-
+              if (snapshot.data.enableNotifications == null) {
+                enableNotifications = true;
+              } else {
+                enableNotifications = snapshot.data.enableNotifications;  
+              }
+              
               return SingleChildScrollView(
                 child: Container(
                   child: Column(
@@ -241,7 +253,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             top: 10.0, left: 20.0, right: 20.0),
                         child: _userInfoTextField("Password", password),
                       ),
-                      _notificationSwitch(),
+                      NotifSwitch(notifsValue: enableNotifications,
+                                  callback: setNotifs),
                       Container(
                         alignment: Alignment.topCenter,
                         padding: const EdgeInsets.only(top: 10.0),
@@ -440,7 +453,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               onChanged: (value) {
                 setState(() {
                   enableNotifications = value;
-                  print(enableNotifications);
                 });
               },
               activeTrackColor: Colors.blue.shade100,
@@ -631,6 +643,67 @@ class _DropDownMenuState extends State<DropDownMenu> {
               child: Text(value),
             );
           }).toList(),
+        ),
+      ),
+    );
+  }
+}
+
+typedef void BoolCallback(bool val);
+
+class NotifSwitch extends StatefulWidget {
+  final bool notifsValue;
+  final BoolCallback callback;
+  NotifSwitch(
+      {Key key,
+      @required this.notifsValue,
+      this.callback})
+      : super(key: key);
+  @override
+  _NotifSwitchState createState() =>
+      _NotifSwitchState(notifsValue, callback);
+}
+
+class _NotifSwitchState extends State<NotifSwitch> {
+  _NotifSwitchState(this.notifsValue, this.callback);
+  bool notifsValue;
+  BoolCallback callback;
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.only(
+          top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.white,
+        ),
+        //padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Notifications",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 17,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            Switch(
+              value: notifsValue,
+              onChanged: (value) {
+                setState(() {
+                  notifsValue = value;
+                  callback(value);
+                });
+              },
+              activeTrackColor: Colors.blue.shade100,
+              activeColor: Colors.lightBlue,
+            ),
+          ],
         ),
       ),
     );

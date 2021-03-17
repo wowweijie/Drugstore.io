@@ -124,8 +124,8 @@ class _NewProfilePageState extends State<NewProfilePage> {
               existingMedCond = snapshot.data.existingMedCond;
               personalMedHist = snapshot.data.personalMedHist;
               famMedHist = snapshot.data.famMedHist;
-              print(height);
-              print(username);
+              enableNotifications = snapshot.data.enableNotifications;
+
               return SingleChildScrollView(
                 child: Container(
                   child: Column(
