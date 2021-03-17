@@ -59,7 +59,8 @@ Future<http.Response> createProfile(String uid, username) async {
       'allergies': ["NIL"],
       'existingMedCond': ["NIL"],
       'famMedHist': ["NIL"],
-      'personalMedHist': ["NIL"]
+      'personalMedHist': ["NIL"],
+      'enableNotifications': true,
     }),
   );
 
@@ -83,7 +84,8 @@ Future<http.Response> updateProfile(
     List<dynamic> allergies,
     existingMedCond,
     famMedHist,
-    personalMedHist) async {
+    personalMedHist,
+    enableNotifications) async {
   final response = await http.put(
     Uri.http('10.0.2.2:8080', '/users/', {'uid': uid}),
     headers: <String, String>{
@@ -101,7 +103,8 @@ Future<http.Response> updateProfile(
       'allergies': allergies,
       'existingMedCond': existingMedCond,
       'famMedHist': famMedHist,
-      'personalMedHist': personalMedHist
+      'personalMedHist': personalMedHist,
+      'enableNotifications': enableNotifications
     }),
   );
   if (response.statusCode == 200) {
