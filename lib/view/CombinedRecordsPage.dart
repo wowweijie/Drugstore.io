@@ -1,6 +1,7 @@
 import 'package:drugstore_io/controller/PrescriptionManager.dart';
 import 'package:drugstore_io/main.dart';
 import 'package:drugstore_io/model/Prescription.dart';
+import 'package:drugstore_io/view/PrescriptionPDF.dart';
 import 'package:flutter/material.dart';
 import 'package:list_expandable/list_expandable_widget.dart';
 import 'package:drugstore_io/controller/DiagnosisManager.dart';
@@ -219,60 +220,97 @@ class _CombinedRecordsPageState extends State<CombinedRecordsPage> {
                               int index = userPrescriptions.indexOf(group);
                               return ListExpandableWidget(
                                 isExpanded: false,
-                                header: Container(
-                                  alignment: Alignment.centerLeft,
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, right: 10.0),
-                                  // height: 65,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Color(0xfff2f6fc),
-                                  ),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Container(
-                                        alignment: Alignment.centerLeft,
-                                        padding: const EdgeInsets.only(
-                                            top: 10.0, bottom: 5.0),
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Text(
-                                                userPrescriptions[index].date,
-                                                style: TextStyle(
-                                                  fontSize: 16,
+                                header: Row(children: <Widget>[
+                                  // userPrescriptions[index].complete ? Container(
+                                  //     padding:
+                                  //         const EdgeInsets.only(right: 10.0),
+                                  //     child: GestureDetector(
+                                  //         onTap: () {
+                                  //           Navigator.push(
+                                  //               context,
+                                  //               MaterialPageRoute(
+                                  //                   builder: (context) =>
+                                  //                       PrescriptionPDF()));
+                                  //         }, 
+                                  //         child: Image(
+                                  //             image: new AssetImage(
+                                  //                 "images/file.png"),
+                                  //             width: 30,
+                                  //             height: 30))) : Container(),
+                                  Expanded(
+                                      child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0, right: 10.0),
+                                    // height: 65,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Color(0xfff2f6fc),
+                                    ),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          padding: const EdgeInsets.only(
+                                              top: 10.0, bottom: 5.0),
+                                          child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  userPrescriptions[index].date,
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                  ),
                                                 ),
-                                              ),
-                                              userPrescriptions[index].complete
-                                                  ? Text(
-                                                      "Dr " +
-                                                          userPrescriptions[
-                                                                  index]
-                                                              .doctor,
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                      ),
-                                                    )
-                                                  : Text("-"),
-                                            ]),
-                                      ),
-                                      Container(
-                                        alignment: Alignment.centerLeft,
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10.0),
-                                        child: Text(
-                                          getDiagnosisName(index),
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                          softWrap: true,
-                                          overflow: TextOverflow.ellipsis,
+                                                userPrescriptions[index]
+                                                        .complete
+                                                    ? Text(
+                                                        "Dr " +
+                                                            userPrescriptions[
+                                                                    index]
+                                                                .doctor,
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                        ),
+                                                      )
+                                                    : Text("-"),
+                                              ]),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          padding: const EdgeInsets.only(
+                                              bottom: 10.0),
+                                          child: Text(
+                                            getDiagnosisName(index),
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                                  userPrescriptions[index].complete ? Container(
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PrescriptionPDF()));
+                                          }, 
+                                          child: Image(
+                                              image: new AssetImage(
+                                                  "images/file.png"),
+                                              width: 30,
+                                              height: 30))) : Container(),
+                                ]),
                                 items: userPrescriptions[index].complete
                                     ? _buildItemsPrescription(
                                         context, group.drug)
