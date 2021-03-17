@@ -342,6 +342,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
       child: ListView(
+        physics: ScrollPhysics(),
         shrinkWrap: true,
         children: <Widget>[
           ExpandableGroup(

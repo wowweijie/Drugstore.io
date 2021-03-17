@@ -426,44 +426,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget _notificationSwitch() {
-    return Container(
-      alignment: Alignment.topLeft,
-      padding: const EdgeInsets.only(
-          top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: Colors.white,
-        ),
-        //padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Notifications",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 17,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            Switch(
-              value: enableNotifications,
-              onChanged: (value) {
-                setState(() {
-                  enableNotifications = value;
-                });
-              },
-              activeTrackColor: Colors.blue.shade100,
-              activeColor: Colors.lightBlue,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _aboutMeInfoTextField(String title, String info, String suffix) {
     return new Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
@@ -526,7 +488,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget _medHistInfoChipsInput(
       String title, List<dynamic> userInfo, List<MedHealthDetails> commonInfo) {
     return new ChipsInput(
-      initialValue: userInfo.map((item) => MedHealthDetails(item)).toList(),
+      initialValue: userInfo[0]=="NIL" ?  [].map((item) => MedHealthDetails(item)).toList() : userInfo.map((item) => MedHealthDetails(item)).toList(),
       decoration: InputDecoration(
         labelText: "Input " + title,
       ),
@@ -540,17 +502,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
       onChanged: (data) {
         userInfo = data.map<String>((item) => item.toString()).toList();
         if (title == "allergies") {
-          allergies = data.map<String>((item) => item.toString()).toList();
+          if (data.length == 0) {
+            allergies = ["NIL"];
+          } else {
+            allergies = data.map<String>((item) => item.toString()).toList();
+          }  
         } else if (title == "existing medical conditions") {
-          existingMedCond =
+          if (data.length == 0) {
+            existingMedCond = ["NIL"];
+          } else {
+            existingMedCond =
               data.map<String>((item) => item.toString()).toList();
+          }  
         } else if (title == "personal medical history") {
-          personalMedHist =
+          if (data.length == 0) {
+            personalMedHist = ["NIL"];
+          } else {
+            personalMedHist =
               data.map<String>((item) => item.toString()).toList();
+          }
         } else if (title == "family medical history") {
-          famMedHist = data.map<String>((item) => item.toString()).toList();
+          if (data.length == 0) {
+            famMedHist = ["NIL"];
+          } else {
+            famMedHist =
+              data.map<String>((item) => item.toString()).toList();
+          }
         }
-        print(userInfo);
       },
       chipBuilder: (context, state, item) {
         return InputChip(
