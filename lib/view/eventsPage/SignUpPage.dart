@@ -14,10 +14,11 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  bool showProgress = false;
+  bool _isButtonEnabled = false;
   FirebaseAuth auth = FirebaseAuth.instance;
   String email, password, username;
   bool _acceptTerms = false;
+  List<String> errorField = [];
 
   DatabaseReference fDbUsers =
       FirebaseDatabase.instance.reference().child('userInfo');
@@ -106,6 +107,16 @@ class _SignUpPageState extends State<SignUpPage> {
                             password = value;
                           }),
                     ),
+                    Container(
+                      padding: const EdgeInsets.only(
+                          left: 15.0, right: 15.0, top: 5, bottom: 0),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Password should contain at least 6 characters.",
+                        style:
+                            TextStyle(color: Colors.red.shade900, fontSize: 10),
+                      ),
+                    ),
                     CheckboxListTile(
                       value: _acceptTerms,
                       onChanged: (bool value) {
@@ -117,51 +128,67 @@ class _SignUpPageState extends State<SignUpPage> {
                           style: TextStyle(
                               color: Color(0x7f000000), fontSize: 15)),
                     ),
-                    /*Align(
-                      alignment: Alignment.centerLeft,
-                      child: FlatButton(
-                        //padding: const EdgeInsets.only(left: 200.0),
-                        onPressed: () {
-                          print("Accepted terms and conditions");
-                        },
-                        child: Text(
-                          'I accept the terms and conditions',
-                          style:
-                              TextStyle(color: Color(0x7f000000), fontSize: 15),
-                        ),
-                      ),
-                    ),*/
                     Container(
                       padding: const EdgeInsets.only(top: 5.0),
                       height: 50,
                       width: 280,
                       child: ElevatedButton(
-                        onPressed: () async {
+                        onPressed: username == null &&
+                              email == null &&
+                              password == null &&
+                              _acceptTerms != true ? null: () async {
                           setState(() {
-                            showProgress = true;
+                              _isButtonEnabled = true;
                           });
-                          if (_acceptTerms) {
-                            try {
-                              final newuser =
-                                  await auth.createUserWithEmailAndPassword(
-                                      email: email, password: password);
-                              final newprofile = await createProfile(
-                                  newuser.user.uid, username);
-                              if (newuser != null && newprofile != null) {
-                                print("user created");
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => EditProfilePage()),
-                                );
-                                //Navigator.pop(context);
+                          if (_isButtonEnabled) {
+                            if (username != "" &&
+                                email != "" &&
+                                isValidEmail(email) &&
+                                password != "" &&
+                                password.length >= 6) {
+                              try {
+                                final newuser =
+                                    await auth.createUserWithEmailAndPassword(
+                                        email: email, password: password);
+                                final newprofile = await createProfile(
+                                    newuser.user.uid, username);
+                                if (newuser != null && newprofile != null) {
+                                  print("user created");
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditProfilePage()),
+                                  );
+                                }
+                                setState(() {
+                                  _isButtonEnabled = false;
+                                });
+                              } catch (e) {
+                                print(e.toString());
                               }
-
-                              setState(() {
-                                showProgress = false;
-                              });
-                            } catch (e) {
-                              print(e.toString());
+                            } else {
+                              errorField = [];
+                              if (username == "") {
+                                errorField.add("Username not inputted.");
+                              }
+                              if (email == "" || !isValidEmail(email)) {
+                                errorField.add("Please enter a valid email.");
+                              }
+                              if (password == "") {
+                                errorField.add("Password not inputted.");
+                              }
+                              if (password != null
+                                  ? password.length < 6
+                                  : false) {
+                                errorField.add(
+                                    "Password has less than 6 characters.");
+                              }
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      _alertDialog(
+                                          "Error", errorField));
                             }
                           }
                         },
@@ -228,6 +255,30 @@ class _SignUpPageState extends State<SignUpPage> {
                   ],
                 ),
               ))),
+    );
+  }
+
+  Widget _alertDialog(String title, List<String> errorFields) {
+
+    return new AlertDialog(
+      title: Text(title),
+      scrollable: true,
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: errorFields.map((group) {
+            int index = errorFields.indexOf(group);
+            return Text(errorFields[index]);
+          }).toList(),
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Ok'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
 }
