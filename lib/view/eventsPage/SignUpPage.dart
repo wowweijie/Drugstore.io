@@ -259,7 +259,6 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _alertDialog(String title, List<String> errorFields) {
-
     return new AlertDialog(
       title: Text(title),
       scrollable: true,

@@ -9,6 +9,7 @@ import 'package:drugstore_io/model/UserProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:pdf/pdf.dart';
+import 'package:intl/intl.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -68,22 +69,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
     futureProfile = fetchProfile(auth.currentUser.uid.toString());
   }
 
+  bool _noEmptyFields = false;
   bool enableNotifications = false;
   bool notifsInitTrue = true;
   bool notifsInitFalse = false;
-  String name = "Pablo Stanley";
-  String username = "pablo_123456";
+  String name;
+  String username;
   String password = "********";
-  String gender = "Male";
-  String birthday = "19 Aug 2000";
-  String ethnicity = "European";
-  String height = "169";
-  String weight = "55";
-  String bloodType = "B+";
-  List<dynamic> allergies = ["Prawn", "Paracetamol"];
-  List<dynamic> existingMedCond = ["Anaemia", "Asthma"];
-  List<dynamic> personalMedHist = ["NIL"];
-  List<dynamic> famMedHist = ["NIL"];
+  String gender;
+  String birthday;
+  String ethnicity;
+  String height;
+  String weight;
+  String bloodType;
+  List<dynamic> allergies;
+  List<dynamic> existingMedCond;
+  List<dynamic> personalMedHist;
+  List<dynamic> famMedHist;
+
+  List<String> errorField = [];
 
   List<String> _gender = ['Male', 'Female', 'Others'];
   List<String> _ethnicity = [
@@ -144,35 +148,70 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () async {
-                    print(gender);
-                    final status = await updateProfile(
-                        auth.currentUser.uid.toString(),
-                        name,
-                        username,
-                        gender,
-                        birthday,
-                        height,
-                        weight,
-                        bloodType,
-                        ethnicity,
-                        allergies,
-                        existingMedCond,
-                        famMedHist,
-                        personalMedHist,
-                        enableNotifications);
+                    _noEmptyFields = _checkForEmptyFields();
+                    if (_noEmptyFields && _checkValidBday()) {
+                      final status = await updateProfile(
+                          auth.currentUser.uid.toString(),
+                          name,
+                          username,
+                          gender,
+                          birthday,
+                          height,
+                          weight,
+                          bloodType,
+                          ethnicity,
+                          allergies,
+                          existingMedCond,
+                          famMedHist,
+                          personalMedHist,
+                          enableNotifications);
 
-                    if (status.runtimeType == http.Response) {
-                      print("user updated");
-                      Future.delayed(Duration(milliseconds: 500), () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyBottomNavigationBar(
-                                    key: GlobalKey(), selectedIndex: 3)));
-                      });
-                      // Future.delayed(Duration(milliseconds: 500), () {
-                      //   Navigator.pop(context);
-                      // });
+                      if (status.runtimeType == http.Response) {
+                        print("user updated");
+                        Future.delayed(Duration(milliseconds: 500), () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyBottomNavigationBar(
+                                      key: GlobalKey(), selectedIndex: 3)));
+                        });
+                        // Future.delayed(Duration(milliseconds: 500), () {
+                        //   Navigator.pop(context);
+                        // });
+                      }
+                    } else {
+                      errorField = [];
+                      if (name == "") {
+                        errorField.add("Name not inputted.");
+                      }
+                      if (username == "") {
+                        errorField.add("Username not inputted.");
+                      }
+                      if (gender == "") {
+                        errorField.add("Gender not selected.");
+                      }
+                      if (birthday == "") {
+                        errorField.add("Birthday not selected.");
+                      }
+                      if (birthday != "" && _checkValidBday() == false) {
+                        errorField.add("Invalid birthday selected.");
+                      }
+                      if (ethnicity == "") {
+                        errorField.add("Ethnicity not selected.");
+                      }
+                      if (height == "") {
+                        errorField.add("Height not inputted.");
+                      }
+                      if (weight == "") {
+                        errorField.add("Weight not inputted.");
+                      }
+                      if (bloodType == "") {
+                        errorField.add("Blood Type not selected.");
+                      }
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              _alertDialog(errorField));
                     }
                   },
                   child: Icon(
@@ -195,20 +234,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
               famMedHist = snapshot.data.famMedHist;
               gender = snapshot.data.gender;
               if (snapshot.data.birthday == "") {
-                birthday = "2000-01-01";
+                birthday = DateFormat('yyyy-MM-dd').format(DateTime.now());
+                print(birthday);
               } else {
                 birthday = snapshot.data.birthday;
               }
               ethnicity = snapshot.data.ethnicity;
               height = snapshot.data.height;
               weight = snapshot.data.weight;
-              bloodType = snapshot.data.bloodType;  
+              bloodType = snapshot.data.bloodType;
               if (snapshot.data.enableNotifications == null) {
                 enableNotifications = true;
               } else {
-                enableNotifications = snapshot.data.enableNotifications;  
+                enableNotifications = snapshot.data.enableNotifications;
               }
-              
+
               return SingleChildScrollView(
                 child: Container(
                   child: Column(
@@ -253,8 +293,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             top: 10.0, left: 20.0, right: 20.0),
                         child: _userInfoTextField("Password", password),
                       ),
-                      NotifSwitch(notifsValue: enableNotifications,
-                                  callback: setNotifs),
+                      NotifSwitch(
+                          notifsValue: enableNotifications,
+                          callback: setNotifs),
                       Container(
                         alignment: Alignment.topCenter,
                         padding: const EdgeInsets.only(top: 10.0),
@@ -488,7 +529,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget _medHistInfoChipsInput(
       String title, List<dynamic> userInfo, List<MedHealthDetails> commonInfo) {
     return new ChipsInput(
-      initialValue: userInfo[0]=="NIL" ?  [].map((item) => MedHealthDetails(item)).toList() : userInfo.map((item) => MedHealthDetails(item)).toList(),
+      initialValue: userInfo[0] == "NIL"
+          ? [].map((item) => MedHealthDetails(item)).toList()
+          : userInfo.map((item) => MedHealthDetails(item)).toList(),
       decoration: InputDecoration(
         labelText: "Input " + title,
       ),
@@ -506,27 +549,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
             allergies = ["NIL"];
           } else {
             allergies = data.map<String>((item) => item.toString()).toList();
-          }  
+          }
         } else if (title == "existing medical conditions") {
           if (data.length == 0) {
             existingMedCond = ["NIL"];
           } else {
             existingMedCond =
-              data.map<String>((item) => item.toString()).toList();
-          }  
+                data.map<String>((item) => item.toString()).toList();
+          }
         } else if (title == "personal medical history") {
           if (data.length == 0) {
             personalMedHist = ["NIL"];
           } else {
             personalMedHist =
-              data.map<String>((item) => item.toString()).toList();
+                data.map<String>((item) => item.toString()).toList();
           }
         } else if (title == "family medical history") {
           if (data.length == 0) {
             famMedHist = ["NIL"];
           } else {
-            famMedHist =
-              data.map<String>((item) => item.toString()).toList();
+            famMedHist = data.map<String>((item) => item.toString()).toList();
           }
         }
       },
@@ -558,6 +600,59 @@ class _EditProfilePageState extends State<EditProfilePage> {
           .toLowerCase()
           .indexOf(lowercaseQuery)
           .compareTo(b.itemDetail.toLowerCase().indexOf(lowercaseQuery)));
+  }
+
+  bool _checkForEmptyFields() {
+    if (name == "" ||
+        username == "" ||
+        password == "" ||
+        gender == "" ||
+        birthday == "" ||
+        ethnicity == "" ||
+        height == "" ||
+        weight == "" ||
+        bloodType == "") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  bool _checkValidBday() {
+    DateTime now = DateTime.now();
+    DateTime bday = DateTime.parse(birthday);
+    if (now.year == bday.year &&
+        now.month == bday.month &&
+        now.day == bday.day) {
+      return false;
+    }
+    else if (now.isAfter(bday)) {
+      return true;
+    } else
+      return false;
+  }
+
+  Widget _alertDialog(List<String> errorFields) {
+    return new AlertDialog(
+      title: Text("Error"),
+      scrollable: true,
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: errorFields.map((group) {
+            int index = errorFields.indexOf(group);
+            return Text(errorFields[index]);
+          }).toList(),
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Ok'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
   }
 }
 
@@ -601,7 +696,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
         isEmpty: dropdownValue == "",
         child: new DropdownButton<String>(
           underline: Container(color: Colors.transparent),
-          value: dropdownValue=="" ? null : dropdownValue,
+          value: dropdownValue == "" ? null : dropdownValue,
           isDense: true,
           isExpanded: true,
           icon: Icon(
@@ -632,14 +727,10 @@ typedef void BoolCallback(bool val);
 class NotifSwitch extends StatefulWidget {
   final bool notifsValue;
   final BoolCallback callback;
-  NotifSwitch(
-      {Key key,
-      @required this.notifsValue,
-      this.callback})
+  NotifSwitch({Key key, @required this.notifsValue, this.callback})
       : super(key: key);
   @override
-  _NotifSwitchState createState() =>
-      _NotifSwitchState(notifsValue, callback);
+  _NotifSwitchState createState() => _NotifSwitchState(notifsValue, callback);
 }
 
 class _NotifSwitchState extends State<NotifSwitch> {
