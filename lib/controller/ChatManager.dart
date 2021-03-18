@@ -111,7 +111,11 @@ class ChatManager {
     print(option.name);
     print("evidenceList : $evidenceList");
     if ((option.name != 'None of the above') & (option.name != 'No')) {
-      symptomsList.add(option.name);
+      if (option.name == "Yes") {
+        symptomsList.add(option.hiddenName);
+      } else {
+        symptomsList.add(option.name);
+      }
     }
     print(symptomsList);
     final response = await http.post(
@@ -154,8 +158,10 @@ class ChatManager {
       })).toList();
       if (options.length == 1) {
         List<Option> yesNoList = new List<Option>(2);
-        yesNoList[0] = new Option(id: options[0].id, name: "Yes");
-        yesNoList[1] = new Option(id: options[0].id, name: "No");
+        yesNoList[0] = new Option.yesOrNoOption(
+            id: options[0].id, name: "Yes", hiddenName: options[0].name);
+        yesNoList[1] = new Option.yesOrNoOption(
+            id: options[0].id, name: "No", hiddenName: options[0].name);
         yesNoList[1].present = false;
         sendMsgWidgetCallback(ChatOption(GlobalKey(), yesNoList));
       } else {
@@ -178,9 +184,12 @@ class ChatManager {
 class Option {
   String id;
   String name;
+  String hiddenName;
   bool present = true;
 
-  Option({this.id, this.name});
+  Option({this.id, this.name}) : this.hiddenName = name;
+
+  Option.yesOrNoOption({this.id, this.name, this.hiddenName});
 }
 
 typedef SingleWidgetFunction = void Function(Widget widget);
