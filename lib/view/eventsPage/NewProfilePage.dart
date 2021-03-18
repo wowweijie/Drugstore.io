@@ -1,5 +1,6 @@
 // import 'dart:html';
 
+import 'package:drugstore_io/globals.dart';
 import 'package:drugstore_io/main.dart';
 import 'package:drugstore_io/view/eventsPage/AppEntryPage.dart';
 import 'package:drugstore_io/view/eventsPage/EditProfilePage.dart';
@@ -97,6 +98,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () {
+                    authInstance.signOut();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (_) => AppEntryPage()));
                   },

@@ -131,8 +131,8 @@ class _ChatPageState extends State<ChatPage> {
             image: AssetImage("images/rafiki.png"),
             colorFilter: new ColorFilter.mode(
                 Colors.white.withOpacity(0.3), BlendMode.dstATop),
-            fit: BoxFit.fitWidth,
-            alignment: Alignment.center),
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.topCenter),
       ),
     );
   }
@@ -179,7 +179,7 @@ class ChatMessage extends StatelessWidget {
         margin: const EdgeInsets.only(right: 10.0),
         child: new CircleAvatar(
           child: Image(
-            image: new AssetImage("images/chat_doctor_icon.png"),
+            image: new AssetImage("images/chat_doctor.png"),
             fit: BoxFit.fitHeight,
             alignment: Alignment.center,
           ),
