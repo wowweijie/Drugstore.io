@@ -1,4 +1,5 @@
 import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
+import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:drugstore_io/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -109,19 +110,46 @@ class _NewLoginPageState extends State<NewLoginPage> {
                               print("password: " + password);
                               await authInstance.signInWithEmailAndPassword(
                                   email: email, password: password);
+                              print("Login Success...");
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => MyBottomNavigationBar(
+                                          key: GlobalKey(), selectedIndex: 0)));
                             } on FirebaseAuthException catch (e) {
                               if (e.code == 'user-not-found') {
                                 print('No user found for that email.');
                               } else if (e.code == 'wrong-password') {
                                 print('Wrong password provided for that user.');
                               }
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return RichAlertDialog(
+                                      alertTitle: richTitle(
+                                          "Wrong Username or Password"),
+                                      alertSubtitle: richSubtitle(""),
+                                      alertType: RichAlertType.ERROR,
+                                      actions: <Widget>[
+                                        SizedBox(
+                                            width: 120,
+                                            child: RaisedButton(
+                                              color: Colors.white,
+                                              shape: new RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          18.0),
+                                                  side: BorderSide(
+                                                      color: Colors.black)),
+                                              child: Text("OK"),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ))
+                                      ],
+                                    );
+                                  });
                             }
-                            print("Login Success...");
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => MyBottomNavigationBar(
-                                        key: GlobalKey(), selectedIndex: 0)));
                           }
                         },
                         style: ElevatedButton.styleFrom(
