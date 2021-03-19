@@ -1,3 +1,6 @@
+import 'package:drugstore_io/main.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -19,7 +22,7 @@ class PushNotificationsManager {
     print('on background $message');
   }
 
-  Future<void> init() async {
+  Future<void> init(navigatorKey) async {
     // if (!_initialized) {
     // For iOS request permission first.
 
@@ -30,6 +33,11 @@ class PushNotificationsManager {
         },
         onResume: (Map<String, dynamic> message) {
           print('onResume called');
+          Navigator.push(
+              navigatorKey.currentContext,
+              MaterialPageRoute(
+                  builder: (_) => MyBottomNavigationBar(
+                      key: GlobalKey(), selectedIndex: 0)));
         },
         onMessage: (Map<String, dynamic> message) {
           print('onMessage called');

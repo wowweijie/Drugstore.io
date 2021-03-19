@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:drugstore_io/controller/DiagnosisManager.dart';
+import 'package:drugstore_io/controller/NotificationManager.dart';
 import 'package:drugstore_io/controller/PrescriptionManager.dart';
 import 'package:drugstore_io/main.dart';
+import 'package:drugstore_io/model/Notif.dart';
 import 'package:drugstore_io/model/Prescription.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:list_expandable/list_expandable_widget.dart';
@@ -20,10 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<String> _latestPrescription = ["Paracetamol 75mg", "Antacid 50mg"];
-  List<String> _reminderList = [
-    "Take Paracetamol at 12:30 after food",
-    "Take insulin injection after your meal"
-  ];
+  List<String> _reminderList = [];
   List<String> _healthTips = [
     "Eat a variety of foods.",
     "Base your diet on plenty of foods rich in carbohydrates.",
@@ -36,12 +35,8 @@ class _HomePageState extends State<HomePage> {
     "Get on the move, make it a habit!",
     "Start now! And keep changing gradually."
   ];
-  List<String> _diagnosisAppList = [
-    "2021-03-08: Asthma exacerbation - Approved"
-  ];
-  List<String> _prescReqList = [
-    "Received a prescription for 2021-03-08: Asthma exacerbation"
-  ];
+  List<String> _diagnosisAppList = [];
+  List<String> _prescReqList = [];
 
   List<ListTile> _buildItems(
           BuildContext context, List<dynamic> items, bool records) =>
@@ -78,6 +73,9 @@ class _HomePageState extends State<HomePage> {
   Future<List<Prescription>> futurePrescription;
   List<Prescription> userPrescriptions;
 
+  Future<List<Notif>> futureNotifs;
+  List<Notif> userNotifs;
+
   Position _currentPosition;
   double lat = 1.3393865;
   double long = 103.8476442;
@@ -100,6 +98,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     futureDiagnosis = fetchDiagnosis(auth.currentUser.uid.toString());
     futurePrescription = fetchPrescription(auth.currentUser.uid.toString());
+    futureNotifs = fetchNotifs(auth.currentUser.uid.toString());
     _getCurrentLocation();
   }
 
@@ -166,8 +165,9 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (_) =>
-                                            NearestHealthcareMap(currentPosition: _currentPosition)));
+                                        builder: (_) => NearestHealthcareMap(
+                                            currentPosition:
+                                                _currentPosition)));
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Color(0xffe6f0fa),
@@ -278,22 +278,51 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  width: 370,
-                  child: Column(
-                    children: <Widget>[
-                      _listView("Reminders", _reminderList, "reminder_icon"),
-                      _diagnosisAppList.length != 0
-                          ? _listView("Diagnosis Approval", _diagnosisAppList,
-                              "approve_diag_icon")
-                          : Container(),
-                      _prescReqList.length != 0
-                          ? _listView("Received Prescriptions", _prescReqList,
-                              "medicine_icon")
-                          : Container(),
-                    ],
-                  ),
+                FutureBuilder<List<Notif>>(
+                  future: futureNotifs,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      userNotifs = snapshot.data;
+
+                      _reminderList.clear();
+                      _prescReqList.clear();
+                      _diagnosisAppList.clear();
+
+                      for (int i = 0; i < userNotifs.length; i++) {
+                        if (userNotifs[i].type == "Reminders") {
+                          _reminderList.add(userNotifs[i].content);
+                        } else if (userNotifs[i].type == "Prescriptions") {
+                          _prescReqList.add(userNotifs[i].content);
+                        } else if (userNotifs[i].type == "Diagnoses") {
+                          _diagnosisAppList.add(userNotifs[i].content);
+                        }
+                      }
+
+                      return Container(
+                          alignment: Alignment.topLeft,
+                          width: 370,
+                          child: Column(
+                            children: <Widget>[
+                              _listView(
+                                  "Reminders", _reminderList, "reminder_icon"),
+                              _diagnosisAppList.length != 0
+                                  ? _listView("Diagnosis Approval",
+                                      _diagnosisAppList, "approve_diag_icon")
+                                  : Container(),
+                              _prescReqList.length != 0
+                                  ? _listView("Received Prescriptions",
+                                      _prescReqList, "medicine_icon")
+                                  : Container(),
+                            ],
+                          ));
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    // By default, show a loading spinner.
+                    return Align(
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator());
+                  },
                 ),
                 Divider(
                   color: Color(0xffb5cbec),
