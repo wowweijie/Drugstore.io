@@ -20,12 +20,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Firebase.initializeApp();
 
-  final PushNotificationsManager notif = PushNotificationsManager();
-  Future handleStartUpLogic() async {
-    await notif.init();
-  }
+  // final PushNotificationsManager notif = PushNotificationsManager();
+  // Future handleStartUpLogic() async {
+  //   await notif.init();
+  // }
 
-  handleStartUpLogic();
+  // handleStartUpLogic();
   runApp(MyApp());
 }
 
