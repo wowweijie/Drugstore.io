@@ -4,7 +4,7 @@ import 'package:drugstore_io/controller/DiagnosisManager.dart';
 import 'package:drugstore_io/controller/PrescriptionManager.dart';
 import 'package:drugstore_io/main.dart';
 import 'package:drugstore_io/model/Prescription.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:list_expandable/list_expandable_widget.dart';
 import 'package:drugstore_io/view/eventsPage/EditProfilePage.dart';
 import 'package:flutter/material.dart';
@@ -78,11 +78,29 @@ class _HomePageState extends State<HomePage> {
   Future<List<Prescription>> futurePrescription;
   List<Prescription> userPrescriptions;
 
+  Position _currentPosition;
+  double lat = 1.3393865;
+  double long = 103.8476442;
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+
+  _getCurrentLocation() {
+    geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     futureDiagnosis = fetchDiagnosis(auth.currentUser.uid.toString());
     futurePrescription = fetchPrescription(auth.currentUser.uid.toString());
+    _getCurrentLocation();
   }
 
   @override
@@ -144,11 +162,12 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ElevatedButton(
                               onPressed: () {
+                                print(_currentPosition);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (_) =>
-                                            NearestHealthcareMap()));
+                                            NearestHealthcareMap(currentPosition: _currentPosition)));
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Color(0xffe6f0fa),
