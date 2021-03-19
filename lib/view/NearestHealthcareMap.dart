@@ -9,15 +9,19 @@ import 'package:geolocator/geolocator.dart';
 import 'dart:ui' as ui;
 
 class NearestHealthcareMap extends StatefulWidget {
+  final Position currentPosition;
+  NearestHealthcareMap({@required this.currentPosition});
   @override
-  _NearestHealthcareMapState createState() => _NearestHealthcareMapState();
+  _NearestHealthcareMapState createState() => _NearestHealthcareMapState(currentPosition);
 }
 
 class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
+  _NearestHealthcareMapState(this.currentPosition);
   // PlacesManager placesManager = PlacesManager();
-  Position _currentPosition;
+  Position currentPosition;
   double lat = 1.3393865;
   double long = 103.8476442;
+  Position _currentPosition;
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
   _getCurrentLocation() {
@@ -41,8 +45,7 @@ class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
   void setMap() async {
     healthcareIcon = await getBytesFromAsset('images/healthcare.png', 150);
     currentLocationIcon = await getBytesFromAsset('images/location.png', 150);
-    futureMarkers =
-        searchNearby(lat, long, currentLocationIcon, healthcareIcon);
+    futureMarkers = searchNearby(currentPosition.latitude, currentPosition.longitude, currentLocationIcon, healthcareIcon);
   }
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
@@ -94,6 +97,7 @@ class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               markers = snapshot.data;
+              print("markers");
               return Stack(children: <Widget>[
                 GoogleMap(
                   onMapCreated: (GoogleMapController controller) {
@@ -104,10 +108,9 @@ class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
                   zoomGesturesEnabled: true,
                   zoomControlsEnabled: false,
                   initialCameraPosition: CameraPosition(
-                    // target: LatLng(
-                    //     _currentPosition.latitude,
-                    //     _currentPosition.longitude),
-                    target: _center,
+                    target: LatLng(
+                        currentPosition.latitude, currentPosition.longitude),
+                    // target: _center,
                     zoom: 16,
                   ),
                   markers: Set<Marker>.of(markers),
@@ -182,8 +185,8 @@ class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
                                 CameraUpdate.newCameraPosition(
                                   CameraPosition(
                                     target: LatLng(
-                                      lat,
-                                      long,
+                                      currentPosition.latitude,
+                                      currentPosition.longitude,
                                     ),
                                     zoom: 16.0,
                                   ),

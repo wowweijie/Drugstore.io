@@ -11,8 +11,11 @@ const String baseUrl =
     "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
 const String _API_KEY = 'AIzaSyAcMYX4jTqaGBddJB64YDlk2QBzSp1lZag';
 
-Future<List<Marker>> searchNearby(double latitude, double longitude,
-    currentLocationIcon, healthcareIcon) async {
+Future<List<Marker>> searchNearby(
+    double latitude,
+    double longitude,
+    currentLocationIcon,
+    healthcareIcon) async {
   List<Marker> markers = <Marker>[];
   Error error;
   List<Result> places;
@@ -35,7 +38,7 @@ Future<List<Marker>> searchNearby(double latitude, double longitude,
       markers.add(
         Marker(
           markerId: MarkerId("ChIJyWMKn2kX2jERN5VPP5gkvzQ"),
-          position: LatLng(1.3393865, 103.8476442),
+          position: LatLng(latitude, longitude),
           infoWindow: InfoWindow(title: "Current Location"),
           onTap: () {},
           icon: BitmapDescriptor.fromBytes(currentLocationIcon),
