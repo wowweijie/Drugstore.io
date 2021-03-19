@@ -14,33 +14,34 @@ class PushNotificationsManager {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   bool _initialized = false;
 
-  Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
+  static Future<dynamic> myBackgroundMessageHandler(
+      Map<String, dynamic> message) {
     print('on background $message');
   }
 
   Future<void> init() async {
     // if (!_initialized) {
     // For iOS request permission first.
-     
-      _firebaseMessaging.requestNotificationPermissions();
-      _firebaseMessaging.configure(
-          onLaunch: (Map<String, dynamic> message) {
-            print('onLaunch called');
-          },
-          onResume: (Map<String, dynamic> message) {
-            print('onResume called');
-          },
-          onMessage: (Map<String, dynamic> message) {
-            print('onMessage called');
-          },
-          onBackgroundMessage: myBackgroundMessageHandler);
 
-      // For testing purposes print the Firebase Messaging token
-      String token = await _firebaseMessaging.getToken();
-      print("FirebaseMessaging token: $token");
+    _firebaseMessaging.requestNotificationPermissions();
+    _firebaseMessaging.configure(
+        onLaunch: (Map<String, dynamic> message) {
+          print('onLaunch called');
+        },
+        onResume: (Map<String, dynamic> message) {
+          print('onResume called');
+        },
+        onMessage: (Map<String, dynamic> message) {
+          print('onMessage called');
+        },
+        onBackgroundMessage: myBackgroundMessageHandler);
 
-      _initialized = true;
-     
+    // For testing purposes print the Firebase Messaging token
+    String token = await _firebaseMessaging.getToken();
+    print("FirebaseMessaging token: $token");
+
+    _initialized = true;
+
     // }
   }
 }
