@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:drugstore_io/controller/PlacesManager.dart';
+import 'package:drugstore_io/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -12,7 +13,8 @@ class NearestHealthcareMap extends StatefulWidget {
   final Position currentPosition;
   NearestHealthcareMap({@required this.currentPosition});
   @override
-  _NearestHealthcareMapState createState() => _NearestHealthcareMapState(currentPosition);
+  _NearestHealthcareMapState createState() =>
+      _NearestHealthcareMapState(currentPosition);
 }
 
 class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
@@ -45,7 +47,8 @@ class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
   void setMap() async {
     healthcareIcon = await getBytesFromAsset('images/healthcare.png', 150);
     currentLocationIcon = await getBytesFromAsset('images/location.png', 150);
-    futureMarkers = searchNearby(currentPosition.latitude, currentPosition.longitude, currentLocationIcon, healthcareIcon);
+    futureMarkers = searchNearby(currentPosition.latitude,
+        currentPosition.longitude, currentLocationIcon, healthcareIcon);
   }
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
@@ -83,7 +86,11 @@ class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
               padding: EdgeInsets.only(left: 10.0),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => MyBottomNavigationBar(
+                              key: GlobalKey(), selectedIndex: 0)));
                 },
                 child: Icon(
                   Icons.arrow_back,

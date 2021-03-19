@@ -15,6 +15,7 @@ import 'package:drugstore_io/view/eventsPage/SignUpPage.dart';
 import 'package:drugstore_io/view/chat/ChatPage.dart';
 
 import 'package:drugstore_io/controller/PushNotificationManager.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
-    return FutureBuilder(
+    return OverlaySupport(
+        child: FutureBuilder(
       // Initialize FlutterFire:
       future: _initialization,
       builder: (context, snapshot) {
@@ -52,7 +54,7 @@ class MyApp extends StatelessWidget {
         // Otherwise, show something whilst waiting for initialization to complete
         return FlutterEasyLoading(child: Text("Please wait.."));
       },
-    );
+    ));
   }
 }
 
