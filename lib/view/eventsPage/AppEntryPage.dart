@@ -10,9 +10,11 @@ class AppEntryPage extends StatefulWidget {
 }
 
 class _AppEntryPageState extends State<AppEntryPage> {
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   final PushNotificationsManager notif = PushNotificationsManager();
   Future handleStartUpLogic() async {
-    await notif.init();
+    await notif.init(_scaffoldKey);
   }
 
   @override
@@ -24,6 +26,7 @@ class _AppEntryPageState extends State<AppEntryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       //appBar: AppBar(
       //  title: Text("Doctor Virtual"),
