@@ -168,7 +168,8 @@ class _HomePageState extends State<HomePage> {
                                     MaterialPageRoute(
                                         builder: (_) => NearestHealthcareMap(
                                             currentPosition:
-                                                Position(latitude: 1.3396, longitude: 103.8475))));
+                                               // Position(latitude: 1.3396, longitude: 103.8475)
+                                               _currentPosition)));
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Color(0xffe6f0fa),

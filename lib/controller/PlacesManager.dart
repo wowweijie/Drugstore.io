@@ -33,7 +33,7 @@ Future<List<Marker>> searchNearby(
       );
 
   String url =
-      '$baseUrl?key=$_API_KEY&location=$latitude,$longitude&radius=1000&keyword=Pharmacy';
+      '$baseUrl?key=$_API_KEY&location=$latitude,$longitude&radius=2000&keyword=Pharmacy';
 
   final response = await http.get(url);
 
