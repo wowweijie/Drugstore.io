@@ -55,6 +55,15 @@ class ChatManager {
                 "source": "initial"
               })
           .toList();
+      if (evidenceList.length == 0) {
+        ChatMessage questionMsg = ChatMessage(
+            text:
+                "I'm sorry, I couldn't quite get what you are saying. Could you rephrase again?",
+            name: "Dr Virtual",
+            type: false);
+        sendMsgWidgetCallback(questionMsg);
+        return;
+      }
       symptomsList = mentions
           .map(
             (mention) => mention["common_name"].toString(),

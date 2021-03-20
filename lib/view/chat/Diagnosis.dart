@@ -13,7 +13,7 @@ class DiagnosisResult extends StatelessWidget {
         margin: const EdgeInsets.only(right: 10.0),
         child: new CircleAvatar(
           child: Image(
-            image: new AssetImage("images/chat_doctor_icon.png"),
+            image: new AssetImage("images/chat_doctor.png"),
             fit: BoxFit.fitHeight,
             alignment: Alignment.center,
           ),
