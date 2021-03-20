@@ -174,6 +174,17 @@ class ChatManager {
         yesNoList[1].present = false;
         sendMsgWidgetCallback(ChatOption(GlobalKey(), yesNoList));
       } else {
+        // If user has no option of saying No
+        if (!options.any((_option) {
+          return _option.name == "None of the above" || _option.name == "No";
+        })) {
+          // Add option of None of the above
+          // Send in previous option as absent
+          Option noneOfTheAbove = new Option(
+              id: options[options.length - 1].id, name: "None of the above");
+          noneOfTheAbove.present = false;
+          options.add(noneOfTheAbove);
+        }
         sendMsgWidgetCallback(ChatOption(GlobalKey(), options));
       }
     } else {
