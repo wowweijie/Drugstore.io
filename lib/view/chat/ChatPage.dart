@@ -290,6 +290,7 @@ class ChatOption extends StatefulWidget {
 
 class _ChatOptionState extends State<ChatOption> {
   int selectedIndex = -1;
+  bool enabled = true;
   ChatManager chatManager = ChatManager();
   @override
   Widget build(BuildContext buildContext) {
@@ -301,8 +302,12 @@ class _ChatOptionState extends State<ChatOption> {
         spacing: 5,
         children: <Widget>[
           for (int index = 0; index < widget.options.length; index++)
-            ChoiceChip(
-              label: Text(
+            RaisedButton(
+              elevation: 0,
+              hoverElevation: 0,
+              focusElevation: 0,
+              highlightElevation: 0,
+              child: Text(
                 widget.options[index].name,
                 // softWrap: true,
                 // overflow: TextOverflow.visible,
@@ -312,15 +317,16 @@ class _ChatOptionState extends State<ChatOption> {
                   color: selectedIndex == index ? Colors.white : Colors.blue,
                 ),
               ),
-              backgroundColor: Color(0xFFFFFFFF),
-              selected: selectedIndex == index,
-              selectedColor: Colors.blue,
-              onSelected: (bool selected) {
-                setState(() {
-                  selectedIndex = selected ? index : selectedIndex;
-                });
-                chatManager.sendUserMessage(widget.options[index].name);
-                chatManager.getOntologyFromOption(widget.options[index]);
+              color: selectedIndex == index ? Colors.blue : Color(0xFFFFFFFF),
+              onPressed: () {
+                if (selectedIndex != index && enabled) {
+                  setState(() {
+                    selectedIndex = index;
+                    enabled = false;
+                  });
+                  chatManager.sendUserMessage(widget.options[index].name);
+                  chatManager.getOntologyFromOption(widget.options[index]);
+                }
               },
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
