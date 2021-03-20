@@ -102,6 +102,7 @@ class _NearestHealthcareMapState extends State<NearestHealthcareMap> {
         body: FutureBuilder<List<Marker>>(
           future: futureMarkers,
           builder: (context, snapshot) {
+            print(snapshot);
             if (snapshot.hasData) {
               markers = snapshot.data;
               print("markers");

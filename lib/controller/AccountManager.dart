@@ -25,9 +25,13 @@ class AccountManager {
   }
 }
 
+// const String url = "localhost:8080";
+const String url = "drugstore-node.et.r.appspot.com";
+// const String url = "10.0.2.2:8080"
+
 Future<UserProfile> fetchProfile(String uid) async {
   final response = await http.get(
-    Uri.http('10.0.2.2:8080', '/users/', {'uid': uid}),
+    Uri.https(url, '/users/', {'uid': uid}),
   );
 
   if (response.statusCode == 200) {
@@ -43,7 +47,7 @@ Future<UserProfile> fetchProfile(String uid) async {
 
 Future<http.Response> createProfile(String uid, username) async {
   final response = await http.post(
-    Uri.http('10.0.2.2:8080', '/users/', {'uid': uid}),
+    Uri.https(url, '/users/', {'uid': uid}),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -87,7 +91,7 @@ Future<http.Response> updateProfile(
     personalMedHist,
     enableNotifications) async {
   final response = await http.put(
-    Uri.http('10.0.2.2:8080', '/users/', {'uid': uid}),
+    Uri.https(url, '/users/', {'uid': uid}),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

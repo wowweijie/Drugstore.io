@@ -252,6 +252,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
                     ),
+                    Container(height: 20,),
                   ],
                 ),
               ))),

@@ -219,11 +219,20 @@ class ChatMessage extends StatelessWidget {
       ),
       new Container(
         margin: const EdgeInsets.only(left: 16.0),
+        // child: new CircleAvatar(
+        //   radius: 30.0,
+        //   backgroundImage: NetworkImage(
+        //       'https://www.straitstimes.com/sites/default/files/styles/medium/public/articles/2017/09/10/st_20170910_cyyoungashley_3408138.jpg?itok=2ZyC_nAZ'),
+        //   backgroundColor: Colors.transparent,
+        // ),
         child: new CircleAvatar(
+          child: Image(
+            image: new AssetImage("images/chat_patient.png"),
+            fit: BoxFit.fitHeight,
+            alignment: Alignment.center,
+          ),
           radius: 30.0,
-          backgroundImage: NetworkImage(
-              'https://www.straitstimes.com/sites/default/files/styles/medium/public/articles/2017/09/10/st_20170910_cyyoungashley_3408138.jpg?itok=2ZyC_nAZ'),
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.indigo[300],
         ),
       ),
     ];
@@ -255,6 +264,8 @@ Widget _buildMessageBubble(msgText, user) {
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       child: Text(
         msgText,
+        // softWrap: true,
+        // overflow: TextOverflow.visible,
         style: TextStyle(
           color: user ? Colors.white : Color(0xFF333333),
           fontFamily: 'Poppins',
@@ -293,6 +304,8 @@ class _ChatOptionState extends State<ChatOption> {
             ChoiceChip(
               label: Text(
                 widget.options[index].name,
+                // softWrap: true,
+                // overflow: TextOverflow.visible,
                 style: TextStyle(
                   fontFamily: 'Poppin',
                   fontWeight: FontWeight.bold,

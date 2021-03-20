@@ -338,6 +338,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         child: Container(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               _aboutMeInfoTextField("Height", height, "cm"),
                               _aboutMeInfoTextField("Weight", weight, "kg"),
@@ -470,8 +471,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget _aboutMeInfoTextField(String title, String info, String suffix) {
     return new Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
-      height: 60,
-      width: 130,
+      // height: 60,
+      width: 110,
       child: TextFormField(
         enabled: true,
         keyboardType: TextInputType.number,
@@ -479,11 +480,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
           FilteringTextInputFormatter.digitsOnly
         ],
         decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(vertical: 22.5, horizontal: 10.0),
           border: OutlineInputBorder(),
           labelText: title,
           suffixText: suffix,
+          isDense: false,
         ),
         initialValue: info,
+        style: TextStyle(fontSize: 12),
         onChanged: (value) {
           info = value;
           if (title == "Height") {
@@ -687,10 +691,11 @@ class _DropDownMenuState extends State<DropDownMenu> {
     return new Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
       height: 60,
-      width: 130,
+      width: 110,
       child: InputDecorator(
         decoration: InputDecoration(
           labelText: widget.title,
+          labelStyle: TextStyle(fontSize: 12),
           border: OutlineInputBorder(),
         ),
         isEmpty: dropdownValue == "",
@@ -703,7 +708,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
             Icons.arrow_drop_down,
             color: Colors.black,
           ),
-          iconSize: 24,
+          iconSize: 20,
           onChanged: (String value) {
             setState(() {
               dropdownValue = value;
@@ -713,7 +718,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
           items: dropdownItems.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value),
+              child: Text(value, style: TextStyle(fontSize: 12),),
             );
           }).toList(),
         ),
@@ -844,18 +849,20 @@ class _DatePickerDemoState extends State<DatePickerDemo> {
   Widget build(BuildContext context) {
     return Container(
         height: 60,
-        width: 130,
+        width: 110,
         child: InputDecorator(
           decoration: InputDecoration(
             labelText: 'Birthday',
+            labelStyle: TextStyle(fontSize: 12),
             border: OutlineInputBorder(),
           ),
-          child: new FlatButton(
+          child: new RawMaterialButton(
             onPressed: () => _selectDate(context),
+            constraints: BoxConstraints(),
             child: selectedDate == null
-                ? Text(birthday, textAlign: TextAlign.left)
+                ? Text(birthday, style: TextStyle(fontSize: 12), textAlign: TextAlign.start,)
                 : Text("${selectedDate.toLocal()}".split(' ')[0],
-                    textAlign: TextAlign.left),
+                    style: TextStyle(fontSize: 12), textAlign: TextAlign.start,),
           ),
         ));
   }

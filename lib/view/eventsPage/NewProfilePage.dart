@@ -231,6 +231,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                         ),
                       ),
                       ListView(
+                        physics: ScrollPhysics(),
                         padding: const EdgeInsets.only(
                             top: 10.0, left: 10.0, right: 10.0, bottom: 50.0),
                         shrinkWrap: true,
@@ -308,14 +309,9 @@ class _NewProfilePageState extends State<NewProfilePage> {
           ),
           Switch(
             value: enableNotifications,
-            onChanged: (value) {
-              setState(() {
-                enableNotifications = value;
-                print(enableNotifications);
-              });
-            },
-            activeTrackColor: Colors.blue.shade100,
-            activeColor: Colors.lightBlue,
+            onChanged: null,
+            inactiveTrackColor: enableNotifications ? Colors.blue.shade100 : null,
+            inactiveThumbColor: enableNotifications ? Colors.lightBlue : null,
           ),
         ],
       ),
@@ -326,7 +322,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
     return new Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
       height: 60,
-      width: 130,
+      width: 110,
       child: TextFormField(
         enabled: false,
         decoration: InputDecoration(
@@ -335,6 +331,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
           suffixText: suffix,
         ),
         initialValue: info,
+        style: TextStyle(fontSize: 12),
       ),
     );
   }

@@ -161,13 +161,14 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ElevatedButton(
                               onPressed: () {
+                                print("hi");
                                 print(_currentPosition);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (_) => NearestHealthcareMap(
                                             currentPosition:
-                                                _currentPosition)));
+                                                Position(latitude: 1.3396, longitude: 103.8475))));
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Color(0xffe6f0fa),
@@ -298,23 +299,34 @@ class _HomePageState extends State<HomePage> {
                         }
                       }
 
-                      return Container(
-                          alignment: Alignment.topLeft,
-                          width: 370,
-                          child: Column(
-                            children: <Widget>[
-                              _listView(
-                                  "Reminders", _reminderList, "reminder_icon"),
-                              _diagnosisAppList.length != 0
-                                  ? _listView("Diagnosis Approval",
-                                      _diagnosisAppList, "approve_diag_icon")
-                                  : Container(),
-                              _prescReqList.length != 0
-                                  ? _listView("Received Prescriptions",
-                                      _prescReqList, "medicine_icon")
-                                  : Container(),
-                            ],
-                          ));
+                      if (userNotifs.length != 0) {
+                        return Container(
+                            alignment: Alignment.topLeft,
+                            padding: const EdgeInsets.only(left: 20.0),
+                            width: 370,
+                            child: Column(
+                              children: <Widget>[
+                                _listView("Reminders", _reminderList,
+                                    "reminder_icon"),
+                                _diagnosisAppList.length != 0
+                                    ? _listView("Diagnosis Approval",
+                                        _diagnosisAppList, "approve_diag_icon")
+                                    : Container(),
+                                _prescReqList.length != 0
+                                    ? _listView("Received Prescriptions",
+                                        _prescReqList, "medicine_icon")
+                                    : Container(),
+                              ],
+                            ));
+                        }
+                        else{
+                          return Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.only(top: 5.0, left: 20.0, bottom: 10.0),
+                            width: 370,
+                            child: Text("No notifications"),
+                          );
+                        }
                     } else if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     }
@@ -345,7 +357,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                     alignment: Alignment.topLeft,
                     width: 370,
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: const EdgeInsets.only(bottom: 10.0, left: 20.0),
                     child: _listView("View your daily health tip", _healthTips,
                         "bulb_icon")),
               ],

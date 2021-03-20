@@ -4,9 +4,13 @@ import 'package:drugstore_io/model/Diagnosis.dart';
 import 'package:uuid/uuid.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// const String url = "localhost:8080";
+const String url = "drugstore-node.et.r.appspot.com";
+// const String url = "10.0.2.2:8080"
+
 Future<List<Diagnosis>> fetchDiagnosis(String uid) async {
   final response = await http.get(
-    Uri.http('10.0.2.2:8080', '/diagnoses/', {'uid': uid}),
+    Uri.https(url, '/diagnoses/', {'uid': uid}),
   );
 
   if (response.statusCode == 200) {
@@ -30,7 +34,7 @@ Future<http.Response> createDiagnosis(symptomsList, conditionDiagnosed) async {
   var uuid = Uuid();
 
   final response = await http.post(
-    Uri.http('10.0.2.2:8080', '/diagnoses/', {'id': uuid.v1()}),
+    Uri.https(url, '/diagnoses/', {'id': uuid.v1()}),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

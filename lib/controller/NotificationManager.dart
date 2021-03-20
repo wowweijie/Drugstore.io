@@ -2,9 +2,11 @@ import 'package:drugstore_io/model/Notif.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+const String url = "drugstore-node.et.r.appspot.com";
+
 Future<List<Notif>> fetchNotifs(String uid) async {
   final response = await http.get(
-    Uri.http('10.0.2.2:8080', '/notifs/', {'uid': uid}),
+    Uri.https(url, '/notifs/', {'uid': uid}),
   );
 
   if (response.statusCode == 200) {

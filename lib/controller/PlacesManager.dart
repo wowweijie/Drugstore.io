@@ -22,6 +22,16 @@ Future<List<Marker>> searchNearby(
 
   markers.clear();
 
+  markers.add(
+        Marker(
+          markerId: MarkerId("ChIJyWMKn2kX2jERN5VPP5gkvzQ"),
+          position: LatLng(latitude, longitude),
+          infoWindow: InfoWindow(title: "Current Location"),
+          onTap: () {},
+          icon: BitmapDescriptor.fromBytes(currentLocationIcon),
+        ),
+      );
+
   String url =
       '$baseUrl?key=$_API_KEY&location=$latitude,$longitude&radius=1000&keyword=Pharmacy';
 
@@ -35,15 +45,6 @@ Future<List<Marker>> searchNearby(
       print(error);
       // success
     } else if (data['status'] == "OK") {
-      markers.add(
-        Marker(
-          markerId: MarkerId("ChIJyWMKn2kX2jERN5VPP5gkvzQ"),
-          position: LatLng(latitude, longitude),
-          infoWindow: InfoWindow(title: "Current Location"),
-          onTap: () {},
-          icon: BitmapDescriptor.fromBytes(currentLocationIcon),
-        ),
-      );
       places = PlaceResponse.parseResults(data['results']);
       for (int i = 0; i < places.length; i++) {
         markers.add(
